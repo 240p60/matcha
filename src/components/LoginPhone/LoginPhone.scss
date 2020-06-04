@@ -1,0 +1,15 @@
+.authorization {
+    height: 100%;
+    padding: 50px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+
+    .description {
+        text-align: center;
+        font-size: .9rem;
+        line-height: 1.3rem;
+        padding: 10px 0 30px;
+    }
+}
