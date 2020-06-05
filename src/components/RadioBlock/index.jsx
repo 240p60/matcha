@@ -1,17 +1,21 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Context } from '../../Context';
 
 import Radio from './Radio.jsx'
 import './RadioBlock.scss'
 
-export default function RadioBlock ({radioName, items}) {
+export default function RadioBlock ({radioName}) {
   let name = radioName.toLowerCase();
+  const { radioButtons } = useContext(Context);
 
   return (
-    <div className={`radio-block radio-block_${name}`}>
+    <div className="radio-block">
       <span className="radio-block_name">{radioName}</span>
       <div className="radio__row">
-        {items.map((item, index) => {
-          return <Radio key={index} name={name} type="radio" text={item.text} img={item.image} status={item.checked}></Radio>
+        {radioButtons.map((item, index) => {
+          if (item.type === radioName)
+            return <Radio key={index} radioType={radioName} id={index} name={name} type="radio" text={item.text} img={item.image} status={item.checked}></Radio>
+          return '';
         })}
       </div>
     </div>

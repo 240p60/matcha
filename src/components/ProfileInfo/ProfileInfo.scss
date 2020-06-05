@@ -1,8 +1,14 @@
-.profile_info {
+.profileForm {
     height: 100%;
-    padding: 0 30px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.profile_info {
+    padding: 30px 30px 50px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    justify-content: center;
+    justify-content: flex-start;
 }
