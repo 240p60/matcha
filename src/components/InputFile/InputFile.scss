@@ -13,8 +13,28 @@
     height: 200px;
     background-color: #f5f5f5;
 
-    label.focus {
-        outline: 1px solid #0078d7;
-        outline: -webkit-focus-ring-color auto 5px;
+    label {
+        &.focus {
+            outline: 1px solid #0078d7;
+            outline: -webkit-focus-ring-color auto 5px;
+        }
+
+        .icon-block {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 40px;
+            border-radius: 30px;
+            background-color: #fff;
+            -webkit-box-shadow: 0px 4px 5px -4px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 4px 5px -4px rgba(0,0,0,0.75);
+            box-shadow: 0px 4px 5px -4px rgba(0,0,0,0.75);
+
+            img {
+                width: 30px;
+                height: 30px;
+            }
+        }
     }
 }

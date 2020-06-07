@@ -9,6 +9,7 @@ import Button from '../Button';
 import UserImg from '../../assets/img/user.svg'
 import Male from '../../assets/img/male.svg'
 import Female from '../../assets/img/female.svg'
+import Camera from "../../assets/img/photo-camera.svg"
 
 import "./ProfileInfo.scss"
 
@@ -42,7 +43,7 @@ export default function ProfileInfo() {
 
   return (
     <form action="/profile" className="profileForm">
-      <InputFile/>
+      <InputFile img={Camera}/>
       <div className="profile_info">
         <InputBlock inputName="Name" img={UserImg} inputType="text"/>
         <InputBlock inputName="Date of Birth" inputType="date" placeholder="DD/MM/YYYY"/>
