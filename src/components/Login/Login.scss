@@ -58,18 +58,14 @@
         justify-content: space-between;
         align-items: stretch;
         text-align: center;
-        padding: 30px 30px 20px;
+        padding: 30px 30px 10px;
 
         .login__alt {
-            margin-top: 10px;
-            font-size: .7rem;
+            margin-top: 15px;
+            font-size: 0.875rem;
 
             a {
                 padding-left: 4px;
-                position: relative;
-                font-weight: bold;
-                color: #F62354;
-                text-decoration: none;
             }
         }
 

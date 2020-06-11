@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import Button from '../Button'
 import './Login.scss'
@@ -15,14 +16,17 @@ export default function Login() {
             </div>
             <div className="login__main">
                 <div className="login__action">
-                    <Button type="facebook" href="/login/facebook" text="Continue with Facebook"/>
-                    <Button type="phone" href="/login/phone" text="Continue with Phone"/>
+                    <Button type="facebook" href="/signIn/facebook" text="Continue with Facebook"/>
+                    <Button type="mail" href="/signIn/mail" text="SignIn with Mail"/>
                     <div className="login__alt">
                         Not able to login?
-                        <a href=".">
+                        <Link to='/' className="red-link">
                             Try here
-                        </a>
+                        </Link>
                     </div>
+                    <Link className="green-link" to='/signUp'>
+                        Create an account
+                    </Link>
                 </div>
                 <div className="version">
                     version 1.0

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Context } from '../../Context';
 
 import InputFile from '../InputFile'
-import InputBlock from '../InputBlock'
+import InputBlock from '../Input'
 import RadioBlock from '../RadioBlock'
 import Button from '../Button';
 

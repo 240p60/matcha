@@ -1,8 +1,12 @@
 {
-    "users" : [
-        {"id": 0, "name": "Rashid Alhoev", "tel": "+79308547078", "password": "qwerty"}
-    ],
-    "usersInfo" : [
-        {"id": 0, "userId": 0, "gender": "male", "sex preference": "female", "date of birth": "02.09.1997"}
-    ]
+  "users": [
+    {
+      "id": 0,
+      "tel": "",
+      "password": "qwert"
+    }
+  ],
+  "usersInfo": [
+    {}
+  ]
 }
