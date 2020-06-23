@@ -1,33 +1,27 @@
-import React, { useContext } from 'react'
-import { Context } from '../../Context'
-
+import 'date-fns'
+import React from 'react'
 import TextField from '@material-ui/core/TextField';
+import './Input.scss';
 
-export default function Input ({inputName, focus}) {
-  const {inputs, changeValue} = useContext(Context);
-  const input = inputs.find(item => {
-    return item.name === inputName ? true : false;
-  });
-
+export default function Input ({input, onChange, focus}) {
   let margin = document.documentElement.clientHeight >= 660 ? 'normal' : 'dense';
-
-  let name = input.name;
 
   return (
     <TextField
-        className={`input input__${name}`}
-        value={input.value}
-        onChange={e => changeValue(input.name, inputs, e.target.value)}
-        type={input.type}
-        name={name}
-        error={input.error}
-        helperText={input.error ? input.helperText : ''}
-        autoFocus={focus ? true : false}
-        margin={margin}
-        label={name}
-        required
-        variant="outlined"
-        fullWidth
+      className={`input input__${input.name}`}
+      value={input.value}
+      onChange={e => onChange(input.name, e.target.value)}
+      type={input.type}
+      name={input.name}
+      error={input.error}
+      helperText={input.error ? input.helperText : ''}
+      autoFocus={focus ? true : false}
+      margin={margin}
+      label={input.name}
+      required
+      variant="outlined"
+      fullWidth
+      placeholder={input.placeholder ? input.placeholder : ''}
     />
   )
 }

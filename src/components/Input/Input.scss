@@ -1,0 +1,39 @@
+.input__date {
+    width: 100%;
+
+    & > * {
+        width: 100%;
+    }
+}
+
+p {
+    font-size: .9rem !important;
+    line-height: 1rem !important;
+    margin-top: 10px !important;
+}
+
+
+.options__input {
+    .error {
+        color: red;
+        margin-top: 5px;
+        text-align: center;
+        font-size: .9rem;
+    }
+}
+
+.input__date {
+    .error {
+        color: red;
+        text-align: center;
+        font-size: .9rem;
+    }
+}
+
+@media (max-width: 700px) {
+    p {
+        font-size: 0.75rem !important;
+        line-height: 0.75rem !important;
+        margin-top: 5px !important;
+    }
+}
