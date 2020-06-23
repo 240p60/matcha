@@ -5,3 +5,8 @@ export { default as Button } from './Button';
 export { default as Input } from './Input';
 export { default as ProfileInfo } from './ProfileInfo';
 export { default as InputFile } from './InputFile';
+export { default as InputDate } from './Input/InputDate';
+export { default as InputOptions } from './Input/InputOptions';
+export { default as Radio } from './Radio';
+export { default as Header } from './Header';
+export { default as Menu } from './MenuComponent'

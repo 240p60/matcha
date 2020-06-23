@@ -17,7 +17,7 @@ export default function Login() {
             <div className="login__main">
                 <div className="login__action">
                     <Button type="facebook" href="/signIn/facebook" text="Continue with Facebook"/>
-                    <Button type="mail" href="/signIn/mail" text="SignIn with Mail"/>
+                    <Button type="mail" href="/signIn" text="SignIn with Mail"/>
                     <div className="login__alt">
                         Not able to login?
                         <Link to='/' className="red-link">

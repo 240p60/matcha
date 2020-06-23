@@ -2,11 +2,34 @@
   "users": [
     {
       "id": 0,
-      "tel": "",
-      "password": "qwert"
+      "firstName": "",
+      "lastName": "",
+      "mail": "",
+      "password": ""
+    },
+    {
+      "firstName": "Alex",
+      "lastName": "Alexeevich",
+      "mail": "mr.alhoev@mail.ru",
+      "password": "UXdlcnR5MQ==",
+      "id": 1
     }
   ],
   "usersInfo": [
-    {}
+    {
+      "id": 0
+    },
+    {
+      "years": 25,
+      "gender": "Мale",
+      "sex": "Female",
+      "interests": [
+        "Music",
+        "Pizza",
+        "Hookahs",
+        "Serials"
+      ],
+      "id": 1
+    }
   ]
 }

@@ -1,14 +1,14 @@
-.profileForm {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-.profile_info {
-    padding: 30px 30px 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
+.form__block {
+    .profileForm {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 0;
+    
+        .button {
+            margin-top: 25px;
+        }
+    }
 }

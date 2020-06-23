@@ -14,12 +14,12 @@ export default function Button({text, type, onClick, href}) {
           <span>{text}</span>
         </Link>
       ) : (
-        <div onClick={() => onClick()} className={[
+        <button type={type} onClick={(e) => onClick(e)} className={[
           "button",
           type ? `button_${type}` : null
         ].join(' ')}>
                 <span>{text}</span>
-        </div>
+        </button>
       )}
     </React.Fragment>
   )

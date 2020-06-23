@@ -1,13 +1,12 @@
 import React, { useState, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Context } from '../../Context'
 
 import { Avatar, Typography, Grid } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Button from '../Button'
-import Input from '../Input'
+import { Button, Input } from '../index'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -22,8 +21,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn () {
+  let history = useHistory();
   const classes = useStyles();
-  const { users, setUsers } = useContext(Context);
+  const { users, setUsers, setLoggedIn } = useContext(Context);
 
   const [inputs, setInputValue] = useState([
     {
@@ -44,62 +44,63 @@ export default function SignIn () {
     }
   ]);
 
-  function changeValue(type, data, value) {
-    const newData = data.map(item => {
-      if (item.type === type)
+  function changeValue(name, value) {
+    const newData = inputs.map(item => {
+      if (item.name === name)
         item.value = value;
       return item;
     })
     setInputValue(newData);
   }
 
-  function addNewUser() {
-    setInputValue(inputs.map((item) => {
-      if (!(item.pattern.test(item.value)))
+  function actionSingIn(event) {
+    event.preventDefault();
+    let errors = false;
+    const newInputs = inputs.map((item) => {
+      if (!(item.pattern.test(item.value))) {
         item.error = true;
-      else
+        errors = true;
+      } else
         item.error = false;
       return item;
-    }));
-    // fetch("http://localhost:3000/users", {
-    //   method: "POST",
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     mail: inputs[0].value,
-    //     password: inputs[1].value
-    //   })
-    // })
-    // .then(res => {
-    //   if (!res.ok) throw Error(res.statusText);
-    //   return res.json()
-    // })
-    // .then(data => setUsers(data))
-    // .catch(err => console.log(err))
+    });
+    
+    if (!errors) {
+      fetch("http://localhost:3000/users")
+      .then(res => {
+        if (!res.ok) throw Error(res.statusText);
+        return res.json()
+      })
+      .then(data => {
+        data.forEach(item => {
+          if (item.mail === inputs[0].value && window.atob(item.password) === inputs[1].value)
+            setLoggedIn(true);
+          history.push('/profile');
+        });
+      })
+      .catch(err => console.log(err));
+    } else
+      setInputValue(newInputs);
+
+
   }
 
   return (
-    <div className={`${classes.paper} authorization`}>
+    <div className={`${classes.paper} form__block form__block-signIn`}>
       <Avatar className={classes.avatar}>
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
         Sign In
       </Typography>
-      <form action="" method="POST" name="phone_authorization">
-        <Context.Provider value={{
-          inputs,
-          changeValue
-        }}>
-          {inputs.map((item, index) => {
-            return <Input key={index} focus={index === 0 ? true : false} inputName={item.name}/>
-          })}
-        </Context.Provider>
+      <form action="" method="POST" name="signIn">
+        {inputs.map((item, index) => {
+          return <Input key={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
+        })}
         <div className="description">
           We need your mail to get you signed in
         </div>
-        <Button onClick={addNewUser} type="submit" text="Sign In" />
+        <Button onClick={actionSingIn} type="submit" text="Sign In" />
         <Grid container className="actions">
           <Grid item xs>
             <Link className="red-link" to='/'>

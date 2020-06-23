@@ -1,6 +1,7 @@
 .button {
+    width: 100%;
     display: block;
-    padding: 10px 20px;
+    padding: 15px 20px;
     text-align: center;
     border-radius: 4px;
     -webkit-box-shadow: 0px 4px 5px -4px rgba(0,0,0,0.75);
@@ -11,7 +12,7 @@
 
     span {
         position: relative;
-        font-size: .8rem;
+        font-size: 1rem;
     }
 
     &_mail {
@@ -26,10 +27,9 @@
 
     &_submit {
         background-color: #F62354;
-        color: #fff;
 
         span {
-            font-size: .8rem;
+            color: #fff;
             font-weight: bold;
         }
     }
@@ -41,6 +41,6 @@
 
 @media (max-height: 660px) {
     .button {
-        padding: 7px 20px;
+        padding: 12px 20px;
     }
 }

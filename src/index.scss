@@ -21,9 +21,19 @@ main {
 
 a {
   text-decoration: none;
+  color: #fff;
 }
 
-.authorization {
+button {
+  outline: none;
+  border: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+.form__block {
   height: 100%;
   padding: 50px 30px;
   display: flex;
@@ -32,6 +42,7 @@ a {
 
   form {
       padding-top: 10px;
+      max-width: 400px;
   }
 
   .description {
