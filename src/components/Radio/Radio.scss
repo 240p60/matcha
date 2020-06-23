@@ -1,0 +1,64 @@
+.radio__title {
+    margin: 20px 0 0;
+    width: 100%;
+}
+
+
+input.radio__input {
+    display: none;
+}
+
+input[value="true"] + label.radio {
+    border-color: #F62354;
+}
+
+label.radio {
+    width: calc((100% / 2) - (1rem / 2));
+    position: relative;
+    text-align: center;
+    padding: 10px 0;
+    background-color: #F5F5F5;
+    border-radius: 8px;
+    margin-left: 1rem;
+    margin-top: 10px;
+    border: 2px solid transparent;
+
+    &:nth-of-type(odd) {
+        margin-left: 0;
+    }
+
+    span {
+        font-size: .7rem;
+        line-height: 1rem;
+        color: black;
+    }
+
+    &.active {
+        background-color: #fff;
+
+        span {
+            color: black;
+        }
+    }
+
+    .text {
+        position: relative;
+        font-size: .9rem;
+        padding-left: 20px;
+
+        img {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -7.5px;
+            width: 15px;
+            height: 15px;
+        }
+    }
+}
+
+@media (max-height: 660px) {
+    label.radio {
+        padding: 7px 0;
+    }
+}
