@@ -113,8 +113,8 @@ export default function ProfileInfo() {
     });
 
     if (!errors) {
-      fetch("http://localhost:3000/usersInfo", {
-        method: "POST",
+      fetch("http://localhost:3000/user/update", {
+        method: "PATCH",
         headers: {
           'Content-Type': 'application/json'
         },

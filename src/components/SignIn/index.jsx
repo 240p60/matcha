@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn () {
   let history = useHistory();
   const classes = useStyles();
-  const { users, setUsers, setLoggedIn } = useContext(Context);
+  const { setLoggedIn } = useContext(Context);
 
   const [inputs, setInputValue] = useState([
     {
@@ -38,9 +38,9 @@ export default function SignIn () {
       type: 'password',
       name: 'Password',
       value: '',
-      pattern: /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])[a-z0-9A-Z]{6,14}$/,
+      pattern: /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[$&+,:;=?@#|'<>.^*()%!-])[a-z0-9A-Z$&+,:;=?@#|'<>.-^*()%!-]{6,14}$/,
       error: false,
-      helperText: "Enter 6 to 14 letters in upper or lower case and '.'"
+      helperText: 'Enter 6 to 14 letters in upper and lower case, digits and special character ($&+,:;=?@#|\'<>.^*()%!-)'
     }
   ]);
 
@@ -66,17 +66,27 @@ export default function SignIn () {
     });
     
     if (!errors) {
-      fetch("http://localhost:3000/users")
+      fetch("http://localhost:3000/user/auth/", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          mail: inputs[0].value,
+          passwd: inputs[1].value,
+        })
+      })
       .then(res => {
         if (!res.ok) throw Error(res.statusText);
         return res.json()
       })
       .then(data => {
-        data.forEach(item => {
-          if (item.mail === inputs[0].value && window.atob(item.password) === inputs[1].value)
-            setLoggedIn(true);
-          history.push('/profile');
-        });
+        // data.forEach(item => {
+        //   if (item.mail === inputs[0].value && window.atob(item.password) === inputs[1].value)
+        //     setLoggedIn(true);
+        //   history.push('/profile');
+        // });
+        history.push('/profile');
       })
       .catch(err => console.log(err));
     } else

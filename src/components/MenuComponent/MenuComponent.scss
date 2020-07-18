@@ -38,6 +38,12 @@
     height: 100%;
     top: 0;
   }
+
+  @media screen and (min-width: 1500px) {
+    .bm-menu-wrap {
+      width: 500px !important;
+    }
+  }
   
   /* General sidebar styles */
   .bm-menu {

@@ -2,25 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom'
 import { Context } from './Context';
 
-import { Login, SignIn, ProfileInfo, SignUp, Header } from './components/index'
+import { Login, SignIn, ProfileInfo, SignUp, Header, ConfirmMail } from './components/index'
 
 function App() {
-  const [users, setUsers] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    fetch('http://localhost:3000/users')
-      .then(res => res.json())
-      .then(data => setUsers(data))
-  }, []);
-
 
   return (
     <main id="main">
       <Context.Provider
         value={{
-          users,
-          setUsers,
+          loggedIn,
           setLoggedIn
         }}
       >
@@ -38,6 +29,9 @@ function App() {
             </Route>
             <Route exact path="/profile">
               <ProfileInfo />
+            </Route>
+            <Route exact path="/confirm/mail">
+              <ConfirmMail />
             </Route>
           </Route>
         </Switch>

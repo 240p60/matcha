@@ -9,4 +9,5 @@ export { default as InputDate } from './Input/InputDate';
 export { default as InputOptions } from './Input/InputOptions';
 export { default as Radio } from './Radio';
 export { default as Header } from './Header';
-export { default as Menu } from './MenuComponent'
+export { default as Menu } from './MenuComponent';
+export { default as ConfirmMail } from './ConfirmMail'

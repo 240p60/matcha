@@ -6,7 +6,7 @@ import { Avatar, Typography, Grid } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Button, Input } from '../index'
+import { Button, Input, ConfirmMail } from '../index'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -23,25 +23,9 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp () {
   const history = useHistory();
   const classes = useStyles();
-  const { users, setUsers } = useContext(Context);
+  const [generalError, setError] = useState("");
 
   const [inputs, setInputValue] = useState([
-    {
-      type: 'text',
-      name: 'First Name',
-      value: '',
-      pattern: /^(\w{2,12})$/,
-      error: false,
-      helperText: 'Enter 1 to 12 letters in upper or lower case'
-    },
-    {
-      type: 'text',
-      name: 'Last Name',
-      value: '',
-      pattern: /^(\w{2,12})$/,
-      error: false,
-      helperText: 'Enter 1 to 12 letters in upper or lower case'
-    },
     {
       type: 'email',
       name: 'Mail',
@@ -54,9 +38,9 @@ export default function SignUp () {
       type: 'password',
       name: 'Password',
       value: '',
-      pattern: /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])[a-z0-9A-Z]{6,14}$/,
+      pattern: /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[$&+,:;=?@#|'<>.^*()%!-])[a-z0-9A-Z$&+,:;=?@#|'<>.-^*()%!-]{6,14}$/,
       error: false,
-      helperText: 'Enter 6 to 14 letters in upper and lower case and digits'
+      helperText: 'Enter 6 to 14 letters in upper and lower case, digits and special character ($&+,:;=?@#|\'<>.^*()%!-)'
     }
   ]);
 
@@ -82,27 +66,25 @@ export default function SignUp () {
     });
 
     if (!errors) {
-      fetch("http://localhost:3000/users", {
+      fetch("http://localhost:3000/user/reg/", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          firstName: inputs[0].value,
-          lastName: inputs[1].value,
-          mail: inputs[2].value,
-          password: window.btoa(inputs[3].value)
+          mail: inputs[0].value,
+          passwd: inputs[1].value,
         })
       })
       .then(res => {
-        if (!res.ok) throw Error(res.statusText);
-        return res.json()
+        if (res.status === 406) {
+          history.push('/confirm/mail');
+        } else if (res.status !== 201) {
+          throw new Error(res.json());
+        } else {
+          history.push('/confirm/mail');
+        }
       })
-      .then(data => {
-        setUsers(data);
-        history.push('/profile');
-      })
-      .catch(err => console.log(err));
     } else
       setInputValue(newInputs);
   }
@@ -115,6 +97,9 @@ export default function SignUp () {
       <Typography component="h1" variant="h5">
         Sign Up
       </Typography>
+      <div className="form__block-error">
+        {generalError}
+      </div>
       <form action="" method="POST" name="signUp">
         {inputs.map((item, index) => {
           return <Input key={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>

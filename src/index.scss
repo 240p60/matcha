@@ -40,6 +40,12 @@ ul, ol {
   flex-direction: column;
   justify-content: center;
 
+  &-error {
+    color: #F62354;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+
   form {
       padding-top: 10px;
       max-width: 400px;
