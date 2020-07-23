@@ -20,10 +20,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function SignIn () {
+export default function SignIn() {
   let history = useHistory();
   const classes = useStyles();
-  const { setLoggedIn } = useContext(Context);
+  const { userInfo, setUserInfo } = useContext(Context);
+  const [generalError, setError] = useState("");
 
   const [inputs, setInputValue] = useState([
     {
@@ -53,7 +54,7 @@ export default function SignIn () {
     setInputValue(newData);
   }
 
-  function actionSingIn(event) {
+  async function actionSingIn(event) {
     event.preventDefault();
     let errors = false;
     const newInputs = inputs.map((item) => {
@@ -66,7 +67,7 @@ export default function SignIn () {
     });
     
     if (!errors) {
-      fetch("http://localhost:3000/user/auth/", {
+      let response = await fetch("http://localhost:3000/user/auth/", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
@@ -75,24 +76,25 @@ export default function SignIn () {
           mail: inputs[0].value,
           passwd: inputs[1].value,
         })
-      })
-      .then(res => {
-        if (!res.ok) throw Error(res.statusText);
-        return res.json()
-      })
-      .then(data => {
-        // data.forEach(item => {
-        //   if (item.mail === inputs[0].value && window.atob(item.password) === inputs[1].value)
-        //     setLoggedIn(true);
-        //   history.push('/profile');
-        // });
-        history.push('/profile');
-      })
-      .catch(err => console.log(err));
-    } else
-      setInputValue(newInputs);
+      });
 
-
+      if (response.status === 202) {
+        history.push('/confirm/mail');
+      } else if (response.status === 400) {
+        setError("Wrong mail or password");
+        history.push('/signIn');
+      } else if (!response.ok) {
+        throw Error(response.statusText);
+      } else {
+        let data = await response.json();
+        sessionStorage.setItem('x-auth-token', data['x-auth-token']);
+        setUserInfo(data);
+        if (data.fname)
+          history.push('user/page');
+        else
+          history.push('/profile');
+      }
+    } else setInputValue(newInputs);
   }
 
   return (
@@ -103,6 +105,11 @@ export default function SignIn () {
       <Typography component="h1" variant="h5">
         Sign In
       </Typography>
+      {generalError ? 
+        <div className="form__block-error">
+          {generalError}
+        </div>
+      : null}
       <form action="" method="POST" name="signIn">
         {inputs.map((item, index) => {
           return <Input key={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
@@ -127,88 +134,3 @@ export default function SignIn () {
     </div>
   )
 }
-
-// const useStyles = makeStyles((theme) => ({
-//   paper: {
-//     marginTop: theme.spacing(8),
-//     display: 'flex',
-//     flexDirection: 'column',
-//     alignItems: 'center',
-//     justifyContent: 'space-between'
-//   },
-//   avatar: {
-//     margin: theme.spacing(1),
-//     backgroundColor: theme.palette.secondary.main,
-//   },
-//   form: {
-//     width: '100%', // Fix IE 11 issue.
-//     marginTop: theme.spacing(1),
-//   },
-//   submit: {
-//     margin: theme.spacing(3, 0, 2),
-//   },
-// }));
-
-// export default function SignIn() {
-//   const classes = useStyles();
-
-//   return (
-//     <div className={classes.paper}>
-//         <Avatar className={classes.avatar}>
-//           <LockOutlinedIcon />
-//         </Avatar>
-//         <Typography component="h1" variant="h5">
-//           Sign in
-//         </Typography>
-//         <form className={classes.form} noValidate>
-//           <TextField
-//             variant="outlined"
-//             margin="normal"
-//             required
-//             fullWidth
-//             id="email"
-//             label="Email Address"
-//             name="email"
-//             autoComplete="email"
-//             autoFocus
-//           />
-//           <TextField
-//             variant="outlined"
-//             margin="normal"
-//             required
-//             fullWidth
-//             name="password"
-//             label="Password"
-//             type="password"
-//             id="password"
-//             autoComplete="current-password"
-//           />
-//           <FormControlLabel
-//             control={<Checkbox value="remember" color="primary" />}
-//             label="Remember me"
-//           />
-//           <Button
-//             type="submit"
-//             fullWidth
-//             variant="contained"
-//             color="primary"
-//             className={classes.submit}
-//           >
-//             Sign In
-//           </Button>
-//           <Grid container>
-//             <Grid item xs>
-//               <Link href="#" variant="body2">
-//                 Forgot password?
-//               </Link>
-//             </Grid>
-//             <Grid item>
-//               <Link href="#" variant="body2">
-//                 {"Don't have an account? Sign Up"}
-//               </Link>
-//             </Grid>
-//           </Grid>
-//         </form>
-//       </div>
-//   );
-// }

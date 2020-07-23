@@ -8,6 +8,10 @@ export { default as InputFile } from './InputFile';
 export { default as InputDate } from './Input/InputDate';
 export { default as InputOptions } from './Input/InputOptions';
 export { default as Radio } from './Radio';
+export { default as Checkbox } from './Checkbox';
 export { default as Header } from './Header';
 export { default as Menu } from './MenuComponent';
-export { default as ConfirmMail } from './ConfirmMail'
+export { default as ConfirmMail } from './ConfirmMail';
+export { default as Preloader } from './Preloader';
+export { default as UserPage } from './UserPage';
+export { default as MapComponent } from './MapComponent';

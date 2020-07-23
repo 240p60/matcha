@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
+import { Context } from '../../Context'
 
 import { Typography } from '@material-ui/core';
-import { Input, Button, InputDate, InputOptions, Radio, MapComponent } from '../index'
+import { Input, Button, InputDate, InputOptions, Radio, Checkbox, MapComponent } from '../index'
 import { makeStyles } from '@material-ui/core/styles';
 
 import Male from '../../assets/img/male.svg'
@@ -25,8 +27,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProfileInfo() {
+  let history = useHistory();
+  const { userInfo, setUserInfo } = useContext(Context);
   const classes = useStyles();
   const [inputs, setInputValue] = useState([
+    {
+      type: 'text',
+      name: 'First Name',
+      value: '',
+      error: false,
+      helperText: '',
+      placeholder: 'First Name'
+    },
+    {
+      type: 'text',
+      name: 'Last Name',
+      value: '',
+      error: false,
+      helperText: '',
+      placeholder: 'Last Name'
+    },
     {
       type: 'date',
       name: 'Date of Birth',
@@ -38,7 +58,7 @@ export default function ProfileInfo() {
     {
       type: "radio",
       name: "Gender",
-      text: "Мale",
+      text: "Male",
       image: Male,
       value: true
     },
@@ -50,16 +70,20 @@ export default function ProfileInfo() {
       value: false
     },
     {
-      type: "radio",
+      type: "checkbox",
       name: "Sex Preference",
-      text: "Мale",
+      text: "Male",
+      error: false,
+      helperText: 'Choose at least one preference',
       image: Male,
       value: false
     },
     {
-      type: "radio",
+      type: "checkbox",
       name: "Sex Preference",
       text: "Female",
+      error: false,
+      helperText: 'Choose at least one preference',
       image: Female,
       value: true
     },
@@ -69,36 +93,59 @@ export default function ProfileInfo() {
       error: false,
       helperText: 'Choose min 3 interests',
       value: []
+    },
+    {
+      type: 'map',
+      name: 'map',
+      value: {
+        center: {
+          lat: 0,
+          lng: 0
+        },
+        zoom: 11
+      }
     }
   ]);
 
-  function addProfileInfo(event) {
-    let years;
-    let gender;
-    let sexPreference;
-    let interests;
+  async function addProfileInfo(event) {
     event.preventDefault();
+    let firstName;
+    let lastName;
+    let age;
+    let gender;
+    let sexPreference = '';
+    let interests;
     let errors = false;
     const newInputs = inputs.map((item) => {
       switch (item.name) {
+        case 'First Name':
+          firstName = item.value;
+          break;
+        case 'Last Name':
+          lastName = item.value;
+          break;
         case 'Gender':
           if (item.value === true)
-            gender = item.text;
+            gender = item.text.toLowerCase();
           break;
         case 'Sex Preference':
-          if (item.value === true)
-            sexPreference = item.text;
+          if (item.value === true) {
+            sexPreference += item.text.toLowerCase();
+          } else if (sexPreference === '' && item.text === 'Female') {
+            item.error = true;
+            errors = true;
+          } else item.error = false;
           break;
         case 'Date of Birth':
-          years = Math.floor((Date.now() - new Date(item.value).getTime()) / 1000 / 3600 / 8760);
-          if (years < 18) {
+          age = Math.floor((Date.now() - new Date(item.value).getTime()) / 1000 / 3600 / 8760);
+          if (age < 18) {
             item.error = true;
             errors = true;
           } else 
             item.error = false;
           break;
         case 'Interests':
-          if (item.value.length < 4) {
+          if (item.value.length < 3) {
             item.error = true;
             errors = true;
           } else {
@@ -113,33 +160,57 @@ export default function ProfileInfo() {
     });
 
     if (!errors) {
-      fetch("http://localhost:3000/user/update", {
+      if (sexPreference === 'malefemale') {
+        sexPreference = 'bi';
+      } else if (sexPreference === '') {
+        errors = true;
+      } else if (sexPreference === gender) {
+        sexPreference = 'homo';
+      } else sexPreference = 'hetero';
+
+      let response = await fetch("http://localhost:3000/user/update/", {
         method: "PATCH",
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json;charset=UTF-8',
+          'x-auth-token': sessionStorage.getItem('x-auth-token')
         },
         body: JSON.stringify({
-          years: years,
+          fname: firstName,
+          lname: lastName,
+          age: age,
           gender: gender,
-          sex: sexPreference,
+          orientation: sexPreference,
           interests: interests
         })
-      })
-      .then(res => {
-        if (!res.ok) throw Error(res.statusText);
-        return res.json()
-      })
-      .then(data => {
-        console.log(data);
-      })
-      .catch(err => console.log(err));
-    } else
-      setInputValue(newInputs);
+      });
+
+      if (response.status === 202) {
+        history.push('/confirm/mail');
+      } else if (!response.ok) {
+        throw Error(response.statusText);;
+      } else {
+        setUserInfo({
+          'ws-auth-token': userInfo['ws-auth-token'],
+          'x-auth-token': userInfo['x-auth-token'],
+          mail: userInfo.mail,
+          fname: firstName,
+          lname: lastName,
+          age: age,
+          gender: gender,
+          orientation: sexPreference,
+          interests: interests
+        });
+        history.push('/user/page');
+      }
+    } else setInputValue(newInputs);
   }
 
-  function changeValue(name, value) {
+  function changeValue(name, value, type, text) {
     const newData = inputs.map(item => {
-      if (item.name === name) {
+      if (item.type === 'checkbox') {
+        if (item.text === text)
+          item.value = !item.value;
+      } else if (item.name === name) {
         item.value = typeof item.value === "boolean" ? !item.value : value;
       }
       return item;
@@ -158,13 +229,16 @@ export default function ProfileInfo() {
             return <InputDate key={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
           } else if (item.type === 'radio') {
             return <Radio key={index} index={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
+          } else if (item.type === 'checkbox') {
+            return <Checkbox key={index} index={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
           } else if (item.type === 'options') {
             return <InputOptions key={index} input={item} onChange={changeValue}/>
+          } else if (item.type === 'map') {
+            return <MapComponent key={index} input={item} onChange={changeValue}></MapComponent>
           } else {
             return <Input key={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
           }
         })}
-        {/* <MapComponent></MapComponent> */}
         <Button onClick={addProfileInfo} text="Continue" type="submit" />
       </form>
     </div>

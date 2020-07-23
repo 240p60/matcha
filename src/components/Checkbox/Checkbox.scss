@@ -1,18 +1,24 @@
-.radio__title {
-    margin: 15px 0 0;
+.checkbox__title {
+    margin: 20px 0 0;
     width: 100%;
 }
 
+.checkbox__error {
+    margin: 10px 0 0;
+    width: 100%;
+    color: red;
+    font-size: .9rem;
+}
 
-input.radio__input {
+input.checkbox__input {
     display: none;
 }
 
-input[value="true"] + label.radio {
+input[value="true"] + label.checkbox {
     border-color: #F62354;
 }
 
-label.radio {
+label.checkbox {
     width: calc((100% / 2) - (1rem / 2));
     position: relative;
     text-align: center;
@@ -58,7 +64,7 @@ label.radio {
 }
 
 @media (max-height: 660px) {
-    label.radio {
+    label.checkbox {
         padding: 7px 0;
     }
 }

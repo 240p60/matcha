@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom'
 import { Context } from './Context';
 
-import { Login, SignIn, ProfileInfo, SignUp, Header, ConfirmMail } from './components/index'
+import { Login, SignIn, ProfileInfo, SignUp, Header, ConfirmMail, UserPage } from './components/index'
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState(false);
 
   return (
     <main id="main">
       <Context.Provider
         value={{
-          loggedIn,
-          setLoggedIn
+          userInfo,
+          setUserInfo
         }}
       >
         <Switch>
@@ -32,6 +32,9 @@ function App() {
             </Route>
             <Route exact path="/confirm/mail">
               <ConfirmMail />
+            </Route>
+            <Route exact path="/user/page">
+              <UserPage />
             </Route>
           </Route>
         </Switch>

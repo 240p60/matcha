@@ -53,7 +53,7 @@ export default function SignUp () {
     setInputValue(newData);
   }
 
-  function addNewUser(event) {
+  async function addNewUser(event) {
     event.preventDefault();
     let errors = false;
     const newInputs = inputs.map((item) => {
@@ -66,7 +66,7 @@ export default function SignUp () {
     });
 
     if (!errors) {
-      fetch("http://localhost:3000/user/reg/", {
+      let response = await fetch("http://localhost:3000/user/reg/", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
@@ -75,16 +75,15 @@ export default function SignUp () {
           mail: inputs[0].value,
           passwd: inputs[1].value,
         })
-      })
-      .then(res => {
-        if (res.status === 406) {
-          history.push('/confirm/mail');
-        } else if (res.status !== 201) {
-          throw new Error(res.json());
-        } else {
-          history.push('/confirm/mail');
-        }
-      })
+      });
+
+      if (response.status === 406) {
+        history.push('/confirm/mail');
+      } else if (response.status !== 201) {
+        throw new Error(await response.json());
+      } else {
+        history.push('/confirm/mail');
+      }
     } else
       setInputValue(newInputs);
   }
@@ -97,9 +96,11 @@ export default function SignUp () {
       <Typography component="h1" variant="h5">
         Sign Up
       </Typography>
-      <div className="form__block-error">
-        {generalError}
-      </div>
+      {generalError ? 
+        <div className="form__block-error">
+          {generalError}
+        </div>
+      : null}
       <form action="" method="POST" name="signUp">
         {inputs.map((item, index) => {
           return <Input key={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>

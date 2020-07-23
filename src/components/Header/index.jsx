@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Menu } from '../index'
+import { Menu, Button } from '../index'
 
 import './Header.scss'
 
@@ -11,7 +11,12 @@ export default function Header() {
                 <div className="header__logo">
                     <Link to="/">Strings</Link>
                 </div>
-                <Menu></Menu>
+                <div className="header__right-block">
+                    <div className="header__actions">
+                        {sessionStorage.getItem('x-auth-token') && <Button/>}
+                    </div>
+                    <Menu></Menu>
+                </div>
             </div>
         </div>
     )
