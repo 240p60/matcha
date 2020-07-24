@@ -8,7 +8,6 @@
     -moz-box-shadow: 0px 4px 5px -4px rgba(0,0,0,0.75);
     box-shadow: 0px 4px 5px -4px rgba(0,0,0,0.75);
     cursor: pointer;
-    margin-top: 16px;
 
     span {
         position: relative;
@@ -32,6 +31,11 @@
             color: #fff;
             font-weight: bold;
         }
+    }
+
+    &_header-action {
+        background-color: #fff;
+        padding: 7px 14px;
     }
 
     & + .button {

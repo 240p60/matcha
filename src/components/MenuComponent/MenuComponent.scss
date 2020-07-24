@@ -1,11 +1,11 @@
 /* Position and sizing of burger button */
 .bm-burger-button {
     position: absolute;
-    width: 36px;
-    height: 32px;
+    width: 32px;
+    height: 24px;
     right: 0;
     top: 50%;
-    margin-top: -16px;
+    margin-top: -12px;
   }
   
   /* Color/shape of burger icon bars */
@@ -22,6 +22,18 @@
   .bm-cross-button {
     height: 24px;
     width: 24px;
+  }
+
+  .bm-burger-bars {
+    height: 4px !important;
+  }
+
+  .bm-burger-bars:nth-child(2) {
+    top: calc(50% - 2px) !important;
+  }
+
+  .bm-burger-bars:nth-child(3) {
+    top: calc(100% - 4px) !important;
   }
   
   /* Color/shape of close button cross */

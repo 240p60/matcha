@@ -7,7 +7,7 @@
     -moz-box-shadow: 0px 4px 5px -4px rgba(0,0,0,0.75);
     box-shadow: 0px 4px 5px -4px rgba(0,0,0,0.75);
 
-    .header__container {
+    &__container {
         max-width: 1080px;
         width: 96%;
         margin:0 auto;
@@ -21,6 +21,10 @@
         font-weight: bold;
         font-size: 3rem;
         line-height: 3rem;
+    }
+
+    &__actions {
+        padding-right: 50px;
     }
 
     nav  ul {

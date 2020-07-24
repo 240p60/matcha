@@ -105,7 +105,7 @@ export default function SignUp () {
         {inputs.map((item, index) => {
           return <Input key={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
         })}
-        <Button onClick={addNewUser} type="submit" text="Sign Up" />
+        <Button onClick={addNewUser} type="submit" subClass="submit" text="Sign Up" />
         <Grid container className="actions" justify="center">
           <Grid item>
             <Link to='/signIn'>

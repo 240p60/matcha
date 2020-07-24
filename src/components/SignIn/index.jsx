@@ -117,7 +117,7 @@ export default function SignIn() {
         <div className="description">
           We need your mail to get you signed in
         </div>
-        <Button onClick={actionSingIn} type="submit" text="Sign In" />
+        <Button onClick={actionSingIn} type="submit" subClass="submit" text="Sign In" />
         <Grid container className="actions">
           <Grid item xs>
             <Link className="red-link" to='/'>

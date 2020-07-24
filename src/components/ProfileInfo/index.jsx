@@ -115,6 +115,8 @@ export default function ProfileInfo() {
     let gender;
     let sexPreference = '';
     let interests;
+    let lat;
+    let lng;
     let errors = false;
     const newInputs = inputs.map((item) => {
       switch (item.name) {
@@ -153,6 +155,9 @@ export default function ProfileInfo() {
             interests = item.value;
           }
           break;
+        case 'map':
+          lat = item.value.lat;
+          lng = item.value.lng;
         default:
           return item;
       }
@@ -180,7 +185,9 @@ export default function ProfileInfo() {
           age: age,
           gender: gender,
           orientation: sexPreference,
-          interests: interests
+          interests: interests,
+          lat: lat,
+          lng: lng
         })
       });
 
@@ -239,7 +246,7 @@ export default function ProfileInfo() {
             return <Input key={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
           }
         })}
-        <Button onClick={addProfileInfo} text="Continue" type="submit" />
+        <Button onClick={addProfileInfo} text="Continue" type="submit" subClass="submit" />
       </form>
     </div>
   )

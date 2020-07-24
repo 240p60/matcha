@@ -13,7 +13,10 @@ export default function Header() {
                 </div>
                 <div className="header__right-block">
                     <div className="header__actions">
-                        {sessionStorage.getItem('x-auth-token') && <Button/>}
+                        {sessionStorage.getItem('x-auth-token') ?
+                            <Button text='Log Out' type='button' subClass='header-action'/> :
+                            <Button text='Sign In' type='button' subClass='header-action'/>
+                        }
                     </div>
                     <Menu></Menu>
                 </div>

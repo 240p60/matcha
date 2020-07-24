@@ -49,6 +49,10 @@ ul, ol {
   form {
       padding-top: 10px;
       max-width: 400px;
+
+      .button {
+        margin-top: 16px;
+      }
   }
 
   .description {
