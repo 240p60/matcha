@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Switch, Route, useLocation } from 'react-router-dom'
 import { Context } from './Context';
 
 import { Login, SignIn, ProfileInfo, SignUp, Header, ConfirmMail, UserPage } from './components/index'
 
 function App() {
+  const url = useLocation();
   const [userInfo, setUserInfo] = useState(false);
 
   return (

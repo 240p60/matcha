@@ -22,11 +22,20 @@ main {
 a {
   text-decoration: none;
   color: #fff;
+  font: 400 13.3333px 'Montserrat';
+}
+
+button, input, textarea {
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 button {
   outline: none;
   border: none;
+}
+
+.MuiFormLabel-root {
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 ul, ol {

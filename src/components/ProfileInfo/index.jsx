@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { Context } from '../../Context'
 
 import { Typography } from '@material-ui/core';
-import { Input, Button, InputDate, InputOptions, Radio, Checkbox, MapComponent } from '../index'
+import { Input, Button, InputDate, InputOptions, Radio, Checkbox, MapComponent, Textarea } from '../index'
 import { makeStyles } from '@material-ui/core/styles';
 
 import Male from '../../assets/img/male.svg'
@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   typography: {
-    margin: '0 auto'
+    margin: '0 auto',
+    fontFamily: 'Montserrat'
   }
 }));
 
@@ -95,6 +96,13 @@ export default function ProfileInfo() {
       value: []
     },
     {
+      type: "textarea",
+      name: "Biography",
+      error: false,
+      helperText: 'Empty value',
+      value: ''
+    },
+    {
       type: 'map',
       name: 'map',
       value: {
@@ -115,6 +123,7 @@ export default function ProfileInfo() {
     let gender;
     let sexPreference = '';
     let interests;
+    let bio;
     let lat;
     let lng;
     let errors = false;
@@ -155,9 +164,19 @@ export default function ProfileInfo() {
             interests = item.value;
           }
           break;
+        case 'Biography':
+          if (item.value === '') {
+            item.error = true;
+            errors = true;
+          } else {
+            item.error = false;
+            bio = item.value;
+          }
+          break;
         case 'map':
           lat = item.value.lat;
           lng = item.value.lng;
+          break;
         default:
           return item;
       }
@@ -186,6 +205,7 @@ export default function ProfileInfo() {
           gender: gender,
           orientation: sexPreference,
           interests: interests,
+          bio: bio,
           lat: lat,
           lng: lng
         })
@@ -240,6 +260,8 @@ export default function ProfileInfo() {
             return <Checkbox key={index} index={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
           } else if (item.type === 'options') {
             return <InputOptions key={index} input={item} onChange={changeValue}/>
+          } else if (item.type === 'textarea') {
+            return <Textarea key={index} input={item} onChange={changeValue}/>
           } else if (item.type === 'map') {
             return <MapComponent key={index} input={item} onChange={changeValue}></MapComponent>
           } else {
