@@ -72,7 +72,7 @@ export default function ConfirmMail() {
       })
       .then(res => {
         if (res.status !== 200) {
-          setError(`Что-то пошло не так: ${res.status} - ${res.statusText}`);
+          setError(`Something went wrong: ${res.status} - ${res.statusText}`);
         } else {
           setPreloader(true);
           setTimeout(() => {
@@ -100,7 +100,7 @@ export default function ConfirmMail() {
       <form action="" method="POST" name="signUp">
         <Input focus={true} input={input} onChange={changeValue}/>
         <div className="description">Enter the code that will come to your mail</div>
-        <Button onClick={validateMail} type="submit" text="Confirm Mail" />
+        <Button onClick={validateMail} subClass="submit" type="submit" text="Confirm Mail" />
         <Grid container className="actions" justify="center">
           <Grid item>
             <Link to='/signIn'>

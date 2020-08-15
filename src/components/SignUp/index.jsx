@@ -69,14 +69,14 @@ export default function SignUp () {
     });
 
     if (!errors) {
-      let response = await fetch("http://localhost:3000/user/reg/", {
+      let response = await fetch("http://localhost:3000/user/create/", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           mail: inputs[0].value,
-          passwd: inputs[1].value,
+          pass: inputs[1].value,
         })
       });
 

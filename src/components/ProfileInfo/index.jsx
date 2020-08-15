@@ -31,11 +31,31 @@ export default function ProfileInfo() {
   let history = useHistory();
   const { userInfo, setUserInfo } = useContext(Context);
   const classes = useStyles();
+
+  const gender = userInfo.gender || 'male';
+  const sex = userInfo.orientation === 'bi' ? 'bi' 
+  : userInfo.orientation === 'homo' ? gender : 
+  gender === 'female' ? 'male'
+  : 'female';
+  const location = userInfo.latitude ? {
+    center: {
+      lat: userInfo.latitude,
+      lng: userInfo.longitude
+    },
+    zoom: 11
+  } : {
+    center: {
+      lat: 0,
+      lng: 0
+    },
+    zoom: 11
+  };
+
   const [inputs, setInputValue] = useState([
     {
       type: 'text',
       name: 'First Name',
-      value: '',
+      value: userInfo.fname || '',
       error: false,
       helperText: '',
       placeholder: 'First Name'
@@ -43,7 +63,7 @@ export default function ProfileInfo() {
     {
       type: 'text',
       name: 'Last Name',
-      value: '',
+      value: userInfo.lname || '',
       error: false,
       helperText: '',
       placeholder: 'Last Name'
@@ -51,7 +71,7 @@ export default function ProfileInfo() {
     {
       type: 'date',
       name: 'Date of Birth',
-      value: "2017-05-24",
+      value: userInfo.birth || "2017-05-24",
       error: false,
       helperText: 'You are under 18 years old',
       placeholder: 'DD/MM/YYYY'
@@ -61,14 +81,14 @@ export default function ProfileInfo() {
       name: "Gender",
       text: "Male",
       image: Male,
-      value: true
+      value: gender === 'male' ? true : false
     },
     {
       type: "radio",
       name: "Gender",
       text: "Female",
       image: Female,
-      value: false
+      value: gender === 'female' ? true : false
     },
     {
       type: "checkbox",
@@ -77,7 +97,7 @@ export default function ProfileInfo() {
       error: false,
       helperText: 'Choose at least one preference',
       image: Male,
-      value: false
+      value: sex === 'bi' || sex === 'male' ? true : false
     },
     {
       type: "checkbox",
@@ -86,40 +106,37 @@ export default function ProfileInfo() {
       error: false,
       helperText: 'Choose at least one preference',
       image: Female,
-      value: true
+      value: sex === 'bi' || sex === 'female' ? true : false
     },
     {
       type: "options",
       name: "Interests",
       error: false,
       helperText: 'Choose min 3 interests',
-      value: []
+      value: userInfo.interests || []
     },
     {
       type: "textarea",
       name: "Biography",
       error: false,
       helperText: 'Empty value',
-      value: ''
+      value: userInfo.bio || ''
     },
     {
       type: 'map',
       name: 'map',
-      value: {
-        center: {
-          lat: 0,
-          lng: 0
-        },
-        zoom: 11
-      }
+      value: location
     }
   ]);
+
+  console.log(inputs);
 
   async function addProfileInfo(event) {
     event.preventDefault();
     let firstName;
     let lastName;
     let age;
+    let birth;
     let gender;
     let sexPreference = '';
     let interests;
@@ -148,11 +165,12 @@ export default function ProfileInfo() {
           } else item.error = false;
           break;
         case 'Date of Birth':
-          age = Math.floor((Date.now() - new Date(item.value).getTime()) / 1000 / 3600 / 8760);
+          birth = item.value;
+          age = Math.floor((Date.now() - new Date(birth).getTime()) / 1000 / 3600 / 8760);
           if (age < 18) {
             item.error = true;
             errors = true;
-          } else 
+          } else
             item.error = false;
           break;
         case 'Interests':
@@ -174,8 +192,8 @@ export default function ProfileInfo() {
           }
           break;
         case 'map':
-          lat = item.value.lat;
-          lng = item.value.lng;
+          lat = item.value.center.lat;
+          lng = item.value.center.lng;
           break;
         default:
           return item;
@@ -196,20 +214,21 @@ export default function ProfileInfo() {
         method: "PATCH",
         headers: {
           'Content-Type': 'application/json;charset=UTF-8',
-          'x-auth-token': sessionStorage.getItem('x-auth-token')
         },
         body: JSON.stringify({
+          'x-auth-token': sessionStorage.getItem('x-auth-token'),
           fname: firstName,
           lname: lastName,
-          age: age,
+          birth: birth,
           gender: gender,
           orientation: sexPreference,
           interests: interests,
           bio: bio,
-          lat: lat,
-          lng: lng
+          latitude: lat,
+          longitude: lng
         })
       });
+      console.log(lat, lng);
 
       if (response.status === 202) {
         history.push('/confirm/mail');
@@ -222,10 +241,13 @@ export default function ProfileInfo() {
           mail: userInfo.mail,
           fname: firstName,
           lname: lastName,
-          age: age,
+          birth: birth,
           gender: gender,
           orientation: sexPreference,
-          interests: interests
+          bio: bio,
+          interests: interests,
+          latitude: lat,
+          longitude: lng
         });
         history.push('/user/page');
       }

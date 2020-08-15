@@ -10,7 +10,6 @@ const containerStyle = {
 };
 
 export default function MapComponent({input, onChange}) {
-
   useEffect(() => {
     if (navigator.geolocation && input.value.center.lat === 0) {
       navigator.geolocation.getCurrentPosition(function(position) {
@@ -38,7 +37,7 @@ export default function MapComponent({input, onChange}) {
 
   return (
     <LoadScript
-      googleMapsApiKey="YOUR_API_KEY"
+      googleMapsApiKey="AIzaSyDXt1xnUyKre_2okWHA_tBAI9LeJdrKTjw"
     >
       <GoogleMap
         mapContainerStyle={containerStyle}

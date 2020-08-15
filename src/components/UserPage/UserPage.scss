@@ -6,7 +6,7 @@
     border-radius: 12px;
 
     &__info {
-        padding: 20px 0;
+        padding: 20px 0 0;
     }
 
     &__main-info {
@@ -28,6 +28,10 @@
             font-weight: bold;
             margin-bottom: 10px;
         }
+
+        &:last-child {
+            border: none;
+        }
     }
 
     &__flex {
@@ -45,4 +49,8 @@
             color: #F62454;
         }
     }
+}
+
+#map {
+    height: 100%;
 }
