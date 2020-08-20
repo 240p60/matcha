@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-import "./InputFile.scss"
+import './InputFile.scss';
+import Camera from './camera.svg';
 
-export default function InputFile({img}) {
-    /* Попытка сделать динамический input file
+export default function InputFile({ input }) {
+  const [value, setValue] = React.useState('');
+  /* Попытка сделать динамический input file
     document.addEventListener("load", () => {
         const dropZone = document.querySelector("#upload-container");
         document.querySelector("#file-input").addEventListener("focus", () => {
@@ -53,14 +55,14 @@ export default function InputFile({img}) {
         }
     })*/
 
-    return (
-        <div className="file-input_block" id="upload-container">
-            <input type="file" id="file-input" name="file"/>
-            <label htmlFor="file-input">
-                <div className="icon-block">
-                    <img src={img} alt="Icon"/>
-                </div>
-            </label>
+  return (
+    <div className="file-input_block upload-container">
+      <input type={input.type} id="file-input" name={input.name} />
+      <label htmlFor="file-input">
+        <div className="icon-block">
+          <img src={Camera} alt="Icon" />
         </div>
-    )
-};
+      </label>
+    </div>
+  );
+}

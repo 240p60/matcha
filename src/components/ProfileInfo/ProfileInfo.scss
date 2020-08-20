@@ -1,14 +1,19 @@
 .form__block {
-    .profileForm {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        padding: 0;
-    
-        .button {
-            margin-top: 25px;
-        }
+  &-profile_info {
+    height: auto;
+  }
+
+  .profileForm {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0;
+    height: 100%;
+
+    .button {
+      margin-top: 25px;
     }
+  }
 }
