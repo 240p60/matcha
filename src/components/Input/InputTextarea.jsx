@@ -11,7 +11,6 @@ export default function InputTextarea({input, onChange, focus}) {
           id="outlined-multiline-static"
           multiline
           rows={2}
-          defaultValue="Default Value"
           variant="outlined"
           className={`input input__${input.name}`}
           value={input.value}

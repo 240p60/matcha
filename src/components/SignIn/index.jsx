@@ -77,19 +77,20 @@ export default function SignIn() {
         },
         body: JSON.stringify({
           mail: inputs[0].value,
-          passwd: inputs[1].value,
+          pass: inputs[1].value,
         })
       });
 
       if (response.status === 202) {
         history.push('/confirm/mail');
-      } else if (response.status === 400) {
+      } else if (response.status === 422) {
         setError("Wrong mail or password");
         history.push('/signIn');
       } else if (!response.ok) {
         throw Error(response.statusText);
       } else {
         let data = await response.json();
+        sessionStorage.setItem("ws-auth-token", data['ws-auth-token']);
         sessionStorage.setItem('x-auth-token', data['x-auth-token']);
         setUserInfo(data);
         if (data.fname)

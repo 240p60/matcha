@@ -1,15 +1,25 @@
-import React, { useState, useContext } from 'react'
-import { useHistory } from 'react-router-dom'
-import { Context } from '../../Context'
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Context } from '../../Context';
 
 import { Typography } from '@material-ui/core';
-import { Input, Button, InputDate, InputOptions, Radio, Checkbox, MapComponent, Textarea } from '../index'
+import {
+  Input,
+  Button,
+  InputDate,
+  InputOptions,
+  InputFile,
+  Radio,
+  Checkbox,
+  MapComponent,
+  Textarea,
+} from '../index';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Male from '../../assets/img/male.svg'
-import Female from '../../assets/img/female.svg'
+import Male from '../../assets/img/male.svg';
+import Female from '../../assets/img/female.svg';
 
-import "./ProfileInfo.scss"
+import './ProfileInfo.scss';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -23,96 +33,123 @@ const useStyles = makeStyles((theme) => ({
   },
   typography: {
     margin: '0 auto',
-    fontFamily: 'Montserrat'
-  }
+    fontFamily: 'Montserrat',
+  },
 }));
 
 export default function ProfileInfo() {
   let history = useHistory();
   const { userInfo, setUserInfo } = useContext(Context);
   const classes = useStyles();
+
+  const gender = userInfo.gender || 'male';
+  const sex =
+    userInfo.orientation === 'bi'
+      ? 'bi'
+      : userInfo.orientation === 'homo'
+      ? gender
+      : gender === 'female'
+      ? 'male'
+      : 'female';
+  const location = userInfo.latitude
+    ? {
+        center: {
+          lat: userInfo.latitude,
+          lng: userInfo.longitude,
+        },
+        zoom: 11,
+      }
+    : {
+        center: {
+          lat: 0,
+          lng: 0,
+        },
+        zoom: 11,
+      };
+
   const [inputs, setInputValue] = useState([
+    {
+      type: 'file',
+      name: 'Photos',
+      value: userInfo.photos || [],
+      error: false,
+      helperText: '',
+    },
     {
       type: 'text',
       name: 'First Name',
-      value: '',
+      value: userInfo.fname || '',
       error: false,
       helperText: '',
-      placeholder: 'First Name'
+      placeholder: 'First Name',
     },
     {
       type: 'text',
       name: 'Last Name',
-      value: '',
+      value: userInfo.lname || '',
       error: false,
       helperText: '',
-      placeholder: 'Last Name'
+      placeholder: 'Last Name',
     },
     {
       type: 'date',
       name: 'Date of Birth',
-      value: "2017-05-24",
+      value: userInfo.birth || '2017-05-24',
       error: false,
       helperText: 'You are under 18 years old',
-      placeholder: 'DD/MM/YYYY'
+      placeholder: 'DD/MM/YYYY',
     },
     {
-      type: "radio",
-      name: "Gender",
-      text: "Male",
+      type: 'radio',
+      name: 'Gender',
+      text: 'Male',
       image: Male,
-      value: true
+      value: gender === 'male' ? true : false,
     },
     {
-      type: "radio",
-      name: "Gender",
-      text: "Female",
+      type: 'radio',
+      name: 'Gender',
+      text: 'Female',
       image: Female,
-      value: false
+      value: gender === 'female' ? true : false,
     },
     {
-      type: "checkbox",
-      name: "Sex Preference",
-      text: "Male",
+      type: 'checkbox',
+      name: 'Sex Preference',
+      text: 'Male',
       error: false,
       helperText: 'Choose at least one preference',
       image: Male,
-      value: false
+      value: sex === 'bi' || sex === 'male' ? true : false,
     },
     {
-      type: "checkbox",
-      name: "Sex Preference",
-      text: "Female",
+      type: 'checkbox',
+      name: 'Sex Preference',
+      text: 'Female',
       error: false,
       helperText: 'Choose at least one preference',
       image: Female,
-      value: true
+      value: sex === 'bi' || sex === 'female' ? true : false,
     },
     {
-      type: "options",
-      name: "Interests",
+      type: 'options',
+      name: 'Interests',
       error: false,
       helperText: 'Choose min 3 interests',
-      value: []
+      value: userInfo.interests || [],
     },
     {
-      type: "textarea",
-      name: "Biography",
+      type: 'textarea',
+      name: 'Biography',
       error: false,
       helperText: 'Empty value',
-      value: ''
+      value: userInfo.bio || '',
     },
     {
       type: 'map',
       name: 'map',
-      value: {
-        center: {
-          lat: 0,
-          lng: 0
-        },
-        zoom: 11
-      }
-    }
+      value: location,
+    },
   ]);
 
   async function addProfileInfo(event) {
@@ -120,6 +157,7 @@ export default function ProfileInfo() {
     let firstName;
     let lastName;
     let age;
+    let birth;
     let gender;
     let sexPreference = '';
     let interests;
@@ -136,8 +174,7 @@ export default function ProfileInfo() {
           lastName = item.value;
           break;
         case 'Gender':
-          if (item.value === true)
-            gender = item.text.toLowerCase();
+          if (item.value === true) gender = item.text.toLowerCase();
           break;
         case 'Sex Preference':
           if (item.value === true) {
@@ -148,12 +185,14 @@ export default function ProfileInfo() {
           } else item.error = false;
           break;
         case 'Date of Birth':
-          age = Math.floor((Date.now() - new Date(item.value).getTime()) / 1000 / 3600 / 8760);
+          birth = item.value;
+          age = Math.floor(
+            (Date.now() - new Date(birth).getTime()) / 1000 / 3600 / 8760
+          );
           if (age < 18) {
             item.error = true;
             errors = true;
-          } else 
-            item.error = false;
+          } else item.error = false;
           break;
         case 'Interests':
           if (item.value.length < 3) {
@@ -174,8 +213,8 @@ export default function ProfileInfo() {
           }
           break;
         case 'map':
-          lat = item.value.lat;
-          lng = item.value.lng;
+          lat = item.value.center.lat;
+          lng = item.value.center.lng;
           break;
         default:
           return item;
@@ -192,29 +231,29 @@ export default function ProfileInfo() {
         sexPreference = 'homo';
       } else sexPreference = 'hetero';
 
-      let response = await fetch("http://localhost:3000/user/update/", {
-        method: "PATCH",
+      let response = await fetch('http://localhost:3000/user/update/', {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json;charset=UTF-8',
-          'x-auth-token': sessionStorage.getItem('x-auth-token')
         },
         body: JSON.stringify({
+          'x-auth-token': sessionStorage.getItem('x-auth-token'),
           fname: firstName,
           lname: lastName,
-          age: age,
+          birth: birth,
           gender: gender,
           orientation: sexPreference,
           interests: interests,
           bio: bio,
-          lat: lat,
-          lng: lng
-        })
+          latitude: lat,
+          longitude: lng,
+        }),
       });
 
       if (response.status === 202) {
         history.push('/confirm/mail');
       } else if (!response.ok) {
-        throw Error(response.statusText);;
+        throw Error(response.statusText);
       } else {
         setUserInfo({
           'ws-auth-token': userInfo['ws-auth-token'],
@@ -222,10 +261,13 @@ export default function ProfileInfo() {
           mail: userInfo.mail,
           fname: firstName,
           lname: lastName,
-          age: age,
+          birth: birth,
           gender: gender,
           orientation: sexPreference,
-          interests: interests
+          bio: bio,
+          interests: interests,
+          latitude: lat,
+          longitude: lng,
         });
         history.push('/user/page');
       }
@@ -233,15 +275,14 @@ export default function ProfileInfo() {
   }
 
   function changeValue(name, value, type, text) {
-    const newData = inputs.map(item => {
+    const newData = inputs.map((item) => {
       if (item.type === 'checkbox') {
-        if (item.text === text)
-          item.value = !item.value;
+        if (item.text === text) item.value = !item.value;
       } else if (item.name === name) {
-        item.value = typeof item.value === "boolean" ? !item.value : value;
+        item.value = typeof item.value === 'boolean' ? !item.value : value;
       }
       return item;
-    })
+    });
     setInputValue(newData);
   }
 
@@ -252,24 +293,69 @@ export default function ProfileInfo() {
           Add Information
         </Typography>
         {inputs.map((item, index) => {
-          if (item.type === 'date') {
-            return <InputDate key={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
+          if (item.type === 'file') {
+            return <InputFile key={index} input={item} />;
+          } else if (item.type === 'date') {
+            return (
+              <InputDate
+                key={index}
+                focus={index === 0 ? true : false}
+                input={item}
+                onChange={changeValue}
+              />
+            );
           } else if (item.type === 'radio') {
-            return <Radio key={index} index={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
+            return (
+              <Radio
+                key={index}
+                index={index}
+                focus={index === 0 ? true : false}
+                input={item}
+                onChange={changeValue}
+              />
+            );
           } else if (item.type === 'checkbox') {
-            return <Checkbox key={index} index={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
+            return (
+              <Checkbox
+                key={index}
+                index={index}
+                focus={index === 0 ? true : false}
+                input={item}
+                onChange={changeValue}
+              />
+            );
           } else if (item.type === 'options') {
-            return <InputOptions key={index} input={item} onChange={changeValue}/>
+            return (
+              <InputOptions key={index} input={item} onChange={changeValue} />
+            );
           } else if (item.type === 'textarea') {
-            return <Textarea key={index} input={item} onChange={changeValue}/>
+            return <Textarea key={index} input={item} onChange={changeValue} />;
           } else if (item.type === 'map') {
-            return <MapComponent key={index} input={item} onChange={changeValue}></MapComponent>
+            return (
+              <MapComponent
+                key={index}
+                input={item}
+                onChange={changeValue}
+              ></MapComponent>
+            );
           } else {
-            return <Input key={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
+            return (
+              <Input
+                key={index}
+                focus={index === 0 ? true : false}
+                input={item}
+                onChange={changeValue}
+              />
+            );
           }
         })}
-        <Button onClick={addProfileInfo} text="Continue" type="submit" subClass="submit" />
+        <Button
+          onClick={addProfileInfo}
+          text="Continue"
+          type="submit"
+          subClass="submit"
+        />
       </form>
     </div>
-  )
-};
+  );
+}

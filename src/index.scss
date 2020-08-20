@@ -25,7 +25,9 @@ a {
   font: 400 13.3333px 'Montserrat';
 }
 
-button, input, textarea {
+button,
+input,
+textarea {
   font-family: 'Montserrat', sans-serif !important;
 }
 
@@ -38,7 +40,8 @@ button {
   font-family: 'Montserrat', sans-serif !important;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
@@ -50,45 +53,45 @@ ul, ol {
   justify-content: center;
 
   &-error {
-    color: #F62354;
+    color: #f62354;
     margin-top: 20px;
     font-weight: bold;
   }
 
   form {
-      padding-top: 10px;
-      max-width: 400px;
+    padding-top: 10px;
+    max-width: 400px;
 
-      .button {
-        margin-top: 16px;
-      }
+    .button {
+      margin-top: 16px;
+    }
   }
 
   .description {
-      text-align: center;
-      font-size: .9rem;
-      line-height: 1.3rem;
-      margin: 10px 0 30px;
+    text-align: center;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    margin: 10px 0 30px;
   }
 
   .actions {
-      margin-top: 10px;
+    margin-top: 10px;
   }
 
   a {
-      color: #000;
-      font-size: 0.875rem;
+    color: #000;
+    font-size: 0.875rem;
   }
 }
 
 .green-link {
   font-size: 0.875rem;
-  color: #10E365 !important;
+  color: #10e365 !important;
   font-weight: bold;
 }
 
 .red-link {
   font-size: 0.875rem;
-  color: #F62354 !important;
+  color: #f62354 !important;
   font-weight: bold;
 }

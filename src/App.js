@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Switch, Route, useLocation } from 'react-router-dom'
 import { Context } from './Context';
 
@@ -6,7 +6,11 @@ import { Login, SignIn, ProfileInfo, SignUp, Header, ConfirmMail, UserPage } fro
 
 function App() {
   const url = useLocation();
-  const [userInfo, setUserInfo] = useState(false);
+  const [userInfo, setUserInfo] = React.useState(JSON.parse(localStorage.getItem('user')) || false);
+  
+  React.useEffect(() => {
+    localStorage.setItem('user', JSON.stringify(userInfo));
+  }, [userInfo])
 
   return (
     <main id="main">
