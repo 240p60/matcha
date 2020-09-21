@@ -56,11 +56,29 @@ ol {
     color: #f62354;
     margin-top: 20px;
     font-weight: bold;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  &-info {
+    color: #409eff;
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  &-success {
+    color: #10bf6a;
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1rem;
   }
 
   form {
     padding-top: 10px;
-    max-width: 400px;
+    max-width: 620px;
 
     .button {
       margin-top: 16px;
@@ -85,9 +103,25 @@ ol {
 }
 
 .green-link {
+  position: relative;
   font-size: 0.875rem;
-  color: #10e365 !important;
+  color: #10bf6a !important;
   font-weight: bold;
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background-color: #10bf6a;
+    transition: 0.3s linear;
+  }
+
+  &:hover::after {
+    opacity: 0;
+  }
 }
 
 .red-link {

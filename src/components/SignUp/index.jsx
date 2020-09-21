@@ -1,12 +1,14 @@
-import React, { useState, useContext } from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import { Context } from '../../Context'
+import React, { useState, useContext, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Context } from '../../Context';
 
 import { Avatar, Typography, Grid } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
+import { fetchSignUp } from '../../store/actions';
 
-import { Button, Input, ConfirmMail } from '../index'
+import { Button, Input } from '../index';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -19,76 +21,65 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   typography: {
-    fontFamily: 'Montserrat'
-  }
+    fontFamily: 'Montserrat',
+  },
 }));
 
-export default function SignUp () {
-  const history = useHistory();
+export default function SignUp() {
   const classes = useStyles();
-  const [generalError, setError] = useState("");
+  const dispatch = useDispatch();
+  const { signUp } = useContext(Context);
 
-  const [inputs, setInputValue] = useState([
-    {
+  const actionSignUp = useCallback(
+    (mail, password, loadingText) => {
+      dispatch(fetchSignUp(mail, password, loadingText));
+    },
+    [dispatch]
+  );
+
+  const [inputs, setInputValue] = useState({
+    mail: {
       type: 'email',
       name: 'Mail',
       value: '',
       pattern: /^(\w.+)@(\w+)\.(\w+)$/,
       error: false,
-      helperText: 'Mail has unexpected symbols'
+      helperText: 'Mail has unexpected symbols',
     },
-    {
+    password: {
       type: 'password',
       name: 'Password',
       value: '',
       pattern: /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[$&+,:;=?@#|'<>.^*()%!-])[a-z0-9A-Z$&+,:;=?@#|'<>.-^*()%!-]{6,14}$/,
       error: false,
-      helperText: 'Enter 6 to 14 letters in upper and lower case, digits and special character ($&+,:;=?@#|\'<>.^*()%!-)'
-    }
-  ]);
+      helperText:
+        "Enter 6 to 14 letters in upper and lower case, digits and special character ($&+,:;=?@#|'<>.^*()%!-)",
+    },
+  });
 
   function changeValue(name, value) {
-    const newData = inputs.map(item => {
-      if (item.name === name)
-        item.value = value;
-      return item;
-    })
+    const newData = { ...inputs, [name]: { ...inputs[name], value: value } };
     setInputValue(newData);
   }
 
   async function addNewUser(event) {
     event.preventDefault();
     let errors = false;
-    const newInputs = inputs.map((item) => {
-      if (!(item.pattern.test(item.value))) {
-        item.error = true;
+    const newInputs = Object.keys(inputs).map((item) => {
+      if (!inputs[item].pattern.test(inputs[item].value)) {
+        inputs[item].error = true;
         errors = true;
-      } else
-        item.error = false;
-      return item;
+      } else inputs[item].error = false;
+      return inputs[item];
     });
 
     if (!errors) {
-      let response = await fetch("http://localhost:3000/user/create/", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          mail: inputs[0].value,
-          pass: inputs[1].value,
-        })
-      });
-
-      if (response.status === 406) {
-        history.push('/confirm/mail');
-      } else if (response.status !== 201) {
-        throw new Error(await response.json());
-      } else {
-        history.push('/confirm/mail');
-      }
-    } else
-      setInputValue(newInputs);
+      actionSignUp(
+        inputs.mail.value,
+        inputs.password.value,
+        'Попытка регистрации'
+      );
+    } else setInputValue(newInputs);
   }
 
   return (
@@ -99,24 +90,33 @@ export default function SignUp () {
       <Typography className={classes.typography} component="h1" variant="h5">
         Sign Up
       </Typography>
-      {generalError ? 
-        <div className="form__block-error">
-          {generalError}
-        </div>
-      : null}
+      {signUp.error && <div className="form__block-error">{signUp.error}</div>}
       <form action="" method="POST" name="signUp">
-        {inputs.map((item, index) => {
-          return <Input key={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
+        {Object.keys(inputs).map((item, index) => {
+          return (
+            <Input
+              name={item}
+              key={index}
+              focus={index === 0 ? true : false}
+              input={inputs[item]}
+              onChange={changeValue}
+            />
+          );
         })}
-        <Button onClick={addNewUser} type="submit" subClass="submit" text="Sign Up" />
+        <Button
+          onClick={addNewUser}
+          type="submit"
+          subClass="submit"
+          text="Sign Up"
+        />
         <Grid container className="actions" justify="center">
           <Grid item>
-            <Link to='/signIn'>
+            <Link to="/signIn">
               Already have an account? <span className="red-link">Sign In</span>
             </Link>
           </Grid>
         </Grid>
       </form>
     </div>
-  )
+  );
 }

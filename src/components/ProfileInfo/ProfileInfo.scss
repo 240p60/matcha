@@ -3,14 +3,43 @@
     height: auto;
   }
 
+  h1,
+  .form__block-error {
+    text-align: center;
+  }
+
+  .red-link {
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background-color: #f62354;
+      border-radius: 12px;
+      opacity: 1;
+      transition: 0.4s ease-in-out;
+    }
+
+    &:hover::before {
+      opacity: 0;
+    }
+  }
+
   .profileForm {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
     padding: 0;
     height: 100%;
+
+    .inputs_container {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
 
     .button {
       margin-top: 25px;

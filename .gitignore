@@ -4,6 +4,9 @@
 package-lock.json
 yarn.lock
 
+#api
+./src/apikeys.js
+
 # dependencies
 /node_modules
 /.pnp
