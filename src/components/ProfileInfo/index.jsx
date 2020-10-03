@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Context } from '../../Context';
 import { fetchUpdateUser } from '../../store/actions';
@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProfileInfo() {
-  const history = useHistory();
   const dispatch = useDispatch();
   const { user, fetchUser, photos } = React.useContext(Context);
   const classes = useStyles();
@@ -75,7 +74,7 @@ export default function ProfileInfo() {
       name: 'First Name',
       value: user.fname,
       error: false,
-      helperText: '',
+      helperText: 'First Name must be longer than 2 characters',
       placeholder: 'First Name',
     },
     lname: {
@@ -83,7 +82,7 @@ export default function ProfileInfo() {
       name: 'Last Name',
       value: user.lname,
       error: false,
-      helperText: '',
+      helperText: 'Last Name must be longer than 2 characters',
       placeholder: 'Last Name',
     },
     date: {
@@ -196,13 +195,26 @@ export default function ProfileInfo() {
     let lat;
     let lng;
     let errors = false;
-    const newInputs = Object.keys(inputs).map((item) => {
+    let newInputs = { ...inputs };
+    Object.keys(inputs).map((item) => {
       switch (inputs[item].name) {
         case 'First Name':
-          firstName = inputs[item].value;
+          if (inputs[item].value.length < 2) {
+            newInputs[item] = { ...inputs[item], error: true };
+            errors = true;
+          } else {
+            newInputs[item] = { ...inputs[item], error: false };
+            firstName = inputs[item].value;
+          }
           break;
         case 'Last Name':
-          lastName = inputs[item].value;
+          if (inputs[item].value.length < 3) {
+            newInputs[item] = { ...inputs[item], error: true };
+            errors = true;
+          } else {
+            newInputs[item] = { ...inputs[item], error: false };
+            lastName = inputs[item].value;
+          }
           break;
         case 'Gender':
           if (inputs[item].value === true)
@@ -212,9 +224,9 @@ export default function ProfileInfo() {
           if (inputs[item].value === true) {
             sexPreference += inputs[item].text.toLowerCase();
           } else if (sexPreference === '' && inputs[item].text === 'Female') {
-            inputs[item].error = true;
+            newInputs[item] = { ...inputs[item], error: true };
             errors = true;
-          } else inputs[item].error = false;
+          } else newInputs[item] = { ...inputs[item], error: false };
           break;
         case 'Date of Birth':
           birth = inputs[item].value;
@@ -222,25 +234,25 @@ export default function ProfileInfo() {
             (Date.now() - new Date(birth).getTime()) / 1000 / 3600 / 8760
           );
           if (age < 18) {
-            inputs[item].error = true;
+            newInputs[item] = { ...inputs[item], error: true };
             errors = true;
-          } else inputs[item].error = false;
+          } else newInputs[item] = { ...inputs[item], error: false };
           break;
         case 'Interests':
           if (inputs[item].value.length < 3) {
-            inputs[item].error = true;
+            newInputs[item] = { ...inputs[item], error: true };
             errors = true;
           } else {
-            inputs[item].error = false;
+            newInputs[item] = { ...inputs[item], error: false };
             interests = inputs[item].value;
           }
           break;
         case 'Biography':
           if (inputs[item].value === '') {
-            inputs[item].error = true;
+            newInputs[item] = { ...inputs[item], error: true };
             errors = true;
           } else {
-            inputs[item].error = false;
+            newInputs[item] = { ...inputs[item], error: false };
             bio = inputs[item].value;
           }
           break;
@@ -249,9 +261,9 @@ export default function ProfileInfo() {
           lng = inputs[item].value.center.lng;
           break;
         default:
-          return inputs[item];
+          return null;
       }
-      return inputs[item];
+      return null;
     });
 
     if (!errors) {
@@ -312,6 +324,7 @@ export default function ProfileInfo() {
                   key={index}
                   name={item}
                   input={inputs[item]}
+                  uid={user.uid}
                   volatile
                 />
               );
@@ -391,7 +404,7 @@ export default function ProfileInfo() {
         </div>
         <Button
           onClick={addProfileInfo}
-          text="Continue"
+          text="Save"
           type="submit"
           subClass="submit"
         />
@@ -405,15 +418,12 @@ export default function ProfileInfo() {
           </div>
         )}
       </form>
-      {fetchUser.success && (
-        <>
-          <div className="form__block-info">
-            Information has been successfully updated
-          </div>
+      {user.fname.value !== '' && (
+        <div className="form__block-info">
           <Link className="green-link" to="/user/page">
             Go to user page
           </Link>
-        </>
+        </div>
       )}
     </div>
   );

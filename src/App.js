@@ -3,6 +3,7 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import { Context } from './Context';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchInitUser } from './store/actions';
+import 'antd/dist/antd.css';
 
 import { Preloader } from './components/index';
 
@@ -32,7 +33,7 @@ function App() {
 
   React.useEffect(() => {
     if (sessionStorage.getItem('x-auth-token')) initUserAction();
-  }, []);
+  }, [initUserAction]);
 
   React.useEffect(() => {
     if (auth.status === 401) history.push('/confirm/mail');

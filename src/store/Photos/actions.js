@@ -1,4 +1,4 @@
-import { userReducer } from '../User/reducer';
+import { notification } from 'antd';
 export const FETCH_PHOTOS = 'FETCH_PHOTOS';
 export const FETCH_PHOTOS_FAILED = 'FETCH_PHOTOS_FAILED';
 export const FETCH_PHOTOS_SUCCESS = 'FETCH_PHOTOS_SUCCESS';
@@ -35,7 +35,6 @@ export const fetchAddPhoto = (image) => async (dispatch) => {
   dispatch(fetchPhotos());
   const token = sessionStorage.getItem('x-auth-token');
   if (token) {
-    console.log(image);
     let response = await fetch('http://localhost:3000/photo/upload/', {
       method: 'POST',
       headers: {
@@ -48,8 +47,13 @@ export const fetchAddPhoto = (image) => async (dispatch) => {
     });
 
     if (response.status !== 200) {
-      alert('Что-то пошло не так');
-    } else alert('Фото успешно загружено');
+      notification.error({
+        message: 'Failed to upload photo',
+      });
+    } else
+      notification.success({
+        message: 'Photo uploaded successfully',
+      });
   }
 };
 
@@ -70,10 +74,14 @@ export const fetchGetPhotos = (uid) => async (dispatch) => {
 
     if (response.status === 200) {
       const photos = await response.json();
-      dispatch(fetchPhotosSuccess('Фотографии успешно загружены'));
-      dispatch(initPhotos(photos.map((item) => item.src)));
+      notification.success({
+        message: 'Photo downloaded successfully',
+      });
+      dispatch(initPhotos(photos.map((item) => item)));
     } else {
-      dispatch(fetchPhotosFailed('Что-то пошло не так'));
+      notification.error({
+        message: 'Failed to upload photo',
+      });
     }
   }
 };

@@ -5,7 +5,7 @@ package-lock.json
 yarn.lock
 
 #api
-/apikeys.js
+/src/apikeys.js
 
 # dependencies
 /node_modules

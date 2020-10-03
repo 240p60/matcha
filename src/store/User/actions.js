@@ -1,4 +1,5 @@
 import { fetchAuthFailed } from '../actions';
+import { notification } from 'antd';
 
 export const UPDATE_INFO = 'UPDATE_INFO';
 export const FETCH_INFO = 'FETCH_INFO';
@@ -120,6 +121,10 @@ export const fetchUpdateUser = ({
     } else {
       dispatch(fetchInitUser());
       dispatch(fetchInfoSuccess());
+      notification.success({
+        message: 'Succes Updated',
+        description: 'Information has been successfully updated',
+      });
     }
   }
 };

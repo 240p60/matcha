@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 import './MapComponent.scss';
-import { mapApiKey } from '../../../apikeys';
+import { mapApiKey } from '../../apikeys.js';
 
 const containerStyle = {
   width: '100%',

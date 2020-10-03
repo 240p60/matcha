@@ -87,7 +87,6 @@ export default function ConfirmMail() {
       <Typography component="h1" variant="h5">
         Confirm Mail
       </Typography>
-      {mail.error && <div className="form__block-error">{mail.error}</div>}
       <form action="" method="POST" name="signUp">
         <Input focus={true} input={input} onChange={changeValue} />
         <div className="description">

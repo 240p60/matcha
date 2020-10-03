@@ -1,29 +1,44 @@
 import React from 'react';
 import classNames from 'classnames';
+import { PictureSlider, Range } from '../index';
 
 import styles from './Matchs.module.scss';
 import Close from './close.svg';
 import Heart from './heart.svg';
-import Sesh from './sesh.jpg';
 
 export default function Matchs() {
   //   const [users, setUsers] = useState({});
   //   const page = 1;
 
-  //   useEffect(() => {
-  //     fetch(`http://localhost:3000/matchs/users/${page}`)
-  //       .then((res) => res.json())
-  //       .then((data) => setUsers(data));
-  //   }, [users]);
+  React.useEffect(() => {
+    fetch('http://localhost:3000/search', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'x-auth-token': sessionStorage.getItem('x-auth-token'),
+      }),
+    }).then((res) => console.log(res));
+  }, []);
   return (
     <div className={styles.matchs}>
       <div className={styles.inner}>
-        <div className="matchs__container">
+        <div className={styles.matchsFilters}>
+          <Range title="Rating" />
+          <Range title="Age" min={18} defaultValue={[18, 30]} />
+          <Range
+            title="Radius"
+            min={1}
+            max={10000}
+            step={100}
+            defaultValue={[1, 1000]}
+          />
+        </div>
+        <div className={styles.matchsContainer}>
           <div className={styles.matchsItem}>
             <div className={styles.itemArea}>
-              <div className={styles.itemImage}>
-                <img src={Sesh} alt="Картинка" />
-              </div>
+              <PictureSlider height="320px" />
               <div className={styles.itemBottomArea}>
                 <div className={styles.itemMainInfo}>
                   <span className={styles.itemName}>{`Rashid Alhoev, `}</span>

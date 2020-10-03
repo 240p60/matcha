@@ -1,23 +1,30 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGetPhotos, fetchAddPhoto } from '../../store/actions';
+import styled from 'styled-components';
 import classNames from 'classnames';
 import './PictureSlider.scss';
 import Camera from './camera.svg';
 import Arrow from './arrow.svg';
 
-export default function PictureSlider({ input, name, volatile }) {
+export default function PictureSlider({
+  input,
+  name,
+  volatile = false,
+  uid = false,
+  height,
+}) {
   const photos = useSelector((store) => store.photos);
-  const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [value, setValue] = React.useState([]);
   const [activeImage, setActiveImage] = React.useState(0);
 
   React.useEffect(() => {
-    if (sessionStorage.getItem('x-auth-token') && user.uid) {
-      dispatch(fetchGetPhotos(user.uid));
+    if (uid) {
+      if (sessionStorage.getItem('x-auth-token') && uid)
+        dispatch(fetchGetPhotos(uid));
     }
-  }, [user.uid]);
+  }, [uid, dispatch]);
 
   React.useEffect(() => {
     setValue(photos);
@@ -37,7 +44,10 @@ export default function PictureSlider({ input, name, volatile }) {
   }
 
   return (
-    <div className="file-input_block upload-container">
+    <UploadContainer
+      height={height}
+      className="file-input_block upload-container"
+    >
       {volatile && (
         <>
           <input
@@ -58,7 +68,7 @@ export default function PictureSlider({ input, name, volatile }) {
           value.map((item, index) => {
             return (
               <div
-                key={index}
+                key={item.pid}
                 className={classNames('image_block', {
                   active: index === activeImage,
                   prevImage: index < activeImage,
@@ -66,8 +76,8 @@ export default function PictureSlider({ input, name, volatile }) {
                 })}
               >
                 <picture>
-                  <source srcSet={item} alt="user" />
-                  <img className="user__picture" src={item} alt="user" />
+                  <source srcSet={item.src} alt="user" />
+                  <img className="user__picture" src={item.src} alt="user" />
                 </picture>
               </div>
             );
@@ -99,6 +109,10 @@ export default function PictureSlider({ input, name, volatile }) {
           )}
         </div>
       </div>
-    </div>
+    </UploadContainer>
   );
 }
+
+const UploadContainer = styled.div`
+  height: ${({ height }) => (height ? height : '400px')};
+`;

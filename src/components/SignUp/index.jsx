@@ -1,7 +1,6 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Context } from '../../Context';
 
 import { Avatar, Typography, Grid } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -28,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { signUp } = useContext(Context);
 
   const actionSignUp = useCallback(
     (mail, password, loadingText) => {
@@ -65,12 +63,13 @@ export default function SignUp() {
   async function addNewUser(event) {
     event.preventDefault();
     let errors = false;
-    const newInputs = Object.keys(inputs).map((item) => {
+    let newInputs = {};
+    Object.keys(inputs).map((item) => {
       if (!inputs[item].pattern.test(inputs[item].value)) {
-        inputs[item].error = true;
+        newInputs[item] = { ...inputs[item], error: true };
         errors = true;
-      } else inputs[item].error = false;
-      return inputs[item];
+      } else newInputs[item] = { ...inputs[item], error: false };
+      return null;
     });
 
     if (!errors) {
@@ -90,7 +89,7 @@ export default function SignUp() {
       <Typography className={classes.typography} component="h1" variant="h5">
         Sign Up
       </Typography>
-      {signUp.error && <div className="form__block-error">{signUp.error}</div>}
+      {/* {signUp.error && <div className="form__block-error">{signUp.error}</div>} */}
       <form action="" method="POST" name="signUp">
         {Object.keys(inputs).map((item, index) => {
           return (

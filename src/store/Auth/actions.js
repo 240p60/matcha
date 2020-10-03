@@ -1,4 +1,5 @@
 import { fetchMailFailed, fetchSignUpClear } from '../actions';
+import { notification } from 'antd';
 
 export const FETCH_AUTH = 'FETCH_AUTH';
 export const FETCH_AUTH_SUCCESS = 'FETCH_AUTH_SUCCESS';
@@ -50,8 +51,14 @@ export const fetchAuth = (mail, password, loadingText) => async (dispatch) => {
   if (response.status === 401) {
     dispatch(fetchAuthFailed("User don't confirm mail", 401));
     dispatch(fetchMailFailed("User don't confirm mail", 401));
+    notification.error({
+      message: "User don't confirm mail",
+    });
   } else if (response.status === 422) {
     dispatch(fetchAuthFailed('Wrong mail or password', 422));
+    notification.error({
+      message: 'Wrong mail or password',
+    });
   } else if (!response.ok) {
     throw Error(response.statusText);
   } else {

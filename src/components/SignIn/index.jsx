@@ -1,6 +1,5 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Context } from '../../Context';
 import { useDispatch } from 'react-redux';
 import { fetchAuth } from '../../store/actions';
 
@@ -27,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
-  const { auth, mail } = useContext(Context);
   const dispatch = useDispatch();
 
   const actionSignIn = useCallback(
@@ -65,12 +63,13 @@ export default function SignIn() {
   async function actionSingIn(event) {
     event.preventDefault();
     let errors = false;
-    const newInputs = Object.keys(inputs).map((item) => {
+    let newInputs = {};
+    Object.keys(inputs).map((item) => {
       if (!inputs[item].pattern.test(inputs[item].value)) {
-        inputs[item].error = true;
+        newInputs[item] = { ...inputs[item], error: true };
         errors = true;
-      } else inputs[item].error = false;
-      return inputs[item];
+      } else newInputs[item] = { ...inputs[item], error: false };
+      return null;
     });
 
     if (!errors) {
@@ -90,7 +89,6 @@ export default function SignIn() {
       <Typography className={classes.typography} component="h1" variant="h5">
         Sign In
       </Typography>
-      {auth.error && <div className="form__block-error">{auth.error}</div>}
       <form action="" method="POST" name="signIn">
         {Object.keys(inputs).map((item, index) => {
           return (

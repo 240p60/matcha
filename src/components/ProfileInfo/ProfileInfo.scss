@@ -8,27 +8,6 @@
     text-align: center;
   }
 
-  .red-link {
-    position: relative;
-
-    &:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 2px;
-      background-color: #f62354;
-      border-radius: 12px;
-      opacity: 1;
-      transition: 0.4s ease-in-out;
-    }
-
-    &:hover::before {
-      opacity: 0;
-    }
-  }
-
   .profileForm {
     padding: 0;
     height: 100%;

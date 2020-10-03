@@ -4,7 +4,7 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Button, PictureSlider } from '../index';
 
 import './UserPage.scss';
-import { mapApiKey } from '../../apikeys';
+import { mapApiKey } from '../../apikeys.js';
 
 const mapContainerStyle = {
   width: '100%',
@@ -14,25 +14,10 @@ const mapContainerStyle = {
 export default function UserPage() {
   const { user } = React.useContext(Context);
 
-  // React.useEffect(() => {
-  //   fetch('http://localhost:3000/photo/download/', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       'x-auth-token': sessionStorage.getItem('x-auth-token'),
-  //       uid: user.uid,
-  //     }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => console.log(data));
-  // });
-
   return (
     <div className="user-page">
       <div className="user-page__photo">
-        <PictureSlider volatile={false} />
+        <PictureSlider volatile={false} uid={user.uid} />
       </div>
       <div className="user-page__info">
         <div className="user-page__main-info user-page__block">
@@ -79,7 +64,6 @@ export default function UserPage() {
                     lng: +user.longitude,
                   }}
                 />
-                {/* Child components, such as markers, info windows, etc. */}
               </GoogleMap>
             </LoadScript>
           </div>
