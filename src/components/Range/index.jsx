@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 
 const useStyles = makeStyles({
@@ -25,12 +24,12 @@ export default function RangeSlider({
   max = 100,
   step = 1,
   defaultValue = [1, 10],
+  onChange,
 }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(defaultValue);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    onChange(title.toLowerCase(), newValue);
   };
 
   return (
@@ -40,7 +39,7 @@ export default function RangeSlider({
       </div>
       <div className={classes.root}>
         <Slider
-          value={value}
+          value={defaultValue}
           onChange={handleChange}
           valueLabelDisplay="auto"
           aria-labelledby="range-slider"

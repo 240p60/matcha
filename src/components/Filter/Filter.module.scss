@@ -1,0 +1,52 @@
+.FilterBlock {
+  padding: 10px 0;
+  position: relative;
+}
+
+.HeaderFilterBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.FiltesList {
+  height: 0;
+  display: none;
+}
+
+.activeList {
+  display: block;
+  height: auto;
+  padding-left: 6px;
+  padding-top: 10px;
+}
+
+.arrowBlock {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e2e2e2;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.arrow {
+  width: 20px;
+  height: 20px;
+  transform: rotate(90deg);
+  transition: 0.3s linear;
+}
+
+.activeArrow {
+  transform: rotate(-90deg);
+}
+
+.FiltersActionBlock {
+  max-width: 300px;
+  margin: -54px 0 0 auto;
+}

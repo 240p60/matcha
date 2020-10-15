@@ -1,4 +1,4 @@
-import { fetchMailFailed, fetchSignUpClear } from '../actions';
+import { fetchMailFailed, fetchSignUpClear, fetchInitUser } from '../actions';
 import { notification } from 'antd';
 
 export const FETCH_AUTH = 'FETCH_AUTH';
@@ -65,6 +65,17 @@ export const fetchAuth = (mail, password, loadingText) => async (dispatch) => {
     let data = await response.json();
     sessionStorage.setItem('ws-auth-token', data['ws-auth-token']);
     sessionStorage.setItem('x-auth-token', data['x-auth-token']);
-    dispatch(fetchAuthSuccess());
+    dispatch(fetchInitUser(data['x-auth-token']));
+    setTimeout(() => {
+      dispatch(fetchAuthSuccess());
+    }, 2000);
   }
 };
+
+export const fetchLogOut = () => async (dispatch) => {
+  dispatch(fetchAuthClear());
+  dispatch(fetchSignUpClear());
+  sessionStorage.removeItem('x-auth-token');
+  sessionStorage.removeItem('ws-auth-token');
+  localStorage.removeItem('user');
+}

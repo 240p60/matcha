@@ -1,7 +1,9 @@
 import React from 'react';
+import { useDispatch } from "react-redux";
 import { Context } from '../../Context';
+import { fetchDeleteUser } from "../../store/actions";
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { Button, PictureSlider } from '../index';
+import { Button, PictureSlider, Input, Modal } from '../index';
 
 import './UserPage.scss';
 import { mapApiKey } from '../../apikeys.js';
@@ -12,10 +14,37 @@ const mapContainerStyle = {
 };
 
 export default function UserPage() {
+  const [deleteModal, setDeleteModal] = React.useState(false);
+  const [passValue, setPassValue] = React.useState('');
   const { user } = React.useContext(Context);
+  const dispatch = useDispatch();
+
+  const changePassValue = (name, value) => {
+    setPassValue(value);
+  };
+
+  const handlerDeleteUser = React.useCallback(() => {
+    dispatch(fetchDeleteUser(sessionStorage.getItem('x-auth-token'), passValue));
+  }, [dispatch, passValue]);
 
   return (
     <div className="user-page">
+      {deleteModal && (
+        <Modal title="Confirm your password">
+          <Input
+            name='Password'
+            input={{ name: 'Password', value: passValue, type: 'password' }}
+            onChange={changePassValue}
+          />
+          <Button
+            type="button"
+            subClass="delete-action"
+            text="Delete Profile"
+            onClick={handlerDeleteUser}
+          />
+
+        </Modal>
+      )}
       <div className="user-page__photo">
         <PictureSlider volatile={false} uid={user.uid} />
       </div>
@@ -69,6 +98,12 @@ export default function UserPage() {
           </div>
         </div>
         <div className="user-page__block">
+          <Button
+            type="button"
+            subClass="delete-action"
+            text="Delete Profile"
+            onClick={() => setDeleteModal(true)}
+          />
           <Button
             type="button"
             subClass="change-action"

@@ -4,6 +4,7 @@ export {
   fetchInfo,
   fetchInitUser,
   fetchUpdateUser,
+  fetchDeleteUser,
 } from './User/actions';
 
 export {
@@ -12,6 +13,7 @@ export {
   fetchAuthFailed,
   fetchAuthSuccess,
   fetchAuthClear,
+  fetchLogOut,
 } from './Auth/actions';
 
 export {

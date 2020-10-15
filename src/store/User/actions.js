@@ -1,4 +1,4 @@
-import { fetchAuthFailed } from '../actions';
+import {fetchAuthFailed, fetchLogOut} from '../actions';
 import { notification } from 'antd';
 
 export const UPDATE_INFO = 'UPDATE_INFO';
@@ -53,9 +53,29 @@ export const fetchInfoClear = () => {
   };
 };
 
-export const fetchInitUser = () => async (dispatch) => {
+export const fetchDeleteUser = (token, password) => async (dispatch) => {
   dispatch(fetchInfo());
-  const token = sessionStorage.getItem('x-auth-token');
+  if (token) {
+    let res = await fetch('http://localhost:3000/user/delete/', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'pass': password,
+        'x-auth-token': token,
+      }),
+    });
+
+    if (res.status === 200) {
+      dispatch(fetchInfoFailed({error: 'Unauthorized'}));
+      dispatch(fetchLogOut());
+    }
+  }
+};
+
+export const fetchInitUser = (token) => async (dispatch) => {
+  dispatch(fetchInfo());
   if (token) {
     let getDataRes = await fetch('http://localhost:3000/user/get/', {
       method: 'POST',

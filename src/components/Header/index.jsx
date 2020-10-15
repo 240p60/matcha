@@ -1,19 +1,20 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from "react-redux";
 import { Menu, Button } from '../index';
+import { fetchLogOut } from '../../store/Auth/actions';
 
 import './Header.scss';
 
 export default function Header() {
   const history = useHistory();
-  function logOut(e) {
+  const dispatch = useDispatch();
+
+  const handlerLogOut = React.useCallback((e) => {
     e.preventDefault();
-    sessionStorage.removeItem('x-auth-token');
-    sessionStorage.removeItem('ws-auth-token');
-    localStorage.removeItem('user');
+    dispatch(fetchLogOut());
     history.push('/');
-  }
+  }, [dispatch, history]);
 
   return (
     <div className="header">
@@ -28,7 +29,7 @@ export default function Header() {
                 href=""
                 text="Log Out"
                 type="button"
-                onClick={logOut}
+                onClick={handlerLogOut}
                 subClass="header-action"
               />
             ) : (

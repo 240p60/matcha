@@ -100,7 +100,10 @@ export default function ConfirmMail() {
         />
         <Grid container className="actions" justify="center">
           <Grid item>
-            <Link to="/signIn">
+            <Link
+              to="/signIn"
+              style={{ color: '#000', fontSize: '1rem', lineHeight: '1rem' }}
+            >
               Already have an account? <span className="red-link">Sign In</span>
             </Link>
           </Grid>

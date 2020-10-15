@@ -18,3 +18,4 @@ export { default as Preloader } from './Preloader';
 export { default as UserPage } from './UserPage';
 export { default as MapComponent } from './MapComponent';
 export { default as Matchs } from './Matchs';
+export { default as Modal } from './Modal';

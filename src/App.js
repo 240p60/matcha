@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchInitUser } from './store/actions';
 import 'antd/dist/antd.css';
 
-import { Preloader } from './components/index';
-
 import {
   Login,
   SignIn,
@@ -16,6 +14,7 @@ import {
   ConfirmMail,
   UserPage,
   Matchs,
+  Preloader,
 } from './components/index';
 
 function App() {
@@ -27,9 +26,14 @@ function App() {
   const signUp = useSelector((store) => store.signUp);
   const dispatch = useDispatch();
 
+  let token = sessionStorage.getItem('x-auth-token');
+  // if (token === null) {
+  //   history.location.pathname !== '/' && history.location.pathname !== '/signIn' && history.location.pathname !== '/signUp' && history.push('/');
+  // }
+
   const initUserAction = React.useCallback(() => {
-    dispatch(fetchInitUser());
-  }, [dispatch]);
+    token && dispatch(fetchInitUser(token));
+  }, [dispatch, token]);
 
   React.useEffect(() => {
     if (sessionStorage.getItem('x-auth-token')) initUserAction();
@@ -37,8 +41,10 @@ function App() {
 
   React.useEffect(() => {
     if (auth.status === 401) history.push('/confirm/mail');
-    else if (auth.success === true) history.push('/profile');
-  }, [history, auth]);
+    else if (auth.success === true) {
+      user.fname === '' ? history.push('/profile') : history.push('/user/page');
+    }
+  }, [history, auth, user]);
 
   React.useEffect(() => {
     if (signUp.status === 401) {
@@ -56,7 +62,7 @@ function App() {
 
   return (
     <main id="main">
-      {(auth.isLoading || user.isLoading) && (
+      {auth.isLoading || user.isLoading ? (
         <Preloader
           text={
             auth.isLoading
@@ -66,43 +72,44 @@ function App() {
               : 'Почта подтверждена. Пожалуйста, совершите вход'
           }
         />
+      ) : (
+        <Context.Provider
+          value={{
+            user,
+            fetchUser,
+            auth,
+            signUp,
+            mail,
+          }}
+        >
+          <Switch>
+            <Route exact path="/">
+              <Login />
+            </Route>
+            <Route>
+              <Header path="/:path"></Header>
+              <Route exact path="/signIn">
+                <SignIn />
+              </Route>
+              <Route exact path="/signUp">
+                <SignUp />
+              </Route>
+              <Route exact path="/profile">
+                <ProfileInfo />
+              </Route>
+              <Route exact path="/confirm/mail">
+                <ConfirmMail />
+              </Route>
+              <Route exact path="/user/page">
+                <UserPage />
+              </Route>
+              <Route exact path="/matchs">
+                <Matchs />
+              </Route>
+            </Route>
+          </Switch>
+        </Context.Provider>
       )}
-      <Context.Provider
-        value={{
-          user,
-          fetchUser,
-          auth,
-          signUp,
-          mail,
-        }}
-      >
-        <Switch>
-          <Route exact path="/">
-            <Login />
-          </Route>
-          <Route>
-            <Header path="/:path"></Header>
-            <Route exact path="/signIn">
-              <SignIn />
-            </Route>
-            <Route exact path="/signUp">
-              <SignUp />
-            </Route>
-            <Route exact path="/profile">
-              <ProfileInfo />
-            </Route>
-            <Route exact path="/confirm/mail">
-              <ConfirmMail />
-            </Route>
-            <Route exact path="/user/page">
-              <UserPage />
-            </Route>
-            <Route exact path="/matchs">
-              <Matchs />
-            </Route>
-          </Route>
-        </Switch>
-      </Context.Provider>
     </main>
   );
 }
