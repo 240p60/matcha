@@ -7,6 +7,11 @@ import { ReactComponent as Arrow } from '../../assets/img/arrow.svg';
 export const Filter = ({ filters, changeFilters, active, onClick, onSubmit }) => {
   const arrowRef = React.useRef(null);
 
+  const applyFilters = () => {
+    onSubmit();
+    onClick();
+  }
+
   return (
     <div className={styles.FilterBlock}>
       <div className={styles.HeaderFilterBlock}>
@@ -39,10 +44,10 @@ export const Filter = ({ filters, changeFilters, active, onClick, onSubmit }) =>
         />
         <div className={styles.FiltersActionBlock}>
           <Button
-            onClick={onSubmit}
+            onClick={applyFilters}
             type="submit"
             subClass="submit"
-            text="Aplly"
+            text="Apply Filters"
           />
         </div>
       </div>
