@@ -36,6 +36,11 @@
   justify-content: space-between;
 }
 
+.itemInfo {
+  height: 157px;
+  overflow-y: auto;
+}
+
 .itemBottomArea {
   padding: 10px 20px;
   border-top: 1px solid #000;

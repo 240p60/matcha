@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import { ChatItem } from './ChatItem';
-import styles from './Chat.module.scss';
+import { DialogItem } from './DialogItem';
+import styles from './Dialogs.module.scss';
 
-const Chat = () => {
-  const [chats, setChats] = React.useState([]);
+const Dialogs = ({ title }) => {
+  const [dialogs, setDialogs] = React.useState([]);
 
   React.useEffect(() => {
     fetch('http://localhost:3000/user/getFriends/', {
@@ -14,24 +14,25 @@ const Chat = () => {
       }),
     })
       .then((res) => res.json())
-      .then((data) => setChats(data));
+      .then((data) => setDialogs(data));
   }, []);
+  console.log(dialogs);
   return (
-    <div className={styles.Chat}>
-      <h2>Диалоги</h2>
-      {Array.isArray(chats) && chats.length && chats.map((item) => {
-        return <ChatItem key={item} chat={item} />;
+    <div className={styles.Dialog}>
+      {title && <h2>{title}</h2>}
+      {Array.isArray(dialogs) && dialogs.length && dialogs.map((item) => {
+        return <DialogItem key={item} dialog={item} />;
       })}
     </div>
   )
 }
 
-Chat.propTypes = {
+Dialogs.propTypes = {
   chats: PropTypes.arrayOf(PropTypes.number),
 }
 
-Chat.defaultProps = {
+Dialogs.defaultProps = {
   chats: [],
 }
 
-export default Chat;
+export default Dialogs;

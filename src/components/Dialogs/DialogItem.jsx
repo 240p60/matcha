@@ -1,15 +1,15 @@
 import React from 'react';
-import styles from "./Chat.module.scss";
+import { Link } from 'react-router-dom';
+import styles from "./Dialogs.module.scss";
 
-export const ChatItem = ({chat}) => {
-  console.log(chat);
+export const DialogItem = ({dialog}) => {
   return (
-    <div className={styles.ChatItem}>
-      <div className={styles.ChatImage}></div>
-      <div className={styles.ChatContent}>
-        <div className={styles.CompanionName}>{`${chat.fname} ${chat.lname}`}</div>
-        <div className={styles.LastMessage}>{chat.lastMessageBody || 'Начните диалог'}</div>
+    <Link to={`/chat/${dialog.uid}`} className={styles.DialogItem}>
+      <div className={styles.DialogImage}></div>
+      <div className={styles.DialogContent}>
+        <div className={styles.CompanionName}>{`${dialog.fname} ${dialog.lname}`}</div>
+        <div className={styles.LastMessage}>{dialog.lastMessageBody || 'Начните диалог'}</div>
       </div>
-    </div>
+    </Link>
   );
 }

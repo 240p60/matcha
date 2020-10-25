@@ -16,14 +16,12 @@ export default function PictureSlider({
 }) {
   const photos = useSelector((store) => store.photos);
   const dispatch = useDispatch();
-  const [value, setValue] = React.useState([]);
+  const [value, setValue] = React.useState({});
   const [activeImage, setActiveImage] = React.useState(0);
 
   React.useEffect(() => {
-    if (uid) {
-      if (sessionStorage.getItem('x-auth-token') && uid)
-        dispatch(fetchGetPhotos(uid));
-    }
+    if (sessionStorage.getItem('x-auth-token') && uid)
+      dispatch(fetchGetPhotos(uid));
   }, [uid, dispatch]);
 
   React.useEffect(() => {
@@ -34,9 +32,9 @@ export default function PictureSlider({
     if (e.target.files && e.target.files[0]) {
       let reader = new FileReader();
       reader.onload = function (e) {
-        if (!value.includes(e.target.result)) {
-          setValue([...value, e.target.result]);
-          dispatch(fetchAddPhoto(e.target.result));
+        console.log(value);
+        if (!value.length || !value[uid].includes(e.target.result)) {
+          dispatch(fetchAddPhoto(uid, e.target.result));
         }
       };
       reader.readAsDataURL(e.target.files[0]);
@@ -64,8 +62,8 @@ export default function PictureSlider({
         </>
       )}
       <div className="image_slider">
-        {!!value.length &&
-          value.map((item, index) => {
+        {!!value[uid] && !!value[uid].length &&
+          value[uid].map((item, index) => {
             return (
               <div
                 key={item.pid}
@@ -95,7 +93,7 @@ export default function PictureSlider({
               />
             </div>
           )}
-          {activeImage < value.length - 1 && (
+          {value[uid] && activeImage < value[uid].length - 1 && (
             <div
               className="next-nav nav-action"
               onClick={() => setActiveImage(activeImage + 1)}

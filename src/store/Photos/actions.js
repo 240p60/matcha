@@ -31,7 +31,7 @@ export const initPhotos = (data) => {
   };
 };
 
-export const fetchAddPhoto = (image) => async (dispatch) => {
+export const fetchAddPhoto = (uid, image) => async (dispatch) => {
   dispatch(fetchPhotos());
   const token = sessionStorage.getItem('x-auth-token');
   if (token) {
@@ -50,10 +50,12 @@ export const fetchAddPhoto = (image) => async (dispatch) => {
       notification.error({
         message: 'Failed to upload photo',
       });
-    } else
+    } else {
       notification.success({
         message: 'Photo uploaded successfully',
       });
+      dispatch(fetchGetPhotos(uid));
+    }
   }
 };
 
@@ -74,10 +76,7 @@ export const fetchGetPhotos = (uid) => async (dispatch) => {
 
     if (response.status === 200) {
       const photos = await response.json();
-      notification.success({
-        message: 'Photo downloaded successfully',
-      });
-      dispatch(initPhotos(photos.map((item) => item)));
+      dispatch(initPhotos({ uid: uid, photos: photos.map((item) => item) }));
     } else {
       notification.error({
         message: 'Failed to upload photo',
@@ -85,3 +84,4 @@ export const fetchGetPhotos = (uid) => async (dispatch) => {
     }
   }
 };
+//Посмотри pid, который присваивается при добавлении фото

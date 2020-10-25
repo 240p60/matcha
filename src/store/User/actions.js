@@ -4,6 +4,7 @@ import { notification } from 'antd';
 export const UPDATE_INFO = 'UPDATE_INFO';
 export const FETCH_INFO = 'FETCH_INFO';
 export const INIT_USER = 'INIT_USER';
+export const INIT_NEW_USER = 'INIT_NEW_USER';
 export const FETCH_INFO_FAILED = 'FETCH_INFO_FAILED';
 export const FETCH_INFO_SUCCESS = 'FETCH_INFO_SUCCESS';
 export const FETCH_INFO_CLEAR = 'FETCH_INFO_CLEAR';
@@ -23,6 +24,13 @@ export const initUser = (data) => {
     payload: {
       data: data,
     },
+  };
+};
+
+export const initNewUser = (uid) => {
+  return {
+    type: INIT_NEW_USER,
+    payload: uid,
   };
 };
 
@@ -89,12 +97,12 @@ export const fetchInitUser = (token) => async (dispatch) => {
 
     if (getDataRes.status === 200) {
       const data = await getDataRes.json();
-      if (data.fname !== '') {
-        dispatch(initUser(data));
-        dispatch(fetchInfoSuccess());
-      }
+      if (data.fname !== '') dispatch(initUser(data));
+      else dispatch(initNewUser(data.uid));
+      dispatch(fetchInfoSuccess());
     } else if (getDataRes.status === 401) {
       dispatch(fetchInfoFailed({ error: getDataRes.statusText }));
+      dispatch(fetchLogOut());
     }
   }
 };

@@ -1,5 +1,6 @@
 import {
   INIT_USER,
+  INIT_NEW_USER,
   UPDATE_INFO,
   FETCH_INFO,
   FETCH_INFO_FAILED,
@@ -31,6 +32,10 @@ export const userReducer = (state = initialState, action) => {
     case INIT_USER:
       return {
         ...action.payload.data,
+      };
+    case INIT_NEW_USER:
+      return  {
+        ...state, uid: action.payload
       };
     case UPDATE_INFO:
       return {

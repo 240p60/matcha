@@ -5,7 +5,7 @@ import {
   INIT_PHOTOS,
 } from './actions';
 
-const initialState = [];
+const initialState = {};
 
 const fetchState = {
   loading: false,
@@ -17,7 +17,7 @@ const fetchState = {
 export const photosReducer = (state = initialState, action) => {
   switch (action.type) {
     case INIT_PHOTOS:
-      return [...action.payload];
+      return { ...state, [action.payload.uid]: [...action.payload.photos] };
     default:
       return state;
   }

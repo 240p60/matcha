@@ -34,12 +34,7 @@ export default function Matchs() {
     });
   };
 
-  React.useEffect(() => {
-    applyFilters();
-  }, []);
-
-  const applyFilters = () => {
-    console.log(filters);
+  const applyFilters = React.useCallback(() => {
     fetch('http://localhost:3000/search/', {
       method: 'POST',
       body: JSON.stringify({
@@ -53,7 +48,13 @@ export default function Matchs() {
     })
       .then((res) => res.json())
       .then((data) => setUsers(data));
-  }
+  }, [filters]);
+
+  React.useEffect(() => {
+    applyFilters();
+  }, []);
+
+  console.log(users);
 
   return (
     <div className={styles.matchs}>
@@ -69,9 +70,9 @@ export default function Matchs() {
           {Array.isArray(users) &&
             !!users.length &&
             users.map((item) => {
-              return item.fname === 'admin' ? null : (
+              return !item.isLiked ? (item.fname === 'admin' ? null : (
                 <Item key={item.uid} data={item} />
-              );
+              )) : null;
             })}
         </div>
       </div>

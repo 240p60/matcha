@@ -19,3 +19,6 @@ export { default as UserPage } from './UserPage';
 export { default as MapComponent } from './MapComponent';
 export { default as Matchs } from './Matchs';
 export { default as Modal } from './Modal';
+export { default as Widget } from './Widget';
+export { default as Dialogs } from './Dialogs';
+export { default as Chat } from './Chat';

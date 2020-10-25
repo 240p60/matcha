@@ -24,7 +24,7 @@ export default function MenuComponent() {
       <Link id="settings" to="/">
         Settings
       </Link>
-      <Link id="chat" to="/chat">
+      <Link id="chat" to="/dialogs">
         Chat
       </Link>
       <a onClick={() => showSettings} className="menu-item--small" href="/">

@@ -15,6 +15,9 @@ import {
   UserPage,
   Matchs,
   Preloader,
+  Widget,
+  Dialogs,
+  Chat
 } from './components/index';
 
 function App() {
@@ -106,6 +109,13 @@ function App() {
               <Route exact path="/matchs">
                 <Matchs />
               </Route>
+              <Route exact path="/dialogs">
+                <Dialogs title="Диалоги" />
+              </Route>
+              <Route path="/chat/:id">
+                <Chat />
+              </Route>
+              {sessionStorage.getItem('x-auth-token') && <Widget />}
             </Route>
           </Switch>
         </Context.Provider>
