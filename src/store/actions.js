@@ -31,4 +31,15 @@ export {
   fetchConfirmMail,
 } from './Mail/actions';
 
-export { fetchGetPhotos, fetchAddPhoto } from './Photos/actions';
+export {
+  fetchInitDialogs
+} from './Dialogs/actions';
+
+export {
+  openSocket
+} from './Socket/actions';
+
+export {
+  fetchGetPhotos,
+  fetchAddPhoto
+} from './Photos/actions';

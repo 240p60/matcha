@@ -4,7 +4,8 @@ import signUpReducer from './SignUp/reducer';
 import mailReducer from './Mail/reducer';
 import { userReducer, fetchUserReducer } from './User/reducer';
 import { photosReducer, fetchPhotosReducer } from './Photos/reducer';
-import { chatReducer } from './Chat/reducer';
+import { dialogsReducer } from './Dialogs/reducer';
+import { socketReducer } from './Socket/reducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   signUp: signUpReducer,
   mail: mailReducer,
   photos: photosReducer,
-  chat: chatReducer,
+  dialogs: dialogsReducer,
+  socket: socketReducer,
   fetchPhotos: fetchPhotosReducer,
 });
 

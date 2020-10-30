@@ -27,12 +27,10 @@ function App() {
   const auth = useSelector((store) => store.auth);
   const mail = useSelector((store) => store.mail);
   const signUp = useSelector((store) => store.signUp);
+  const socket = useSelector((store) => store.socket);
   const dispatch = useDispatch();
 
   let token = sessionStorage.getItem('x-auth-token');
-  // if (token === null) {
-  //   history.location.pathname !== '/' && history.location.pathname !== '/signIn' && history.location.pathname !== '/signUp' && history.push('/');
-  // }
 
   const initUserAction = React.useCallback(() => {
     token && dispatch(fetchInitUser(token));

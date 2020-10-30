@@ -54,8 +54,6 @@ export default function Matchs() {
     applyFilters();
   }, []);
 
-  console.log(users);
-
   return (
     <div className={styles.matchs}>
       <div className={styles.inner}>

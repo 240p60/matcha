@@ -1,27 +1,26 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from "react-redux";
+import { fetchInitDialogs } from "../../store/Dialogs/actions";
 import { DialogItem } from './DialogItem';
 import styles from './Dialogs.module.scss';
 
-const Dialogs = ({ title }) => {
-  const [dialogs, setDialogs] = React.useState([]);
+const Dialogs = ({ title, onClick }) => {
+  const dispatch = useDispatch();
+  const dialogs = useSelector((store) => store.dialogs);
+
+  const initDialogs = React.useCallback(() => {
+    dispatch(fetchInitDialogs());
+  }, [dispatch]);
 
   React.useEffect(() => {
-    fetch('http://localhost:3000/user/getFriends/', {
-      method: 'POST',
-      body: JSON.stringify({
-        'x-auth-token': sessionStorage.getItem('x-auth-token'),
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => setDialogs(data));
+    initDialogs();
   }, []);
-  console.log(dialogs);
   return (
     <div className={styles.Dialog}>
       {title && <h2>{title}</h2>}
       {Array.isArray(dialogs) && dialogs.length && dialogs.map((item) => {
-        return <DialogItem key={item} dialog={item} />;
+        return <DialogItem onClick={onClick} key={item} dialog={item} />;
       })}
     </div>
   )

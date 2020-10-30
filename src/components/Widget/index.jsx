@@ -14,7 +14,7 @@ const Widget = () => {
             <h2>Чаты</h2>
           </div>
           <div className={styles.WidgetBody}>
-            <Dialogs />
+            <Dialogs onClick={() => setActive(false)} />
           </div>
         </div>
       )}

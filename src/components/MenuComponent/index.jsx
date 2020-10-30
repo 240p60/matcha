@@ -25,7 +25,7 @@ export default function MenuComponent() {
         Settings
       </Link>
       <Link id="chat" to="/dialogs">
-        Chat
+        Dialogs
       </Link>
       <a onClick={() => showSettings} className="menu-item--small" href="/">
         Settings
