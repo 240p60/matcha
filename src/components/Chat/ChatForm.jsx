@@ -9,6 +9,7 @@ export const ChatForm = ({ receiver }) => {
   const dispatch = useDispatch();
 
   const handleSendMessage = React.useCallback(() => {
+    if (value !== '') {
       let message = {};
       message.type = "message";
       message.uidReceiver = receiver;
@@ -17,16 +18,19 @@ export const ChatForm = ({ receiver }) => {
       console.log("tx: " + jsonMessage);
       socket.send(jsonMessage);
       setValue('');
+    }
   }, [dispatch, value, receiver])
 
   return (
-    <div className={styles.ChatForm}>
-      <div className={styles.inputContainer}>
-        <input className={styles.messageInput} placeholder="Введите сообщение" type='text' value={value} onChange={(e) => setValue(e.target.value)} />
+    <form onSubmit={(e) => e.preventDefault()}>
+      <div className={styles.ChatForm}>
+        <div className={styles.inputContainer}>
+          <input className={styles.messageInput} placeholder="Введите сообщение" type='text' value={value} onChange={(e) => setValue(e.target.value)} />
+        </div>
+        <div className={styles.buttonContainer}>
+          <Button type="submit" onClick={handleSendMessage} text="Отправить" subClass="submit" />
+        </div>
       </div>
-      <div className={styles.buttonContainer}>
-        <Button type="submit" onClick={handleSendMessage} text="Отправить" subClass="submit" />
-      </div>
-    </div>
+    </form>
   );
 }

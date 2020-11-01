@@ -40,6 +40,10 @@ export {
 } from './Socket/actions';
 
 export {
+  fetchInitMessages,
+} from './Messages/actions';
+
+export {
   fetchGetPhotos,
   fetchAddPhoto
 } from './Photos/actions';

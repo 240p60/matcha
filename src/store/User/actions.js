@@ -115,6 +115,7 @@ export const fetchUpdateUser = ({
   orientation,
   interests,
   bio,
+  avaID,
   latitude,
   longitude,
 }) => async (dispatch) => {
@@ -135,6 +136,7 @@ export const fetchUpdateUser = ({
         orientation: orientation,
         interests: interests,
         bio: bio,
+        avaID: avaID,
         latitude: latitude,
         longitude: longitude,
       }),

@@ -1,31 +1,45 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom';
 import { ChatForm } from './ChatForm';
 import { Message } from './Message';
+import { fetchInitMessages } from '../../store/actions';
 import styles from './Chat.module.scss';
-import { useHistory } from 'react-router-dom';
 
 const Chat = () => {
   const history = useHistory();
-  const receiverUid = history.location.pathname.split('/')[2];
+  const [receiverUid, setReceiveUid] = React.useState(parseInt(history.location.pathname.split('/')[2]));
+  const messages = useSelector((store) => store.messages);
+  const dispatch = useDispatch();
+
+  const getMessages = React.useCallback((uid) => {
+    dispatch(fetchInitMessages(uid));
+  }, [dispatch]);
 
   React.useEffect(() => {
-    fetch('http://localhost:3000/message/get/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      body: JSON.stringify({
-        'otherUid': receiverUid,
-        'x-auth-token': sessionStorage.getItem('x-auth-token'),
-      }),
-    }).then(res => res.json()).then(data => console.log(data));
-  }, []);
+    setReceiveUid(parseInt(history.location.pathname.split('/')[2]));
+  }, [history]);
+
+  React.useEffect(() => {
+    getMessages(receiverUid);
+  }, [receiverUid]);
 
   return (
     <div className={styles.Chat}>
       <div className={styles.ChatContainer}>
         <div className={styles.ChatContent}>
-          <Message />
+          <div className={styles.Messages}>
+            {messages && Array.isArray(messages) && messages.map((item) => (
+              <Message
+                id={item.mid}
+                receiver={receiverUid}
+                myMessage={item.uidSender !== receiverUid}
+                key={item.mid}
+              >
+                {item.body}
+              </Message>
+            ))}
+          </div>
         </div>
         <ChatForm receiver={receiverUid} />
       </div>

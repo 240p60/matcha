@@ -1,4 +1,5 @@
 import { fetchAuthClear, fetchSignUpClear } from '../actions';
+import { notification } from 'antd';
 
 export const FETCH_MAIL = 'FETCH_MAIL';
 export const FETCH_MAIL_SUCCESS = 'FETCH_MAIL_SUCCESS';
@@ -39,15 +40,15 @@ export const fetchConfirmMail = (text, token) => (dispatch) => {
     }),
   }).then((res) => {
     if (res.status !== 200) {
-      dispatch(
-        fetchMailFailed(
-          `Something went wrong: ${res.status} - ${res.statusText}`
-        )
-      );
+      dispatch(fetchMailFailed(`Something went wrong: ${res.status} - ${res.statusText}`));
+      notification.error({
+        message: `Something went wrong: ${res.status} - ${res.statusText}`,
+      });
     } else {
-      dispatch(
-        fetchMailSuccess('Почта подтверждена. Пожалуйста, совершите вход')
-      );
+      dispatch(fetchMailSuccess('Почта подтверждена. Пожалуйста, совершите вход'));
+      notification.success({
+        message: 'Почта подтверждена. Пожалуйста, совершите вход',
+      });
     }
   });
 };

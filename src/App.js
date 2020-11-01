@@ -27,6 +27,7 @@ function App() {
   const auth = useSelector((store) => store.auth);
   const mail = useSelector((store) => store.mail);
   const signUp = useSelector((store) => store.signUp);
+  const photos = useSelector((store) => store.photos);
   const socket = useSelector((store) => store.socket);
   const dispatch = useDispatch();
 
@@ -81,6 +82,7 @@ function App() {
             auth,
             signUp,
             mail,
+            photos,
           }}
         >
           <Switch>

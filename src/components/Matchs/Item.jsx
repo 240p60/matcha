@@ -8,7 +8,7 @@ import Heart from './heart.svg';
 
 export const Item = ({ data }) => {
   const setLike = (uid) => {
-    fetch('http://localhost:3000/like/set', {
+    fetch('http://localhost:3000/like/set/', {
       method: 'POST',
       body: JSON.stringify({
         otherUid: uid,
@@ -18,7 +18,7 @@ export const Item = ({ data }) => {
   }
 
   const unsetLike = (uid) => {
-    fetch('http://localhost:3000/like/unset', {
+    fetch('http://localhost:3000/like/unset/', {
       method: 'POST',
       body: JSON.stringify({
         otherUid: uid,

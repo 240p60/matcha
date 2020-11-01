@@ -54,3 +54,11 @@
   &:focus:-moz-placeholder{opacity: 0; transition: opacity 0.3s ease;}
   &:focus:-ms-input-placeholder{opacity: 0; transition: opacity 0.3s ease;}
 }
+
+.Messages {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  min-height: 100%;
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { Context } from '../../Context';
 import { fetchUpdateUser } from '../../store/actions';
 
@@ -42,8 +42,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfileInfo() {
   const dispatch = useDispatch();
   const { user, fetchUser, photos } = React.useContext(Context);
+  console.warn(photos);
   const classes = useStyles();
-
   const gender = user.gender;
   const sex =
     user.orientation === 'bi'
@@ -283,6 +283,7 @@ export default function ProfileInfo() {
         orientation: sexPreference,
         interests: interests,
         bio: bio,
+        avaID: photos[user.uid][0].pid,
         latitude: lat,
         longitude: lng,
       });
