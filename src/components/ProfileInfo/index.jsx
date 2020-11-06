@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfileInfo() {
   const dispatch = useDispatch();
   const { user, fetchUser, photos } = React.useContext(Context);
-  console.warn(photos);
   const classes = useStyles();
   const gender = user.gender;
   const sex =

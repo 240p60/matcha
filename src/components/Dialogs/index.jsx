@@ -5,7 +5,7 @@ import { fetchInitDialogs } from "../../store/Dialogs/actions";
 import { DialogItem } from './DialogItem';
 import styles from './Dialogs.module.scss';
 
-const Dialogs = ({ title }) => {
+const Dialogs = ({ title, onClick }) => {
   const dispatch = useDispatch();
   const dialogs = useSelector((store) => store.dialogs);
 
@@ -17,7 +17,7 @@ const Dialogs = ({ title }) => {
     initDialogs();
   }, []);
   return (
-    <div className={styles.Dialog}>
+    <div className={styles.Dialog} onClick={onClick}>
       {title && <h2>{title}</h2>}
       {Array.isArray(dialogs) && dialogs.length && dialogs.map((item) => {
         return <DialogItem key={item.uid} dialog={item} />;

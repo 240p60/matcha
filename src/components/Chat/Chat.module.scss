@@ -20,6 +20,7 @@
 .ChatContent {
   height: 400px;
   overflow-y: auto;
+  padding-right: 12px;
 }
 
 .ChatForm {
@@ -44,15 +45,44 @@
   width: 100%;
   height: 100%;
 
-  &::-webkit-input-placeholder{opacity: 1; transition: opacity 0.3s ease;}
-  &::-webkit-input-placeholder{color:#aaaaaa !important;}
-  &::-moz-placeholder{opacity: 1; transition: opacity 0.3s ease;color:#aaaaaa;}
-  &:-moz-placeholder{opacity: 1; transition: opacity 0.3s ease;color:#aaaaaa;}
-  &:-ms-input-placeholder{opacity: 1; transition: opacity 0.3s ease;color:#aaaaaa;}
-  &:focus::-webkit-input-placeholder{opacity: 0; transition: opacity 0.3s ease;}
-  &:focus::-moz-placeholder{opacity: 0; transition: opacity 0.3s ease;}
-  &:focus:-moz-placeholder{opacity: 0; transition: opacity 0.3s ease;}
-  &:focus:-ms-input-placeholder{opacity: 0; transition: opacity 0.3s ease;}
+  &::-webkit-input-placeholder {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+  &::-webkit-input-placeholder {
+    color: #aaaaaa !important;
+  }
+  &::-moz-placeholder {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    color: #aaaaaa;
+  }
+  &:-moz-placeholder {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    color: #aaaaaa;
+  }
+  &:-ms-input-placeholder {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    color: #aaaaaa;
+  }
+  &:focus::-webkit-input-placeholder {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  &:focus::-moz-placeholder {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  &:focus:-moz-placeholder {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  &:focus:-ms-input-placeholder {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 }
 
 .Messages {

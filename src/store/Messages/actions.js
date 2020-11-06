@@ -3,6 +3,7 @@ import {notification} from "antd";
 export const INIT_MESSAGES = 'INIT_MESSAGES';
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const FETCH_MESSAGE = 'FETCH_MESSAGE';
+export const NEW_MESSAGE = 'NEW_MESSAGE';
 
 const initMessages = (data) => {
   return {
@@ -11,7 +12,7 @@ const initMessages = (data) => {
   }
 }
 
-const addMessage = (data) => {
+export const addMessage = (data) => {
   return {
     type: ADD_MESSAGE,
     payload: data,
@@ -21,6 +22,13 @@ const addMessage = (data) => {
 const fetchMessages = () => {
   return {
     type: FETCH_MESSAGE,
+  }
+}
+
+export const newMessage = (receiver) => {
+  return {
+    type: NEW_MESSAGE,
+    payload: receiver,
   }
 }
 

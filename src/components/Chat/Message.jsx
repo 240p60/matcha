@@ -28,7 +28,7 @@ export const Message = ({ id, receiver, myMessage, children }) => {
 const MessageItem = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: ${({ myMessage }) => myMessage ? 'flex-end' : 'flex-start'};
   padding-bottom: 10px;
 `;
@@ -37,7 +37,7 @@ const MessageContent = styled.div`
   color: #fff;
   border-radius: 10px;
   background-color: #f62354;
-  padding: 5px 10px;
+  padding: 8px 12px;
 `;
 
 const MessageImage = styled.div`

@@ -2,10 +2,12 @@ import {
   INIT_MESSAGES,
   ADD_MESSAGE,
   FETCH_MESSAGE,
+  NEW_MESSAGE,
 } from "./actions";
 
 const fetchMessages = {
   loading: false,
+  newMessage: false
 }
 
 const messages = [];
@@ -21,10 +23,12 @@ export const messageReducer = (state = messages, action) => {
   }
 }
 
-export const fetchMessageReducer = (state = fetchMessages, action) => {
+export const fetchMessagesReducer = (state = fetchMessages, action) => {
   switch (action.type) {
     case FETCH_MESSAGE:
-      return { loading: true };
+      return { ...state, loading: true };
+      case NEW_MESSAGE:
+        return { ...state, newMessage: action.payload };
     default:
       return state;
   }

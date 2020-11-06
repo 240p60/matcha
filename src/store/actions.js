@@ -41,6 +41,8 @@ export {
 
 export {
   fetchInitMessages,
+  newMessage,
+  addMessage,
 } from './Messages/actions';
 
 export {

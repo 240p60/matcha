@@ -1,5 +1,3 @@
-import React from "react";
-
 export const INIT_DIALOGS = 'INIT_DIALOGS';
 
 const initDialogs = (dialogs) => {
@@ -12,7 +10,7 @@ const initDialogs = (dialogs) => {
 export const fetchInitDialogs = () => async (dispatch) => {
   const token = sessionStorage.getItem('x-auth-token');
   if (token) {
-    fetch('http://localhost:3000/user/getFriends/', {
+    fetch('http://localhost:3000/user/get/friends/', {
       method: 'POST',
       body: JSON.stringify({
         'x-auth-token': token,

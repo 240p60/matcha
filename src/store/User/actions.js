@@ -1,4 +1,4 @@
-import {fetchAuthFailed, fetchLogOut} from '../actions';
+import { fetchAuthFailed, fetchLogOut } from '../actions';
 import { notification } from 'antd';
 
 export const UPDATE_INFO = 'UPDATE_INFO';

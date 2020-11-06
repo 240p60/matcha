@@ -28,7 +28,6 @@ function App() {
   const mail = useSelector((store) => store.mail);
   const signUp = useSelector((store) => store.signUp);
   const photos = useSelector((store) => store.photos);
-  const socket = useSelector((store) => store.socket);
   const dispatch = useDispatch();
 
   let token = sessionStorage.getItem('x-auth-token');
@@ -90,7 +89,7 @@ function App() {
               <Login />
             </Route>
             <Route>
-              <Header path="/:path"></Header>
+              <Header path="/:path" />
               <Route exact path="/signIn">
                 <SignIn />
               </Route>

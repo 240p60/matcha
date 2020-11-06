@@ -39,7 +39,7 @@ export const fetchSignUp = (mail, password, loadingText) => async (
   dispatch(fetchSignUpClear());
   dispatch(fetchSignUpAction(loadingText));
   let response = await fetch('http://localhost:3000/user/create/', {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
