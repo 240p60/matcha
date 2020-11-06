@@ -1,59 +1,76 @@
 .button {
-    width: 100%;
-    display: block;
-    padding: 15px 20px;
-    text-align: center;
-    border-radius: 4px;
-    -webkit-box-shadow: 0px 4px 5px -4px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 4px 5px -4px rgba(0,0,0,0.75);
-    box-shadow: 0px 4px 5px -4px rgba(0,0,0,0.75);
-    cursor: pointer;
+  width: 100%;
+  display: block;
+  padding: 15px 20px;
+  text-align: center;
+  border-radius: 4px;
+  -webkit-box-shadow: 0px 4px 5px -4px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 4px 5px -4px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 4px 5px -4px rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+
+  span {
+    position: relative;
+    font-size: 1.2rem;
+  }
+
+  &_mail {
+    background-color: #fff;
+    color: #000;
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  &_facebook {
+    background-color: #375a8c;
+    color: #fff;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  &_submit {
+    background-color: #f62354;
 
     span {
-        position: relative;
-        font-size: 1rem;
+      color: #fff;
+      font-weight: bold;
     }
+  }
 
-    &_mail {
-        background-color: #fff;
-        color: #000;
+  &_change-action {
+    background-color: #0078d7;
+
+    span {
+      color: #fff;
     }
+  }
 
-    &_facebook {
-        background-color: #375A8C;
-        color: #fff;
+  &_delete-action {
+    background-color: #000;
+
+    span {
+      color: #fff;
+      font-weight: bold;
     }
+  }
 
-    &_submit {
-        background-color: #F62354;
+  &_header-action {
+    background-color: #fff;
+    padding: 7px 14px;
+    color: #000;
+  }
 
-        span {
-            color: #fff;
-            font-weight: bold;
-        }
-    }
-
-    &_change-action {
-        background-color: #0078d7;
-
-        span {
-            color: #fff;
-        }
-    }
-
-    &_header-action {
-        background-color: #fff;
-        padding: 7px 14px;
-        color: #000;
-    }
-
-    & + .button {
-        margin-top: 15px;
-    }
+  & + .button {
+    margin-top: 15px;
+  }
 }
 
 @media (max-height: 660px) {
-    .button {
-        padding: 12px 20px;
-    }
+  .button {
+    padding: 12px 20px;
+  }
 }

@@ -12,11 +12,11 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: '15px auto 0',
     width: '100%',
-    maxWidth: 260
+    maxWidth: 260,
   },
 }));
 
-export default function InputOptions({input, onChange}) {
+export default function InputOptions({ input, name, onChange }) {
   const classes = useStyles();
 
   return (
@@ -25,7 +25,7 @@ export default function InputOptions({input, onChange}) {
       <Select
         multiple
         value={input.value}
-        onChange={(event) => onChange(input.name, event.target.value)}
+        onChange={(event) => onChange(name, event.target.value)}
         input={<Input />}
         renderValue={(selected) => selected.join(', ')}
         error={input.error}
@@ -42,11 +42,4 @@ export default function InputOptions({input, onChange}) {
   );
 }
 
-const names = [
-  'Music',
-  'Sport',
-  'Pizza',
-  'Travels',
-  'Hookahs',
-  'Serials'
-];
+const names = ['Music', 'Sport', 'Pizza', 'Travels', 'Hookahs', 'Serials'];

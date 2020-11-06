@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 import './MapComponent.scss';
+import { mapApiKey } from '../../apikeys.js';
 
 const containerStyle = {
-  width: '400px',
+  width: '100%',
   height: '400px',
   margin: '20px 0 0',
 };
 
-export default function MapComponent({ input, onChange }) {
+export default function MapComponent({ input, onChange, name }) {
   useEffect(() => {
     if (navigator.geolocation && input.value.center.lat === 0) {
       navigator.geolocation.getCurrentPosition(function (position) {
-        onChange(input.name, {
+        onChange(name, {
           center: {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
@@ -32,11 +33,11 @@ export default function MapComponent({ input, onChange }) {
       },
       zoom: 11,
     };
-    onChange(input.name, newPosition);
+    onChange(name, newPosition);
   }
 
   return (
-    <LoadScript googleMapsApiKey="API_KEY">
+    <LoadScript googleMapsApiKey={mapApiKey}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={input.value.center}
@@ -47,7 +48,6 @@ export default function MapComponent({ input, onChange }) {
           onDragEnd={(position) => onChangeMarkerPosition(position)}
           draggable
         />
-        {/* Child components, such as markers, info windows, etc. */}
       </GoogleMap>
     </LoadScript>
   );

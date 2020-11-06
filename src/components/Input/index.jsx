@@ -1,15 +1,16 @@
-import React from 'react'
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import './Input.scss';
 
-export default function Input ({input, onChange, focus}) {
-  let margin = document.documentElement.clientHeight >= 660 ? 'normal' : 'dense';
+export default function Input({ input, name, onChange, focus }) {
+  let margin =
+    document.documentElement.clientHeight >= 660 ? 'normal' : 'dense';
 
   return (
     <TextField
       className={`input input__${input.name}`}
       value={input.value}
-      onChange={e => onChange(input.name, e.target.value)}
+      onChange={(e) => onChange(name, e.target.value)}
       type={input.type}
       name={input.name}
       error={input.error}
@@ -22,5 +23,5 @@ export default function Input ({input, onChange, focus}) {
       fullWidth
       placeholder={input.placeholder ? input.placeholder : ''}
     />
-  )
+  );
 }

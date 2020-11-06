@@ -1,6 +1,8 @@
-import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 import { Context } from '../../Context';
+import { fetchUpdateUser } from '../../store/actions';
 
 import { Typography } from '@material-ui/core';
 import {
@@ -8,7 +10,7 @@ import {
   Button,
   InputDate,
   InputOptions,
-  InputFile,
+  PictureSlider,
   Radio,
   Checkbox,
   MapComponent,
@@ -38,82 +40,73 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProfileInfo() {
-  let history = useHistory();
-  const { userInfo, setUserInfo } = useContext(Context);
+  const dispatch = useDispatch();
+  const { user, fetchUser, photos } = React.useContext(Context);
   const classes = useStyles();
-
-  const gender = userInfo.gender || 'male';
+  const gender = user.gender;
   const sex =
-    userInfo.orientation === 'bi'
+    user.orientation === 'bi'
       ? 'bi'
-      : userInfo.orientation === 'homo'
+      : user.orientation === 'homo'
       ? gender
       : gender === 'female'
       ? 'male'
       : 'female';
-  const location = userInfo.latitude
-    ? {
-        center: {
-          lat: userInfo.latitude,
-          lng: userInfo.longitude,
-        },
-        zoom: 11,
-      }
-    : {
-        center: {
-          lat: 0,
-          lng: 0,
-        },
-        zoom: 11,
-      };
+  const location = {
+    center: {
+      lat: user.latitude,
+      lng: user.longitude,
+    },
+    zoom: 11,
+  };
 
-  const [inputs, setInputValue] = useState([
-    {
+  const [inputs, setInputValue] = React.useState({
+    file: {
       type: 'file',
       name: 'Photos',
-      value: userInfo.photos || [],
+      value: user.file,
       error: false,
       helperText: '',
     },
-    {
+    fname: {
       type: 'text',
       name: 'First Name',
-      value: userInfo.fname || '',
+      value: user.fname,
       error: false,
-      helperText: '',
+      helperText: 'First Name must be longer than 2 characters',
       placeholder: 'First Name',
     },
-    {
+    lname: {
       type: 'text',
       name: 'Last Name',
-      value: userInfo.lname || '',
+      value: user.lname,
       error: false,
-      helperText: '',
+      helperText: 'Last Name must be longer than 2 characters',
       placeholder: 'Last Name',
     },
-    {
+    date: {
       type: 'date',
       name: 'Date of Birth',
-      value: userInfo.birth || '2017-05-24',
+      value: user.birth,
       error: false,
       helperText: 'You are under 18 years old',
       placeholder: 'DD/MM/YYYY',
     },
-    {
+    genderMale: {
       type: 'radio',
       name: 'Gender',
       text: 'Male',
       image: Male,
       value: gender === 'male' ? true : false,
     },
-    {
+    genderFemale: {
       type: 'radio',
       name: 'Gender',
       text: 'Female',
       image: Female,
       value: gender === 'female' ? true : false,
     },
-    {
+    sexPreferenceMale: {
       type: 'checkbox',
       name: 'Sex Preference',
       text: 'Male',
@@ -122,7 +115,7 @@ export default function ProfileInfo() {
       image: Male,
       value: sex === 'bi' || sex === 'male' ? true : false,
     },
-    {
+    sexPreferenceFemale: {
       type: 'checkbox',
       name: 'Sex Preference',
       text: 'Female',
@@ -131,26 +124,62 @@ export default function ProfileInfo() {
       image: Female,
       value: sex === 'bi' || sex === 'female' ? true : false,
     },
-    {
+    interests: {
       type: 'options',
       name: 'Interests',
       error: false,
       helperText: 'Choose min 3 interests',
-      value: userInfo.interests || [],
+      value: user.interests,
     },
-    {
+    bio: {
       type: 'textarea',
       name: 'Biography',
       error: false,
       helperText: 'Empty value',
-      value: userInfo.bio || '',
+      value: user.bio,
     },
-    {
+    map: {
       type: 'map',
       name: 'map',
       value: location,
     },
-  ]);
+  });
+
+  React.useEffect(() => {
+    setInputValue({
+      ...inputs,
+      file: { ...inputs.file, value: photos },
+      fname: { ...inputs.fname, value: user.fname },
+      lname: { ...inputs.lname, value: user.lname },
+      date: { ...inputs.date, value: user.birth },
+      genderMale: {
+        ...inputs.genderMale,
+        value: gender === 'male' ? true : false,
+      },
+      genderFemale: {
+        ...inputs.genderFemale,
+        value: gender === 'female' ? true : false,
+      },
+      sexPreferenceMale: {
+        ...inputs.sexPreferenceMale,
+        value: sex === 'bi' || sex === 'male' ? true : false,
+      },
+      sexPreferenceFemale: {
+        ...inputs.sexPreferenceFemale,
+        value: sex === 'bi' || sex === 'female' ? true : false,
+      },
+      interests: { ...inputs.interests, value: user.interests },
+      bio: { ...inputs.bio, value: user.bio },
+      map: { ...inputs.map, value: location },
+    });
+  }, [user]);
+
+  const actionUpdateUser = React.useCallback(
+    (data) => {
+      dispatch(fetchUpdateUser(data));
+    },
+    [dispatch]
+  );
 
   async function addProfileInfo(event) {
     event.preventDefault();
@@ -165,61 +194,75 @@ export default function ProfileInfo() {
     let lat;
     let lng;
     let errors = false;
-    const newInputs = inputs.map((item) => {
-      switch (item.name) {
+    let newInputs = { ...inputs };
+    Object.keys(inputs).map((item) => {
+      switch (inputs[item].name) {
         case 'First Name':
-          firstName = item.value;
+          if (inputs[item].value.length < 2) {
+            newInputs[item] = { ...inputs[item], error: true };
+            errors = true;
+          } else {
+            newInputs[item] = { ...inputs[item], error: false };
+            firstName = inputs[item].value;
+          }
           break;
         case 'Last Name':
-          lastName = item.value;
+          if (inputs[item].value.length < 3) {
+            newInputs[item] = { ...inputs[item], error: true };
+            errors = true;
+          } else {
+            newInputs[item] = { ...inputs[item], error: false };
+            lastName = inputs[item].value;
+          }
           break;
         case 'Gender':
-          if (item.value === true) gender = item.text.toLowerCase();
+          if (inputs[item].value === true)
+            gender = inputs[item].text.toLowerCase();
           break;
         case 'Sex Preference':
-          if (item.value === true) {
-            sexPreference += item.text.toLowerCase();
-          } else if (sexPreference === '' && item.text === 'Female') {
-            item.error = true;
+          if (inputs[item].value === true) {
+            sexPreference += inputs[item].text.toLowerCase();
+          } else if (sexPreference === '' && inputs[item].text === 'Female') {
+            newInputs[item] = { ...inputs[item], error: true };
             errors = true;
-          } else item.error = false;
+          } else newInputs[item] = { ...inputs[item], error: false };
           break;
         case 'Date of Birth':
-          birth = item.value;
+          birth = inputs[item].value;
           age = Math.floor(
             (Date.now() - new Date(birth).getTime()) / 1000 / 3600 / 8760
           );
           if (age < 18) {
-            item.error = true;
+            newInputs[item] = { ...inputs[item], error: true };
             errors = true;
-          } else item.error = false;
+          } else newInputs[item] = { ...inputs[item], error: false };
           break;
         case 'Interests':
-          if (item.value.length < 3) {
-            item.error = true;
+          if (inputs[item].value.length < 3) {
+            newInputs[item] = { ...inputs[item], error: true };
             errors = true;
           } else {
-            item.error = false;
-            interests = item.value;
+            newInputs[item] = { ...inputs[item], error: false };
+            interests = inputs[item].value;
           }
           break;
         case 'Biography':
-          if (item.value === '') {
-            item.error = true;
+          if (inputs[item].value === '') {
+            newInputs[item] = { ...inputs[item], error: true };
             errors = true;
           } else {
-            item.error = false;
-            bio = item.value;
+            newInputs[item] = { ...inputs[item], error: false };
+            bio = inputs[item].value;
           }
           break;
         case 'map':
-          lat = item.value.center.lat;
-          lng = item.value.center.lng;
+          lat = inputs[item].value.center.lat;
+          lng = inputs[item].value.center.lng;
           break;
         default:
-          return item;
+          return null;
       }
-      return item;
+      return null;
     });
 
     if (!errors) {
@@ -231,58 +274,39 @@ export default function ProfileInfo() {
         sexPreference = 'homo';
       } else sexPreference = 'hetero';
 
-      let response = await fetch('http://localhost:3000/user/update/', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-        },
-        body: JSON.stringify({
-          'x-auth-token': sessionStorage.getItem('x-auth-token'),
-          fname: firstName,
-          lname: lastName,
-          birth: birth,
-          gender: gender,
-          orientation: sexPreference,
-          interests: interests,
-          bio: bio,
-          latitude: lat,
-          longitude: lng,
-        }),
+      actionUpdateUser({
+        fname: firstName,
+        lname: lastName,
+        birth: birth,
+        gender: gender,
+        orientation: sexPreference,
+        interests: interests,
+        bio: bio,
+        avaID: photos[user.uid][0].pid,
+        latitude: lat,
+        longitude: lng,
       });
-
-      if (response.status === 202) {
-        history.push('/confirm/mail');
-      } else if (!response.ok) {
-        throw Error(response.statusText);
-      } else {
-        setUserInfo({
-          'ws-auth-token': userInfo['ws-auth-token'],
-          'x-auth-token': userInfo['x-auth-token'],
-          mail: userInfo.mail,
-          fname: firstName,
-          lname: lastName,
-          birth: birth,
-          gender: gender,
-          orientation: sexPreference,
-          bio: bio,
-          interests: interests,
-          latitude: lat,
-          longitude: lng,
-        });
-        history.push('/user/page');
-      }
     } else setInputValue(newInputs);
   }
 
-  function changeValue(name, value, type, text) {
-    const newData = inputs.map((item) => {
-      if (item.type === 'checkbox') {
-        if (item.text === text) item.value = !item.value;
-      } else if (item.name === name) {
-        item.value = typeof item.value === 'boolean' ? !item.value : value;
-      }
-      return item;
-    });
+  function changeValue(name, value) {
+    const newData =
+      inputs[name].type === 'radio'
+        ? {
+            ...inputs,
+            genderMale: {
+              ...inputs.genderMale,
+              value: !inputs.genderMale.value,
+            },
+            genderFemale: {
+              ...inputs.genderFemale,
+              value: !inputs.genderFemale.value,
+            },
+          }
+        : {
+            ...inputs,
+            [name]: { ...inputs[name], value: value },
+          };
     setInputValue(newData);
   }
 
@@ -292,70 +316,115 @@ export default function ProfileInfo() {
         <Typography className={classes.typography} component="h1" variant="h5">
           Add Information
         </Typography>
-        {inputs.map((item, index) => {
-          if (item.type === 'file') {
-            return <InputFile key={index} input={item} />;
-          } else if (item.type === 'date') {
-            return (
-              <InputDate
-                key={index}
-                focus={index === 0 ? true : false}
-                input={item}
-                onChange={changeValue}
-              />
-            );
-          } else if (item.type === 'radio') {
-            return (
-              <Radio
-                key={index}
-                index={index}
-                focus={index === 0 ? true : false}
-                input={item}
-                onChange={changeValue}
-              />
-            );
-          } else if (item.type === 'checkbox') {
-            return (
-              <Checkbox
-                key={index}
-                index={index}
-                focus={index === 0 ? true : false}
-                input={item}
-                onChange={changeValue}
-              />
-            );
-          } else if (item.type === 'options') {
-            return (
-              <InputOptions key={index} input={item} onChange={changeValue} />
-            );
-          } else if (item.type === 'textarea') {
-            return <Textarea key={index} input={item} onChange={changeValue} />;
-          } else if (item.type === 'map') {
-            return (
-              <MapComponent
-                key={index}
-                input={item}
-                onChange={changeValue}
-              ></MapComponent>
-            );
-          } else {
-            return (
-              <Input
-                key={index}
-                focus={index === 0 ? true : false}
-                input={item}
-                onChange={changeValue}
-              />
-            );
-          }
-        })}
+        <div className="inputs_container">
+          {Object.keys(inputs).map((item, index) => {
+            if (inputs[item].type === 'file') {
+              return (
+                <PictureSlider
+                  key={index}
+                  name={item}
+                  input={inputs[item]}
+                  uid={user.uid}
+                  volatile
+                />
+              );
+            } else if (inputs[item].type === 'date') {
+              return (
+                <InputDate
+                  key={index}
+                  name={item}
+                  focus={index === 0 ? true : false}
+                  input={inputs[item]}
+                  onChange={changeValue}
+                />
+              );
+            } else if (inputs[item].type === 'radio') {
+              return (
+                <Radio
+                  key={index}
+                  name={item}
+                  index={index}
+                  focus={index === 0 ? true : false}
+                  input={inputs[item]}
+                  image={inputs[item].text === 'Male' ? Male : Female}
+                  onChange={changeValue}
+                />
+              );
+            } else if (inputs[item].type === 'checkbox') {
+              return (
+                <Checkbox
+                  key={index}
+                  name={item}
+                  index={index}
+                  focus={index === 0 ? true : false}
+                  input={inputs[item]}
+                  image={inputs[item].text === 'Male' ? Male : Female}
+                  onChange={changeValue}
+                />
+              );
+            } else if (inputs[item].type === 'options') {
+              return (
+                <InputOptions
+                  key={index}
+                  name={item}
+                  input={inputs[item]}
+                  onChange={changeValue}
+                />
+              );
+            } else if (inputs[item].type === 'textarea') {
+              return (
+                <Textarea
+                  key={index}
+                  name={item}
+                  input={inputs[item]}
+                  onChange={changeValue}
+                />
+              );
+            } else if (inputs[item].type === 'map') {
+              return (
+                <MapComponent
+                  key={index}
+                  name={item}
+                  input={inputs[item]}
+                  onChange={changeValue}
+                ></MapComponent>
+              );
+            } else {
+              return (
+                <Input
+                  key={index}
+                  name={item}
+                  focus={index === 0 ? true : false}
+                  input={inputs[item]}
+                  onChange={changeValue}
+                />
+              );
+            }
+          })}
+        </div>
         <Button
           onClick={addProfileInfo}
-          text="Continue"
+          text="Save"
           type="submit"
           subClass="submit"
         />
+        {fetchUser.error === 401 && (
+          <div className="form__block-error">
+            User not authorized
+            <br />
+            <Link className="red-link" to="/signIn">
+              Sing in
+            </Link>
+          </div>
+        )}
       </form>
+      {user.fname.value !== '' && (
+        <div className="form__block-info">
+          <Link className="green-link" to="/user/page">
+            Go to user page
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

@@ -3,14 +3,22 @@
     height: auto;
   }
 
+  h1,
+  .form__block-error {
+    text-align: center;
+  }
+
   .profileForm {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
     padding: 0;
     height: 100%;
+
+    .inputs_container {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
 
     .button {
       margin-top: 25px;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import './Checkbox.scss';
 
-export default function Checkbox({ input, onChange, index }) {
+export default function Checkbox({ input, image, name, onChange, index }) {
   return (
     <React.Fragment>
       {index % 2 === 0 ? (
@@ -16,16 +16,14 @@ export default function Checkbox({ input, onChange, index }) {
         type="checkbox"
         name={input.name}
         value={input.value}
-        onChange={() =>
-          onChange(input.name, input.value, input.type, input.text)
-        }
+        onChange={() => onChange(name, !input.value, input.type, input.text)}
       />
       <label
         htmlFor={`checkbox${index}`}
         className={`checkbox ${input.value ? 'active' : null}`}
       >
         <span className="text">
-          <img alt={input.name} className="image" src={input.image} />
+          <img alt={input.name} className="image" src={image} />
           {input.text}
         </span>
       </label>

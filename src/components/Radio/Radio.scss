@@ -1,64 +1,64 @@
 .radio__title {
-    margin: 15px 0 0;
-    width: 100%;
+  margin: 15px 0 0;
+  width: 100%;
 }
-
 
 input.radio__input {
-    display: none;
+  display: none;
 }
 
-input[value="true"] + label.radio {
-    border-color: #F62354;
+input[value='true'] + label.radio {
+  border-color: #f62354;
 }
 
 label.radio {
-    width: calc((100% / 2) - (1rem / 2));
-    position: relative;
-    text-align: center;
-    padding: 10px 0;
-    background-color: #F5F5F5;
-    border-radius: 8px;
-    margin-left: 1rem;
-    margin-top: 10px;
-    border: 2px solid transparent;
+  width: calc((100% / 2) - (1rem / 2));
+  position: relative;
+  text-align: center;
+  padding: 10px 0;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  margin-left: 1rem;
+  margin-top: 10px;
+  border: 2px solid transparent;
+  cursor: pointer;
 
-    &:nth-of-type(odd) {
-        margin-left: 0;
-    }
+  &:nth-of-type(odd) {
+    margin-left: 0;
+  }
+
+  span {
+    font-size: 0.7rem;
+    line-height: 1rem;
+    color: black;
+  }
+
+  &.active {
+    background-color: #fff;
 
     span {
-        font-size: .7rem;
-        line-height: 1rem;
-        color: black;
+      color: black;
     }
+  }
 
-    &.active {
-        background-color: #fff;
+  .text {
+    position: relative;
+    font-size: 0.9rem;
+    padding-left: 20px;
 
-        span {
-            color: black;
-        }
+    img {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      margin-top: -7.5px;
+      width: 15px;
+      height: 15px;
     }
-
-    .text {
-        position: relative;
-        font-size: .9rem;
-        padding-left: 20px;
-
-        img {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            margin-top: -7.5px;
-            width: 15px;
-            height: 15px;
-        }
-    }
+  }
 }
 
 @media (max-height: 660px) {
-    label.radio {
-        padding: 7px 0;
-    }
+  label.radio {
+    padding: 7px 0;
+  }
 }

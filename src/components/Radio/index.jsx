@@ -2,7 +2,7 @@ import React from 'react';
 
 import './Radio.scss';
 
-export default function Radio({ input, onChange, index }) {
+export default function Radio({ input, image, name, onChange, index }) {
   return (
     <React.Fragment>
       {index % 2 === 0 ? <div className="radio__title">{input.name}</div> : ''}
@@ -12,14 +12,14 @@ export default function Radio({ input, onChange, index }) {
         type="radio"
         name={input.name}
         value={input.value}
-        onChange={() => onChange(input.name, input.value, input.type)}
+        onChange={() => onChange(name, !input.value)}
       />
       <label
         htmlFor={`radio${index}`}
         className={`radio ${input.value ? 'active' : null}`}
       >
         <span className="text">
-          <img alt={input.name} className="image" src={input.image} />
+          <img alt={input.name} className="image" src={image} />
           {input.text}
         </span>
       </label>

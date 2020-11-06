@@ -1,10 +1,11 @@
-import 'date-fns'
-import React from 'react'
+import 'date-fns';
+import React from 'react';
 
 import TextField from '@material-ui/core/TextField';
 
-export default function InputDate({input, onChange, focus}) {
-  let margin = document.documentElement.clientHeight >= 660 ? 'normal' : 'dense';
+export default function InputDate({ input, name, onChange, focus }) {
+  let margin =
+    document.documentElement.clientHeight >= 660 ? 'normal' : 'dense';
 
   return (
     <div className="input__date">
@@ -15,12 +16,12 @@ export default function InputDate({input, onChange, focus}) {
         type="date"
         defaultValue={input.value}
         margin={margin}
-        onChange={e => onChange(input.name, e.target.value)}
+        onChange={(e) => onChange(name, e.target.value)}
         InputLabelProps={{
           shrink: true,
         }}
       />
       {input.error ? <div className="error">{input.helperText}</div> : ''}
     </div>
-  )
+  );
 }

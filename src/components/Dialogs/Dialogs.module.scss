@@ -1,0 +1,51 @@
+.Dialog {
+  max-width: 1080px;
+  width: 96%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  position: relative;
+  padding: 20px 0;
+}
+
+.DialogItem {
+  background-color: rgba(246,36,84, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  color: #000;
+  font-size: 1.3rem;
+  line-height: 1.8rem;
+
+  &:hover {
+    color: #000;
+  }
+
+  & + & {
+    margin-top: 10px;
+  }
+
+
+  .DialogImage {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+    border: 1px solid #f62354;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .CompanionName {
+    font-weight: 600;
+  }
+}

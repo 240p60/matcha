@@ -1,12 +1,13 @@
-import React, { useState, useContext } from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import { Context } from '../../Context'
+import React, { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { fetchAuth } from '../../store/actions';
 
 import { Avatar, Typography, Grid } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Button, Input } from '../index'
+import { Button, Input } from '../index';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -19,85 +20,64 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   typography: {
-    fontFamily: 'Montserrat'
-  }
+    fontFamily: 'Montserrat',
+  },
 }));
 
 export default function SignIn() {
-  let history = useHistory();
   const classes = useStyles();
-  const { userInfo, setUserInfo } = useContext(Context);
-  const [generalError, setError] = useState("");
+  const dispatch = useDispatch();
 
-  const [inputs, setInputValue] = useState([
-    {
+  const actionSignIn = useCallback(
+    (mail, password, loadingText) => {
+      dispatch(fetchAuth(mail, password, loadingText));
+    },
+    [dispatch]
+  );
+
+  const [inputs, setInputValue] = useState({
+    mail: {
       type: 'email',
       name: 'Mail',
       value: '',
       pattern: /^(\w.+)@(\w+)\.(\w+)$/,
       error: false,
-      helperText: 'Mail has unexpected symbols'
+      helperText: 'Mail has unexpected symbols',
     },
-    {
+    password: {
       type: 'password',
       name: 'Password',
       value: '',
       pattern: /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[$&+,:;=?@#|'<>.^*()%!-])[a-z0-9A-Z$&+,:;=?@#|'<>.-^*()%!-]{6,14}$/,
       error: false,
-      helperText: 'Enter 6 to 14 letters in upper and lower case, digits and special character ($&+,:;=?@#|\'<>.^*()%!-)'
-    }
-  ]);
+      helperText:
+        "Enter 6 to 14 letters in upper and lower case, digits and special character ($&+,:;=?@#|'<>.^*()%!-)",
+    },
+  });
 
   function changeValue(name, value) {
-    const newData = inputs.map(item => {
-      if (item.name === name)
-        item.value = value;
-      return item;
-    })
+    const newData = { ...inputs, [name]: { ...inputs[name], value: value } };
     setInputValue(newData);
   }
 
   async function actionSingIn(event) {
     event.preventDefault();
     let errors = false;
-    const newInputs = inputs.map((item) => {
-      if (!(item.pattern.test(item.value))) {
-        item.error = true;
+    let newInputs = {};
+    Object.keys(inputs).map((item) => {
+      if (!inputs[item].pattern.test(inputs[item].value)) {
+        newInputs[item] = { ...inputs[item], error: true };
         errors = true;
-      } else
-        item.error = false;
-      return item;
+      } else newInputs[item] = { ...inputs[item], error: false };
+      return null;
     });
-    
-    if (!errors) {
-      let response = await fetch("http://localhost:3000/user/auth/", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          mail: inputs[0].value,
-          pass: inputs[1].value,
-        })
-      });
 
-      if (response.status === 202) {
-        history.push('/confirm/mail');
-      } else if (response.status === 422) {
-        setError("Wrong mail or password");
-        history.push('/signIn');
-      } else if (!response.ok) {
-        throw Error(response.statusText);
-      } else {
-        let data = await response.json();
-        sessionStorage.setItem("ws-auth-token", data['ws-auth-token']);
-        sessionStorage.setItem('x-auth-token', data['x-auth-token']);
-        setUserInfo(data);
-        if (data.fname)
-          history.push('user/page');
-        else
-          history.push('/profile');
-      }
+    if (!errors) {
+      actionSignIn(
+        inputs.mail.value,
+        inputs.password.value,
+        'Попытка авторизации'
+      );
     } else setInputValue(newInputs);
   }
 
@@ -109,23 +89,31 @@ export default function SignIn() {
       <Typography className={classes.typography} component="h1" variant="h5">
         Sign In
       </Typography>
-      {generalError ? 
-        <div className="form__block-error">
-          {generalError}
-        </div>
-      : null}
       <form action="" method="POST" name="signIn">
-        {inputs.map((item, index) => {
-          return <Input key={index} focus={index === 0 ? true : false} input={item} onChange={changeValue}/>
+        {Object.keys(inputs).map((item, index) => {
+          return (
+            <Input
+              key={index}
+              focus={index === 0 ? true : false}
+              input={inputs[item]}
+              name={item}
+              onChange={changeValue}
+            />
+          );
         })}
         <div className="description">
           We need your mail to get you signed in
         </div>
-        <Button onClick={actionSingIn} type="submit" subClass="submit" text="Sign In" />
+        <Button
+          onClick={actionSingIn}
+          type="submit"
+          subClass="submit"
+          text="Sign In"
+        />
         <Grid container className="actions">
           <Grid item xs>
-            <Link className="red-link" to='/'>
-                Forgot password?
+            <Link className="red-link" to="/">
+              Forgot password?
             </Link>
           </Grid>
           <Grid item>
@@ -136,5 +124,5 @@ export default function SignIn() {
         </Grid>
       </form>
     </div>
-  )
+  );
 }
