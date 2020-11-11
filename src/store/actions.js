@@ -5,6 +5,7 @@ export {
   fetchInitUser,
   fetchUpdateUser,
   fetchDeleteUser,
+  fetchInfoFailed,
 } from './User/actions';
 
 export {

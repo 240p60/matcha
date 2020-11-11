@@ -9,7 +9,7 @@ import Heart from './heart.svg';
 export const Item = ({ data }) => {
   const setLike = (uid) => {
     fetch('http://localhost:3000/like/set/', {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify({
         otherUid: uid,
         'x-auth-token': sessionStorage.getItem('x-auth-token'),
@@ -19,7 +19,7 @@ export const Item = ({ data }) => {
 
   const unsetLike = (uid) => {
     fetch('http://localhost:3000/like/unset/', {
-      method: 'POST',
+      method: 'DELETE',
       body: JSON.stringify({
         otherUid: uid,
         'x-auth-token': sessionStorage.getItem('x-auth-token'),

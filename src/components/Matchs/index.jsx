@@ -51,8 +51,9 @@ export default function Matchs() {
   }, [filters]);
 
   React.useEffect(() => {
+    console.log(1);
     applyFilters();
-  }, []);
+  }, [applyFilters]);
 
   return (
     <div className={styles.matchs}>

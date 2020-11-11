@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { newMessage, addMessage } from '../actions';
+import { addMessage } from '../actions';
 export const INIT_SOCKET = 'INIT_SOCKET';
 
 const initSocket = (socket) => {
@@ -10,8 +10,9 @@ const initSocket = (socket) => {
 }
 
 export const openSocket = (uid, token) => (dispatch) => {
+  console.log(uid, token);
   if (uid && token) {
-    const socket = new WebSocket("ws://localhost:3000/ws/auth/?uid=" + uid + "&ws-auth-token=" + token);
+    const socket = new WebSocket("ws://localhost:3000/ws/auth/?x-auth-token=" + token);
     socket.onopen = () => dispatch(initSocket(socket));
     socket.onerror = (error) => {
       notification.error({

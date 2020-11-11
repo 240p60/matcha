@@ -1,5 +1,6 @@
 import React from "react";
-import {useSelector} from "react-redux";
+import { Link } from 'react-router-dom';
+import { useSelector } from "react-redux";
 import styled from 'styled-components';
 
 export const Message = ({ id, receiver, myMessage, children }) => {
@@ -10,13 +11,16 @@ export const Message = ({ id, receiver, myMessage, children }) => {
       {!myMessage && dialogs.map((item) => {
         if (item.uid === receiver)
           return (
-            <MessageImage key={id}>
-              <picture>
-                <source srcSet={item.avatar}/>
-                <img className="user__picture" src={item.avatar} alt="user" />
-              </picture>
-            </MessageImage>
+            <Link to={`/user/page/${receiver}`}  key={id}>
+              <MessageImage>
+                <picture>
+                  <source srcSet={item.avatar}/>
+                  <img className="user__picture" src={item.avatar} alt="user" />
+                </picture>
+              </MessageImage>
+            </Link>
           );
+        return null;
       })}
       <MessageContent>
         {children}

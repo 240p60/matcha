@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Context } from '../../Context';
 import { fetchUpdateUser } from '../../store/actions';
 
-import { Typography } from '@material-ui/core';
 import {
   Input,
   Button,
@@ -16,33 +15,16 @@ import {
   MapComponent,
   Textarea,
 } from '../index';
-import { makeStyles } from '@material-ui/core/styles';
 
 import Male from '../../assets/img/male.svg';
 import Female from '../../assets/img/female.svg';
 
 import './ProfileInfo.scss';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  typography: {
-    margin: '0 auto',
-    fontFamily: 'Montserrat',
-  },
-}));
 
 export default function ProfileInfo() {
   const dispatch = useDispatch();
   const { user, fetchUser, photos } = React.useContext(Context);
-  const classes = useStyles();
   const gender = user.gender;
   const sex =
     user.orientation === 'bi'
@@ -311,11 +293,9 @@ export default function ProfileInfo() {
   }
 
   return (
-    <div className={`${classes.paper} form__block form__block-profile_info`}>
+    <div className={`form__block form__block-profile_info`}>
       <form action="/profile" className="profileForm">
-        <Typography className={classes.typography} component="h1" variant="h5">
-          Add Information
-        </Typography>
+        <h1 className="title">User Information</h1>
         <div className="inputs_container">
           {Object.keys(inputs).map((item, index) => {
             if (inputs[item].type === 'file') {

@@ -63,10 +63,9 @@ export const fetchAuth = (mail, password, loadingText) => async (dispatch) => {
     throw Error(response.statusText);
   } else {
     let data = await response.json();
-    sessionStorage.setItem('ws-auth-token', data['ws-auth-token']);
     sessionStorage.setItem('x-auth-token', data['x-auth-token']);
-    dispatch(fetchInitUser(data['x-auth-token']));
-    dispatch(openSocket(data.uid, data['ws-auth-token']));
+    dispatch(fetchInitUser(data.uid, data['x-auth-token']));
+    dispatch(openSocket(data.uid, data['x-auth-token']));
     setTimeout(() => {
       dispatch(fetchAuthSuccess());
     }, 2000);

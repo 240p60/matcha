@@ -56,9 +56,14 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: stretch;
+    align-items: center;
     text-align: center;
     padding: 20px 30px 10px;
+
+    .login__action {
+      max-width: 98%;
+      width: 500px;
+    }
 
     .login__alt {
       margin-top: 15px;

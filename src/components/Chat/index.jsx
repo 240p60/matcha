@@ -1,41 +1,51 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ChatForm } from './ChatForm';
 import { MessageList } from './MessageList';
-import { fetchInitMessages } from '../../store/actions';
+import { fetchInitMessages, fetchInitDialogs } from '../../store/actions';
 import styles from './Chat.module.scss';
 
 const Chat = () => {
-  const history = useHistory();
-  const [receiverUid, setReceiveUid] = React.useState(parseInt(history.location.pathname.split('/')[2]));
+  const url = useParams();
+  const dispatch = useDispatch();
+  const [receiverUid, setReceiveUid] = React.useState(parseInt(url.id));
+  const dialogs = useSelector((store) => store.dialogs);
   const messages = useSelector((store) => store.messages);
   const fetchMessages = useSelector((store) => store.fetchMessages);
-  const dispatch = useDispatch();
 
   const getMessages = React.useCallback((uid) => {
     dispatch(fetchInitMessages(uid));
+    dispatch(fetchInitDialogs());
   }, [dispatch]);
 
   React.useEffect(() => {
-    setReceiveUid(parseInt(history.location.pathname.split('/')[2]));
-  }, [history]);
+    setReceiveUid(parseInt(url.id));
+  }, [url.id]);
 
   React.useEffect(() => {
     getMessages(receiverUid);
   }, [receiverUid, getMessages]);
 
   React.useEffect(() => {
-    if (fetchMessages.newMessage == receiverUid)
+    if (+fetchMessages.newMessage === +receiverUid)
       getMessages(receiverUid);
-  }, [fetchMessages.newMessage]);
+  }, [fetchMessages.newMessage, getMessages, receiverUid]);
 
   React.useEffect(() => {
     document.querySelector('.contentRef').scrollTop = 999999;
   });
 
+  let name = null;
+  dialogs.map(item => {
+    if (item.uid === receiverUid)
+      name = item.fname + ' ' + item.lname;
+    return item;
+  });
+
   return (
     <div className={styles.Chat}>
+      <h1>{name}</h1>
       <div className={styles.ChatContainer}>
         <div className={`contentRef ${styles.ChatContent}`}>
           <div className={styles.Messages}>

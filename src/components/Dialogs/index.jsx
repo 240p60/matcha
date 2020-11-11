@@ -15,7 +15,7 @@ const Dialogs = ({ title, onClick }) => {
 
   React.useEffect(() => {
     initDialogs();
-  }, []);
+  }, [initDialogs]);
   return (
     <div className={styles.Dialog} onClick={onClick}>
       {title && <h2>{title}</h2>}

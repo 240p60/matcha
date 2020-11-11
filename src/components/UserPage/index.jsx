@@ -1,12 +1,13 @@
 import React from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { notification } from 'antd';
 import { Context } from '../../Context';
 import { fetchDeleteUser } from "../../store/actions";
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Button, PictureSlider, Input, Modal } from '../index';
-
-import './UserPage.scss';
 import { mapApiKey } from '../../apikeys.js';
+import './UserPage.scss';
 
 const mapContainerStyle = {
   width: '100%',
@@ -14,10 +15,42 @@ const mapContainerStyle = {
 };
 
 export default function UserPage() {
+  const url = useParams();
+  const dispatch = useDispatch();
   const [deleteModal, setDeleteModal] = React.useState(false);
   const [passValue, setPassValue] = React.useState('');
   const { user } = React.useContext(Context);
-  const dispatch = useDispatch();
+  const [otherUser, setOtherUser] = React.useState(false);
+
+  const getOtherUser = React.useCallback(async (uid) => {
+    let getDataRes = await fetch('http://localhost:3000/user/get/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'x-auth-token': sessionStorage.getItem('x-auth-token'),
+        'otherUid': parseInt(uid),
+      }),
+    });
+
+    if (getDataRes.status === 200) {
+      const data = await getDataRes.json();
+      setOtherUser(data);
+    } else {
+      notification.error({
+        message: 'Error',
+        description: getDataRes.statusText,
+      });
+      setOtherUser(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (+url.id !== +user.uid) {
+      getOtherUser(url.id);
+    } else setOtherUser(false)
+  }, [url, user, getOtherUser])
 
   const changePassValue = (name, value) => {
     setPassValue(value);
@@ -46,34 +79,34 @@ export default function UserPage() {
         </Modal>
       )}
       <div className="user-page__photo">
-        <PictureSlider volatile={false} uid={user.uid} />
+        <PictureSlider volatile={false} uid={otherUser.uid || user.uid} />
       </div>
       <div className="user-page__info">
         <div className="user-page__main-info user-page__block">
-          <span className="user-page__main-info_name">{`${user.fname} ${user.lname}, `}</span>
-          <span className="user-page__main-info_years">{`${user.age}`}</span>
+          <span className="user-page__main-info_name">{`${otherUser.fname || user.fname} ${otherUser.lname || user.lname}, `}</span>
+          <span className="user-page__main-info_years">{`${otherUser.age || user.age}`}</span>
         </div>
         <div className="user-page__gender user-page__flex">
           <div className="user-page__title">Gender</div>
           <div className="user-page__description user-page__sex">
-            {user.gender}
+            {otherUser.gender || user.gender}
           </div>
         </div>
         <div className="user-page__orientation user-page__flex">
           <div className="user-page__title">Sex Preference</div>
           <div className="user-page__description user-page__sex">
-            {user.orientation}
+            {otherUser.orientation || user.orientation}
           </div>
         </div>
         <div className="user-page__interests user-page__block">
           <div className="user-page__title">Interests</div>
           <div className="user-page__description">
-            {user.interests.join(', ')}
+            {otherUser.interests ? otherUser.interests.join(', ') : user.interests.join(', ')}
           </div>
         </div>
         <div className="user-page__bio user-page__block">
           <div className="user-page__title">About me</div>
-          <div className="user-page__description">{user.bio}</div>
+          <div className="user-page__description">{otherUser.bio || user.bio}</div>
         </div>
         <div className="user-page__location user-page__block">
           <div className="user-page__title">Location</div>
@@ -82,22 +115,23 @@ export default function UserPage() {
               <GoogleMap
                 mapContainerStyle={mapContainerStyle}
                 center={{
-                  lat: +user.latitude,
-                  lng: +user.longitude,
+                  lat: +otherUser.latitude || +user.latitude,
+                  lng: +otherUser.longitude || +user.longitude,
                 }}
                 zoom={11}
               >
                 <Marker
                   position={{
-                    lat: +user.latitude,
-                    lng: +user.longitude,
+                    lat: +otherUser.latitude || +user.latitude,
+                    lng: +otherUser.longitude || +user.longitude,
                   }}
                 />
               </GoogleMap>
             </LoadScript>
           </div>
         </div>
-        <div className="user-page__block">
+        {!otherUser && (
+          <div className="user-page__block">
           <Button
             type="button"
             subClass="delete-action"
@@ -117,6 +151,7 @@ export default function UserPage() {
             text="Go to Matchs"
           />
         </div>
+        )}
       </div>
     </div>
   );

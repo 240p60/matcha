@@ -1,3 +1,4 @@
+import { fetchInfoFailed } from '../actions';
 import {notification} from "antd";
 
 export const INIT_MESSAGES = 'INIT_MESSAGES';
@@ -47,7 +48,8 @@ export const fetchInitMessages = (receiver) => async (dispatch) => {
       }),
     });
 
-    if (response.status) dispatch(initMessages(await response.json()));
+    if (response.status === 401) dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+    else if (response.ok) dispatch(initMessages(await response.json()));
     else notification.error({
       message: 'Something went wrong',
     });

@@ -82,7 +82,7 @@ export const fetchDeleteUser = (token, password) => async (dispatch) => {
   }
 };
 
-export const fetchInitUser = (token) => async (dispatch) => {
+export const fetchInitUser = (uid, token) => async (dispatch) => {
   dispatch(fetchInfo());
   if (token) {
     let getDataRes = await fetch('http://localhost:3000/user/get/', {
@@ -92,6 +92,7 @@ export const fetchInitUser = (token) => async (dispatch) => {
       },
       body: JSON.stringify({
         'x-auth-token': token,
+        'otherUid': uid,
       }),
     });
 

@@ -1,3 +1,4 @@
+import { fetchInfoFailed } from '../actions';
 import { notification } from 'antd';
 export const FETCH_PHOTOS = 'FETCH_PHOTOS';
 export const FETCH_PHOTOS_FAILED = 'FETCH_PHOTOS_FAILED';
@@ -36,7 +37,7 @@ export const fetchAddPhoto = (uid, image) => async (dispatch) => {
   const token = sessionStorage.getItem('x-auth-token');
   if (token) {
     let response = await fetch('http://localhost:3000/photo/upload/', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -77,11 +78,10 @@ export const fetchGetPhotos = (uid) => async (dispatch) => {
     if (response.status === 200) {
       const photos = await response.json();
       dispatch(initPhotos({ uid: uid, photos: photos.map((item) => item) }));
-    } else {
-      notification.error({
+    } else if (response.status === 401) if (response.status === 401) dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+     else notification.error({
         message: 'Failed to upload photo',
       });
-    }
   }
 };
 //Посмотри pid, который присваивается при добавлении фото

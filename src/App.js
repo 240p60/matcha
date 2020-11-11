@@ -43,7 +43,7 @@ function App() {
   React.useEffect(() => {
     if (auth.status === 401) history.push('/confirm/mail');
     else if (auth.success === true) {
-      user.fname === '' ? history.push('/profile') : history.push('/user/page');
+      user.fname === '' ? history.push('/profile') : history.push(`/user/page/${user.uid}`);
     }
   }, [history, auth, user]);
 
@@ -102,7 +102,7 @@ function App() {
               <Route exact path="/confirm/mail">
                 <ConfirmMail />
               </Route>
-              <Route exact path="/user/page">
+              <Route exact path="/user/page/:id">
                 <UserPage />
               </Route>
               <Route exact path="/matchs">
