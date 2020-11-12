@@ -400,7 +400,7 @@ export default function ProfileInfo() {
       </form>
       {user.fname.value !== '' && (
         <div className="form__block-info">
-          <Link className="green-link" to="/user/page">
+          <Link className="green-link" to={`/user/page/${user.uid}`}>
             Go to user page
           </Link>
         </div>

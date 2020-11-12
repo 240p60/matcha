@@ -14,7 +14,7 @@ const initialState = {
   lname: '',
   birth: '2000-01-01',
   gender: 'male',
-  orientation: 'hetero',
+  orientation: 'bi',
   interests: [],
   bio: '',
   longitude: 0,
