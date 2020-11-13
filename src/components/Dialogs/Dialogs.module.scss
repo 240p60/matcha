@@ -11,7 +11,7 @@
 }
 
 .DialogItem {
-  background-color: rgba(246,36,84, 0.1);
+  background-color: rgba(246, 36, 84, 0.1);
   padding: 10px;
   border-radius: 8px;
   display: flex;
@@ -27,7 +27,6 @@
   & + & {
     margin-top: 10px;
   }
-
 
   .DialogImage {
     display: flex;
@@ -45,7 +44,17 @@
     }
   }
 
+  .DialogContent {
+    width: calc(100% - 50px);
+  }
+
   .CompanionName {
     font-weight: 600;
+  }
+
+  .LastMessage {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }

@@ -13,7 +13,7 @@ export const DialogItem = ({ dialog }) => {
       </div>
       <div className={styles.DialogContent}>
         <div className={styles.CompanionName}>{`${dialog.fname} ${dialog.lname}`}</div>
-        <div className={styles.LastMessage}>{dialog.lastMessageBody || 'Начните диалог'}</div>
+        <div className={styles.LastMessage}>{`${dialog.uid === dialog.uidReceiver ? 'You: ' : ''}${dialog.lastMessageBody}` || 'Начните диалог'}</div>
       </div>
     </Link>
   );

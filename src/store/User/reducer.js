@@ -2,6 +2,7 @@ import {
   INIT_USER,
   INIT_NEW_USER,
   UPDATE_INFO,
+  CLEAR_INFO,
   FETCH_INFO,
   FETCH_INFO_FAILED,
   FETCH_INFO_SUCCESS,
@@ -41,6 +42,19 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...action.payload.data,
       };
+    case CLEAR_INFO:
+      return {
+        file: [],
+        fname: '',
+        lname: '',
+        birth: '2000-01-01',
+        gender: 'male',
+        orientation: 'bi',
+        interests: [],
+        bio: '',
+        longitude: 0,
+        latitude: 0,
+      }
     default:
       return state;
   }

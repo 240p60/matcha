@@ -5,6 +5,7 @@ export const UPDATE_INFO = 'UPDATE_INFO';
 export const FETCH_INFO = 'FETCH_INFO';
 export const INIT_USER = 'INIT_USER';
 export const INIT_NEW_USER = 'INIT_NEW_USER';
+export const CLEAR_INFO = 'CLEAR_INFO';
 export const FETCH_INFO_FAILED = 'FETCH_INFO_FAILED';
 export const FETCH_INFO_SUCCESS = 'FETCH_INFO_SUCCESS';
 export const FETCH_INFO_CLEAR = 'FETCH_INFO_CLEAR';
@@ -33,6 +34,12 @@ export const initNewUser = (uid) => {
     payload: uid,
   };
 };
+
+export const clearInfo = () => {
+  return {
+    type: CLEAR_INFO,
+  }
+}
 
 export const fetchInfo = () => {
   return {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { notification } from 'antd';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Context } from '../../Context';
@@ -24,6 +25,7 @@ import './ProfileInfo.scss';
 
 export default function ProfileInfo() {
   const dispatch = useDispatch();
+  const [avaID, setAvaID] = React.useState(false);
   const { user, fetchUser, photos } = React.useContext(Context);
   const gender = user.gender;
   const sex =
@@ -156,6 +158,12 @@ export default function ProfileInfo() {
     });
   }, [user]);
 
+  React.useEffect(() => {
+    if (photos[user.uid]) {
+      setAvaID(photos[user.uid][0] ? photos[user.uid][0].pid : 0);
+    }
+  }, [photos, user.uid]);
+
   const actionUpdateUser = React.useCallback(
     (data) => {
       dispatch(fetchUpdateUser(data));
@@ -247,7 +255,7 @@ export default function ProfileInfo() {
       return null;
     });
 
-    if (!errors) {
+    if (!errors && !!avaID) {
       if (sexPreference === 'malefemale') {
         sexPreference = 'bi';
       } else if (sexPreference === '') {
@@ -264,11 +272,19 @@ export default function ProfileInfo() {
         orientation: sexPreference,
         interests: interests,
         bio: bio,
-        avaID: photos[user.uid][0].pid,
+        avaID: avaID,
         latitude: lat,
         longitude: lng,
       });
-    } else setInputValue(newInputs);
+      setInputValue(newInputs);
+    } else {
+      if (!avaID) {
+        notification.error({
+          message: 'Add at least 1 photo',
+        });
+      }
+      setInputValue(newInputs);
+    }
   }
 
   function changeValue(name, value) {

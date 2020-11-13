@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Menu, Button } from '../index';
 import { fetchLogOut } from '../../store/Auth/actions';
 
@@ -9,6 +9,7 @@ import './Header.scss';
 export default function Header() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const user = useSelector((store) => store.user);
 
   const handlerLogOut = React.useCallback((e) => {
     e.preventDefault();
@@ -20,7 +21,7 @@ export default function Header() {
     <div className="header">
       <div className="header__container">
         <div className="header__logo">
-          <Link to="/">Strings</Link>
+          <Link to={sessionStorage.getItem('x-auth-token') ? `/user/page/${user.uid}` : '/'}>Strings</Link>
         </div>
         <div className="header__right-block">
           <div className="header__actions">

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { notification } from 'antd';
 import { Context } from '../../Context';
-import { fetchDeleteUser } from "../../store/actions";
+import { fetchDeleteUser, fetchInitUser } from "../../store/actions";
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Button, PictureSlider, Input, Modal } from '../index';
 import { mapApiKey } from '../../apikeys.js';
@@ -56,7 +56,16 @@ export default function UserPage() {
     setPassValue(value);
   };
 
-  const handlerDeleteUser = React.useCallback(() => {
+  const handlerInitUser = React.useCallback(() => {
+    dispatch(fetchInitUser(user.uid, sessionStorage.getItem('x-auth-token')));
+  }, [dispatch, user.uid]);
+
+  React.useEffect(() => {
+    handlerInitUser();
+  }, [handlerInitUser]);
+
+  const handlerDeleteUser = React.useCallback((event) => {
+    event.preventDefault();
     dispatch(fetchDeleteUser(sessionStorage.getItem('x-auth-token'), passValue));
   }, [dispatch, passValue]);
 
@@ -70,12 +79,11 @@ export default function UserPage() {
             onChange={changePassValue}
           />
           <Button
-            type="button"
+            type="submit"
             subClass="delete-action"
             text="Delete Profile"
             onClick={handlerDeleteUser}
           />
-
         </Modal>
       )}
       <div className="user-page__photo">

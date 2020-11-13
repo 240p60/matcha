@@ -1,4 +1,4 @@
-import { fetchMailFailed, fetchSignUpClear, fetchInitUser, openSocket } from '../actions';
+import { fetchMailFailed, fetchSignUpClear, fetchInitUser, clearInfo, openSocket } from '../actions';
 import { notification } from 'antd';
 
 export const FETCH_AUTH = 'FETCH_AUTH';
@@ -75,6 +75,7 @@ export const fetchAuth = (mail, password, loadingText) => async (dispatch) => {
 export const fetchLogOut = () => async (dispatch) => {
   dispatch(fetchAuthClear());
   dispatch(fetchSignUpClear());
+  dispatch(clearInfo());
   sessionStorage.removeItem('x-auth-token');
   sessionStorage.removeItem('ws-auth-token');
   localStorage.removeItem('user');

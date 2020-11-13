@@ -2,6 +2,7 @@ export {
   initUser,
   updateInfo,
   fetchInfo,
+  clearInfo,
   fetchInitUser,
   fetchUpdateUser,
   fetchDeleteUser,
