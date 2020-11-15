@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { ChatForm } from './ChatForm';
 import { MessageList } from './MessageList';
-import { fetchInitMessages, fetchInitDialogs } from '../../store/actions';
+import { fetchInitMessages } from '../../store/actions';
 import styles from './Chat.module.scss';
 
 const Chat = () => {
@@ -16,7 +16,6 @@ const Chat = () => {
 
   const getMessages = React.useCallback((uid) => {
     dispatch(fetchInitMessages(uid));
-    dispatch(fetchInitDialogs());
   }, [dispatch]);
 
   React.useEffect(() => {

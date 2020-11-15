@@ -1,4 +1,4 @@
-import { fetchMailFailed, fetchSignUpClear, fetchInitUser, clearInfo, openSocket } from '../actions';
+import { fetchMailFailed, fetchSignUpClear, fetchInitUser, clearInfo, openSocket, fetchInitDialogs } from '../actions';
 import { notification } from 'antd';
 
 export const FETCH_AUTH = 'FETCH_AUTH';
@@ -66,6 +66,7 @@ export const fetchAuth = (mail, password, loadingText) => async (dispatch) => {
     sessionStorage.setItem('x-auth-token', data['x-auth-token']);
     dispatch(fetchInitUser(data.uid, data['x-auth-token']));
     dispatch(openSocket(data.uid, data['x-auth-token']));
+    dispatch(fetchInitDialogs());
     setTimeout(() => {
       dispatch(fetchAuthSuccess());
     }, 2000);

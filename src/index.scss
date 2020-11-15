@@ -147,3 +147,23 @@ ol {
 a {
   color: #fff;
 }
+
+.ant-notification-notice-content {
+  & > div {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .ant-notification-notice-icon {
+    width: 24px;
+    height: 24px;
+    margin-left: 0;
+  }
+
+  .ant-notification-notice-message {
+    margin-left: 40px !important;
+    margin-bottom: 0px !important;
+    line-height: 25px;
+  }
+}

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { notification } from 'antd';
 import { Context } from '../../Context';
-import { fetchDeleteUser, fetchInitUser } from "../../store/actions";
+import { fetchDeleteUser } from "../../store/actions";
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Button, PictureSlider, Input, Modal } from '../index';
 import { mapApiKey } from '../../apikeys.js';
@@ -56,13 +56,13 @@ export default function UserPage() {
     setPassValue(value);
   };
 
-  const handlerInitUser = React.useCallback(() => {
-    dispatch(fetchInitUser(user.uid, sessionStorage.getItem('x-auth-token')));
-  }, [dispatch, user.uid]);
+  // const handlerInitUser = React.useCallback(() => {
+  //   dispatch(fetchInitUser(user.uid, sessionStorage.getItem('x-auth-token')));
+  // }, [dispatch, user.uid]);
 
-  React.useEffect(() => {
-    handlerInitUser();
-  }, [handlerInitUser]);
+  // React.useEffect(() => {
+  //   handlerInitUser();
+  // }, [handlerInitUser]);
 
   const handlerDeleteUser = React.useCallback((event) => {
     event.preventDefault();

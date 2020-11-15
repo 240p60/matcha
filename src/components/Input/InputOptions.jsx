@@ -37,7 +37,7 @@ export default function InputOptions({ input, name, onChange }) {
     <div className="options__container">
       <Autocomplete
         multiple
-        limitTags={2}
+        limitTags={5}
         id="multiple-limit-tags"
         inputValue={value}
         options={tags}

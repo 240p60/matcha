@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { Context } from './Context';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchInitUser } from './store/actions';
+import { fetchInitUser, fetchAuthClear } from './store/actions';
 import 'antd/dist/antd.css';
 
 import {
@@ -44,8 +44,9 @@ function App() {
     if (auth.status === 401) history.push('/confirm/mail');
     else if (auth.success === true) {
       user.fname === '' ? history.push('/profile') : history.push(`/user/page/${user.uid}`);
+      dispatch(fetchAuthClear());
     }
-  }, [history, auth, user]);
+  }, [history, auth, user, dispatch]);
 
   React.useEffect(() => {
     if (signUp.status === 401) {

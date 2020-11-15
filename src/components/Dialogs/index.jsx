@@ -1,21 +1,12 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from "react-redux";
-import { fetchInitDialogs } from "../../store/Dialogs/actions";
+import { useSelector } from "react-redux";
 import { DialogItem } from './DialogItem';
 import styles from './Dialogs.module.scss';
 
 const Dialogs = ({ title, onClick }) => {
-  const dispatch = useDispatch();
   const dialogs = useSelector((store) => store.dialogs);
 
-  const initDialogs = React.useCallback(() => {
-    dispatch(fetchInitDialogs());
-  }, [dispatch]);
-
-  React.useEffect(() => {
-    initDialogs();
-  }, [initDialogs]);
   return (
     <div className={styles.Dialog} onClick={onClick}>
       {title && <h2>{title}</h2>}

@@ -22,6 +22,7 @@ export const openSocket = (uid, token) => (dispatch) => {
 
     socket.onmessage = function (message) {
       const obj = JSON.parse(message.data);
+      console.log(obj);
       dispatch(addMessage({
         uidSender: parseInt(obj.uidSender),
         uidReceiver: uid,
