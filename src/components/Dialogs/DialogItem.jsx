@@ -1,20 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ReactComponent as ChatIcon } from "./right-arrow.svg";
 import styles from "./Dialogs.module.scss";
 
 export const DialogItem = ({ dialog }) => {
   return (
-    <Link to={`/chat/${dialog.uid}`} className={styles.DialogItem}>
-      <div className={styles.DialogImage}>
+    <div className={styles.DialogItem}>
+      <Link to={`/user/page/${dialog.uid}`} className={styles.DialogImage}>
         <picture>
           <source srcSet={dialog.avatar}/>
           <img className="user__picture" src={dialog.avatar} alt="user" />
         </picture>
-      </div>
+      </Link>
       <div className={styles.DialogContent}>
-        <div className={styles.CompanionName}>{`${dialog.fname} ${dialog.lname}`}</div>
+        <Link to={`/user/page/${dialog.uid}`} className={styles.CompanionName}>{`${dialog.fname} ${dialog.lname}`}</Link>
         <div className={styles.LastMessage}>{`${dialog.uid === dialog.uidReceiver ? 'You: ' : ''}${dialog.lastMessageBody}` || 'Начните диалог'}</div>
+        <Link to={`/chat/${dialog.uid}`} className={styles.DialogLink}>
+          <ChatIcon />
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 }
