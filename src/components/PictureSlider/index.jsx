@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGetPhotos, fetchAddPhoto } from '../../store/actions';
+import { fetchGetPhotos, fetchAddPhoto, fetchDeletePhoto } from '../../store/actions';
 import styled from 'styled-components';
 import classNames from 'classnames';
 import './PictureSlider.scss';
@@ -26,6 +26,7 @@ export default function PictureSlider({
 
   React.useEffect(() => {
     setValue(photos);
+    setActiveImage(0);
   }, [photos]);
 
   function addPhotoPreview(e) {
@@ -77,6 +78,14 @@ export default function PictureSlider({
                   <source srcSet={item.src} alt="user" />
                   <img className="user__picture" src={item.src} alt="user" />
                 </picture>
+                {volatile &&
+                  <div
+                    className="image_block-delete"
+                    onClick={() => dispatch(fetchDeletePhoto(uid, item.pid))}
+                  >
+                    Delete
+                  </div>
+                }
               </div>
             );
           })}

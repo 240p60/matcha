@@ -102,6 +102,19 @@
     &.active {
       transform: translate(0%, 0px);
     }
+
+    .image_block-delete {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      background-color: #f62354;
+      box-shadow: 0px 4px 5px -4px rgba(0, 0, 0, 0.75);
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
   }
 
   .navigation {
