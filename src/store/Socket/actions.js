@@ -1,6 +1,7 @@
 import { notification } from 'antd';
 import { addMessage } from '../actions';
 export const INIT_SOCKET = 'INIT_SOCKET';
+export const CLOSE_SOCKET = 'CLOSE_SOCKET';
 
 const initSocket = (socket) => {
   return {
@@ -9,8 +10,13 @@ const initSocket = (socket) => {
   }
 }
 
+const closeSocket = () => {
+  return {
+    type: CLOSE_SOCKET,
+  }
+}
+
 export const openSocket = (uid, token) => (dispatch) => {
-  console.log(uid, token);
   if (uid && token) {
     const socket = new WebSocket("ws://localhost:3000/ws/auth/?x-auth-token=" + token);
     socket.onopen = () => dispatch(initSocket(socket));
@@ -20,15 +26,20 @@ export const openSocket = (uid, token) => (dispatch) => {
       });
     }
 
-    socket.onmessage = function (message) {
+    socket.onclose = () => {
+      dispatch(closeSocket());
+    }
+
+    socket.onmessage = async function (message) {
       const obj = JSON.parse(message.data);
       console.log(obj);
-      dispatch(addMessage({
+      obj.type === 'message' && dispatch(addMessage({
         uidSender: parseInt(obj.uidSender),
-        uidReceiver: uid,
+        uidReceiver: parseInt(uid),
         body: obj.body,
       }));
-      notification.info({
+
+      obj.type === 'notif' && notification.info({
         message: obj.body,
         duration: null
       });

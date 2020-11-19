@@ -22,6 +22,12 @@ export default function MenuComponent() {
       <Link id="chat" to="/dialogs">
         Dialogs
       </Link>
+      <Link id="ignore" to="/ignore/list">
+        Ignore List
+      </Link>
+      <Link id="black" to="/black/list">
+        Black List
+      </Link>
     </Menu>
   );
 }

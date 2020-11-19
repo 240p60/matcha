@@ -5,6 +5,7 @@ import Slider from '@material-ui/core/Slider';
 const useStyles = makeStyles({
   root: {
     width: 300,
+    marginLeft: 6,
   },
   rail: {
     height: 1,
@@ -33,7 +34,7 @@ export default function RangeSlider({
   };
 
   return (
-    <>
+    <div className={classes.container}>
       <div id="range-slider" className={`${title}-slider`}>
         {title}
       </div>
@@ -54,6 +55,6 @@ export default function RangeSlider({
           step={step}
         />
       </div>
-    </>
+    </div>
   );
 }

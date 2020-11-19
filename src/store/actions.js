@@ -38,6 +38,16 @@ export {
 } from './Dialogs/actions';
 
 export {
+  fetchInitIgnoreList,
+  fetchRemoveFromIgnore,
+} from './IgnoreList/actions';
+
+export {
+  fetchInitBlackList,
+  fetchRemoveFromBlackList,
+} from './BlackList/actions';
+
+export {
   openSocket
 } from './Socket/actions';
 
@@ -49,5 +59,6 @@ export {
 
 export {
   fetchGetPhotos,
-  fetchAddPhoto
+  fetchAddPhoto,
+  fetchDeletePhoto
 } from './Photos/actions';

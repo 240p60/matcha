@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Modal.module.scss';
 
-const Modal = ({ children, title }) => {
+const Modal = ({ children, title, onClose }) => {
   return (
     <form action="" method="POST" name="deleteUser" className={styles.ModalContainer}>
       <div className={styles.Modal}>
@@ -9,6 +9,7 @@ const Modal = ({ children, title }) => {
           <h3>{title}</h3>
         </div>
         {children}
+        <div className={styles.ModalClose} onClick={() => onClose()}></div>
       </div>
     </form>
   );

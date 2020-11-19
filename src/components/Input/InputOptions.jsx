@@ -7,7 +7,7 @@ import './Input.scss';
 export default function InputOptions({ input, name, onChange }) {
   const [tags, setTags] = React.useState([]);
   const [value, setValue] = React.useState('');
-  // ['Music', 'Sport', 'Pizza', 'Travels', 'Hookahs', 'Serials'];
+
   const addNewTag = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -46,7 +46,15 @@ export default function InputOptions({ input, name, onChange }) {
         onChange={(e, newValue) => onChange(name, newValue)}
         value={input.value}
         renderInput={(params) => (
-          <TextField error={!!input.error} onChange={(event) => setValue(event.target.value)} onKeyPress={(event) => event.key === 'Enter' && addNewTag(event)} {...params} variant="outlined" label="Tags" placeholder="Favorites" />
+          <TextField
+            error={!!input.error}
+            onChange={(event) => setValue(event.target.value)}
+            onKeyPress={(event) => event.key === 'Enter' && addNewTag(event)}
+            variant="outlined"
+            label="Tags"
+            placeholder="Favorites"
+            {...params}
+          />
         )}
       />
       {input.error ? <div className="error">{input.helperText}</div> : null}

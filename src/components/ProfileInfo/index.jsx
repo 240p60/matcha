@@ -265,6 +265,7 @@ export default function ProfileInfo() {
       } else sexPreference = 'hetero';
 
       actionUpdateUser({
+        uid: user.uid,
         fname: firstName,
         lname: lastName,
         birth: birth,

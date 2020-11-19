@@ -1,7 +1,8 @@
 .user-page {
+  position: relative;
   max-width: 1080px;
   width: 96%;
-  margin: 40px auto;
+  margin: 60px auto 80px;
   border: 1px solid #e2e2e2;
   border-radius: 12px;
 
@@ -43,6 +44,17 @@
 
     .user-page__sex {
       color: #f62454;
+    }
+  }
+
+  .user-menu {
+    position: absolute;
+    right: 0;
+    top: -48px;
+
+    button {
+      transform: rotate(90deg);
+      padding: 5px;
     }
   }
 }

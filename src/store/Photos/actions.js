@@ -60,6 +60,34 @@ export const fetchAddPhoto = (uid, image) => async (dispatch) => {
   }
 };
 
+export const fetchDeletePhoto = (uid, pid) => async (dispatch) => {
+  dispatch(fetchPhotos());
+  const token = sessionStorage.getItem('x-auth-token');
+  if (token) {
+    let response = await fetch('http://localhost:3000/photo/delete/', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'x-auth-token': sessionStorage.getItem('x-auth-token'),
+        pid: pid
+      }),
+    });
+
+    if (response.status !== 200) {
+      notification.error({
+        message: 'Failed to delete photo',
+      });
+    } else {
+      notification.success({
+        message: 'Photo deleted successfully',
+      });
+      dispatch(fetchGetPhotos(uid));
+    }
+  }
+};
+
 export const fetchGetPhotos = (uid) => async (dispatch) => {
   dispatch(fetchPhotos());
   const token = sessionStorage.getItem('x-auth-token');

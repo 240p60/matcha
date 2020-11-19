@@ -99,7 +99,7 @@ export const fetchInitUser = (uid, token) => async (dispatch) => {
       },
       body: JSON.stringify({
         'x-auth-token': token,
-        'otherUid': uid,
+        'otherUid': +uid,
       }),
     });
 
@@ -109,45 +109,23 @@ export const fetchInitUser = (uid, token) => async (dispatch) => {
       else dispatch(initNewUser(data.uid));
       dispatch(fetchInfoSuccess());
     } else if (getDataRes.status === 401) {
-      dispatch(fetchInfoFailed({ error: getDataRes.statusText }));
+      dispatch(fetchInfoFailed({error: 'Unauthorized'}));
       dispatch(fetchLogOut());
     }
   }
 };
 
-export const fetchUpdateUser = ({
-  fname,
-  lname,
-  birth,
-  gender,
-  orientation,
-  interests,
-  bio,
-  avaID,
-  latitude,
-  longitude,
-}) => async (dispatch) => {
+export const fetchUpdateUser = (data) => async (dispatch) => {
   dispatch(fetchInfo());
   const token = sessionStorage.getItem('x-auth-token');
   if (token) {
+    data['x-auth-token'] = token;
     let response = await fetch('http://localhost:3000/user/update/', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      body: JSON.stringify({
-        'x-auth-token': token,
-        fname: fname,
-        lname: lname,
-        birth: birth,
-        gender: gender,
-        orientation: orientation,
-        interests: interests,
-        bio: bio,
-        avaID: avaID,
-        latitude: latitude,
-        longitude: longitude,
-      }),
+      body: JSON.stringify(data),
     });
 
     if (response.status === 202) {
@@ -157,11 +135,11 @@ export const fetchUpdateUser = ({
     } else if (!response.ok) {
       throw Error(response.statusText);
     } else {
-      dispatch(fetchInitUser());
+      dispatch(fetchInitUser(data.uid, token));
       dispatch(fetchInfoSuccess());
       notification.success({
         message: 'Succes Updated',
-        description: 'Information has been successfully updated',
+        description: `${data.mail ? 'Mail' : data.pass ? 'Password' : 'Information'} has been successfully updated`,
       });
     }
   }

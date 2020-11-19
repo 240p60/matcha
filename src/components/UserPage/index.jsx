@@ -3,9 +3,10 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { notification } from 'antd';
 import { Context } from '../../Context';
-import { fetchDeleteUser } from "../../store/actions";
+import { fetchDeleteUser, fetchUpdateUser } from "../../store/actions";
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Button, PictureSlider, Input, Modal } from '../index';
+import { default as Menu } from './Menu';
 import { mapApiKey } from '../../apikeys.js';
 import './UserPage.scss';
 
@@ -18,7 +19,12 @@ export default function UserPage() {
   const url = useParams();
   const dispatch = useDispatch();
   const [deleteModal, setDeleteModal] = React.useState(false);
+  const [changeMailModal, setChangeMailModal] = React.useState(false);
+  const [changePassModal, setChangePassModal] = React.useState(false);
   const [passValue, setPassValue] = React.useState('');
+  const [newPassValue, setNewPassValue] =React.useState('');
+  const [curMail, setCurMail] = React.useState('');
+  const [newMail, setNewMail] = React.useState('');
   const { user } = React.useContext(Context);
   const [otherUser, setOtherUser] = React.useState(false);
 
@@ -50,29 +56,116 @@ export default function UserPage() {
     if (+url.id !== +user.uid) {
       getOtherUser(url.id);
     } else setOtherUser(false)
-  }, [url, user, getOtherUser])
+  }, [url, user, getOtherUser]);
+
+  console.log(otherUser);
 
   const changePassValue = (name, value) => {
     setPassValue(value);
   };
 
-  // const handlerInitUser = React.useCallback(() => {
-  //   dispatch(fetchInitUser(user.uid, sessionStorage.getItem('x-auth-token')));
-  // }, [dispatch, user.uid]);
+  const changeNewPassValue = (name, value) => {
+    setNewPassValue(value);
+  };
 
-  // React.useEffect(() => {
-  //   handlerInitUser();
-  // }, [handlerInitUser]);
+  const changeCurMail = (name, value) => {
+    setCurMail(value);
+  };
+
+  const changeNewMail = (name, value) => {
+    setNewMail(value);
+  };
 
   const handlerDeleteUser = React.useCallback((event) => {
     event.preventDefault();
     dispatch(fetchDeleteUser(sessionStorage.getItem('x-auth-token'), passValue));
   }, [dispatch, passValue]);
 
+  const handlerChangeData = React.useCallback((event, name) => {
+    event.preventDefault();
+    const breakAction = (error) => {
+      notification.error({
+        message: error,
+      });
+    }
+    if (name === 'new_mail') {
+      !(/^(\w.+)@(\w+)\.(\w+)$/.test(newMail)) && breakAction('Mail has unexpected symbols');
+      curMail !== user.mail && breakAction('Wrong current mail');
+      /^(\w.+)@(\w+)\.(\w+)$/.test(newMail) && curMail === user.mail && dispatch(fetchUpdateUser({ uid: user.uid, mail: newMail }));
+    } else if (name === 'new_pass') {
+      !(/^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[$&+,:;=?@#|'<>.^*()%!-])[a-z0-9A-Z$&+,:;=?@#|'<>.-^*()%!-]{6,14}$/.test(newPassValue)) && breakAction('Password has unexpected symbols');
+      /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[$&+,:;=?@#|'<>.^*()%!-])[a-z0-9A-Z$&+,:;=?@#|'<>.-^*()%!-]{6,14}$/.test(newPassValue) && dispatch(fetchUpdateUser({ uid: user.uid, pass: newPassValue }));
+    }
+    closeModal();
+  }, [dispatch, curMail, newMail, newPassValue, user.mail, user.uid]);
+
+  const closeModal = () => {
+    setDeleteModal(false);
+    setChangeMailModal(false);
+    setChangePassModal(false);
+    setCurMail('');
+    setNewMail('');
+    setPassValue('');
+    setNewPassValue('');
+  }
+
+  const handlerMenu = (option) => {
+    switch (option) {
+      case 'Change mail':
+        setChangeMailModal(true);
+        break;
+      case 'Change password':
+        setChangePassModal(true);
+        break;
+      default:
+        return null;
+    }
+  }
+
+  const setInIgnoreList = async () => {
+    let getDataRes = await fetch('http://localhost:3000/ignore/set/', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'x-auth-token': sessionStorage.getItem('x-auth-token'),
+        'otherUid': parseInt(otherUser.uid),
+      }),
+    });
+
+    if (getDataRes.status) {
+      notification.success({
+        message: `${otherUser.fname} ${otherUser.lname} add to ignore list`,
+        description: getDataRes.statusText,
+      });
+    }
+  }
+
+  const setInBlackList = async () => {
+    let getDataRes = await fetch('http://localhost:3000/claim/set/', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'x-auth-token': sessionStorage.getItem('x-auth-token'),
+        'otherUid': parseInt(otherUser.uid),
+      }),
+    });
+
+    if (getDataRes.status) {
+      notification.success({
+        message: `${otherUser.fname} ${otherUser.lname} add to black list`,
+        description: getDataRes.statusText,
+      });
+    }
+  }
+
   return (
     <div className="user-page">
       {deleteModal && (
-        <Modal title="Confirm your password">
+        <Modal title="Confirm your password" onClose={closeModal}>
           <Input
             name='Password'
             input={{ name: 'Password', value: passValue, type: 'password' }}
@@ -86,6 +179,44 @@ export default function UserPage() {
           />
         </Modal>
       )}
+      {changeMailModal && (
+        <Modal title="Change your mail" onClose={closeModal}>
+          <Input
+            name='Current mail'
+            input={{ name: 'Current mail', value: curMail, type: 'mail' }}
+            onChange={changeCurMail}
+          />
+          <Input
+            name='New mail'
+            input={{ name: 'New mail', value: newMail, type: 'mail' }}
+            onChange={changeNewMail}
+          />
+          <Button
+            type="submit"
+            name="changeMail-action"
+            subClass="submit"
+            text="Change Mail"
+            onClick={(event) => handlerChangeData(event, 'new_mail')}
+          />
+        </Modal>
+      )}
+      {changePassModal && (
+        <Modal title="Change your password" onClose={closeModal}>
+          <Input
+            name='New password'
+            input={{ name: 'New password', value: newPassValue, type: 'password' }}
+            onChange={changeNewPassValue}
+          />
+          <Button
+            type="submit"
+            name="changePass-action"
+            subClass="submit"
+            text="Change Password"
+            onClick={(event) => handlerChangeData(event, 'new_pass')}
+          />
+        </Modal>
+      )}
+      {!otherUser && <Menu onClick={handlerMenu} />}
       <div className="user-page__photo">
         <PictureSlider volatile={false} uid={otherUser.uid || user.uid} />
       </div>
@@ -138,28 +269,46 @@ export default function UserPage() {
             </LoadScript>
           </div>
         </div>
-        {!otherUser && (
-          <div className="user-page__block">
-          <Button
-            type="button"
-            subClass="delete-action"
-            text="Delete Profile"
-            onClick={() => setDeleteModal(true)}
-          />
-          <Button
-            type="button"
-            subClass="change-action"
-            href="/profile"
-            text="Change Information"
-          />
-          <Button
-            type="button"
-            subClass="submit"
-            href="/matchs"
-            text="Go to Matchs"
-          />
+        <div className="user-page__block">
+          {!otherUser && (
+            <>
+              <Button
+                type="button"
+                subClass="delete-action"
+                text="Delete Profile"
+                onClick={() => setDeleteModal(true)}
+              />
+              <Button
+                type="button"
+                subClass="change-action"
+                href="/profile"
+                text="Change Information"
+              />
+              <Button
+                type="button"
+                subClass="submit"
+                href="/matchs"
+                text="Go to Matchs"
+              />
+            </>
+          )}
+          {otherUser && (
+            <>
+              <Button
+                type="button"
+                subClass="ignore-action"
+                text="Add to Ignore List"
+                onClick={() => setInIgnoreList()}
+              />
+              <Button
+                type="button"
+                subClass="delete-action"
+                text="Add to Black List"
+                onClick={() => setInBlackList()}
+              />
+            </>
+          )}
         </div>
-        )}
       </div>
     </div>
   );

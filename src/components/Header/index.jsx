@@ -10,12 +10,17 @@ export default function Header() {
   const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
+  const socket = useSelector((store) => store.socket);
 
   const handlerLogOut = React.useCallback((e) => {
     e.preventDefault();
+    let message = {};
+    message.type = "logout";
+    let jsonMessage = JSON.stringify(message);
+    socket.send(jsonMessage);
     dispatch(fetchLogOut());
     history.push('/');
-  }, [dispatch, history]);
+  }, [dispatch, socket, history]);
 
   return (
     <div className="header">

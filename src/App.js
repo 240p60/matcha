@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { Context } from './Context';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchInitUser, fetchAuthClear } from './store/actions';
+import { fetchInitUser, fetchAuthClear, openSocket } from './store/actions';
 import 'antd/dist/antd.css';
 
 import {
@@ -17,7 +17,8 @@ import {
   Preloader,
   Widget,
   Dialogs,
-  Chat
+  Ignore,
+  Chat,
 } from './components/index';
 
 function App() {
@@ -31,13 +32,17 @@ function App() {
   const dispatch = useDispatch();
 
   let token = sessionStorage.getItem('x-auth-token');
+  let uid = sessionStorage.getItem('uid');
 
   const initUserAction = React.useCallback(() => {
-    token && dispatch(fetchInitUser(token));
-  }, [dispatch, token]);
+    token && uid && dispatch(fetchInitUser(uid, token));
+  }, [dispatch, uid, token]);
 
   React.useEffect(() => {
-    if (sessionStorage.getItem('x-auth-token')) initUserAction();
+    if (sessionStorage.getItem('x-auth-token') && user.fname === '') {
+      initUserAction();
+      dispatch(openSocket(uid, token));
+    }
   }, [initUserAction]);
 
   React.useEffect(() => {
@@ -111,6 +116,12 @@ function App() {
               </Route>
               <Route exact path="/dialogs">
                 <Dialogs title="Диалоги" />
+              </Route>
+              <Route exact path="/ignore/list">
+                <Ignore type="ignore" title="Ignored users" />
+              </Route>
+              <Route exact path="/black/list">
+                <Ignore type="blacklist" title="Black list" />
               </Route>
               <Route path="/chat/:id">
                 <Chat />

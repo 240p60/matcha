@@ -12,15 +12,21 @@
   border-bottom: 1px solid #ccc;
 }
 
-.FiltesList {
+.FiltersList {
   height: 0;
   display: none;
+}
+
+.FiltersContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
 }
 
 .activeList {
   display: block;
   height: auto;
-  padding-left: 6px;
   padding-top: 10px;
 }
 
@@ -48,5 +54,5 @@
 
 .FiltersActionBlock {
   max-width: 300px;
-  margin: -54px 0 0 auto;
+  margin: 20px 0 0;
 }

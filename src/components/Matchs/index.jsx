@@ -20,7 +20,11 @@ export default function Matchs() {
       min: 1,
       max: 1000,
     },
+    options: {
+      value: [],
+    },
     online: false,
+    wasntLiked: false,
   });
 
   const actionOpenFilter = () => {
@@ -28,10 +32,20 @@ export default function Matchs() {
   };
 
   const changeFilters = (name, value) => {
-    setFilters({
-      ...filters,
-      [name]: { min: value[0], max: value[1] },
-    });
+    if (name === 'options') {
+      setFilters({
+        ...filters,
+        [name]: {value: value },
+      });
+    } else if (name === 'online' || name === 'wasntLiked') {
+      setFilters({
+        ...filters,
+        [name]: value,
+      });
+    } else setFilters({
+        ...filters,
+        [name]: { min: value[0], max: value[1] },
+      });
   };
 
   const applyFilters = React.useCallback(() => {
@@ -41,6 +55,9 @@ export default function Matchs() {
         'x-auth-token': sessionStorage.getItem('x-auth-token'),
         rating: filters.rating,
         age: filters.age,
+        options: filters.options.value,
+        online: filters.online,
+        wasntLiked: filters.wasntLiked,
         radius: {
           radius: filters.radius.max,
         },
@@ -51,9 +68,31 @@ export default function Matchs() {
   }, [filters]);
 
   React.useEffect(() => {
-    console.log(1);
     applyFilters();
-  }, [applyFilters]);
+  }, []);
+
+  const setLike = (uid) => {
+    fetch('http://localhost:3000/like/set/', {
+      method: 'PUT',
+      body: JSON.stringify({
+        otherUid: uid,
+        'x-auth-token': sessionStorage.getItem('x-auth-token'),
+      })
+    }).then(res => res.status === 200 && applyFilters());
+    applyFilters();
+  }
+
+  const unsetLike = (uid) => {
+    fetch('http://localhost:3000/like/unset/', {
+      method: 'DELETE',
+      body: JSON.stringify({
+        otherUid: uid,
+        'x-auth-token': sessionStorage.getItem('x-auth-token'),
+      })
+    }).then(res => res.status === 200 && applyFilters());
+  }
+
+  console.log(users);
 
   return (
     <div className={styles.matchs}>
@@ -70,7 +109,7 @@ export default function Matchs() {
             !!users.length &&
             users.map((item) => {
               return !item.isLiked ? (item.fname === 'admin' ? null : (
-                <Item key={item.uid} data={item} />
+                <Item setLike={setLike} unsetLike={unsetLike} key={item.uid} data={item} />
               )) : null;
             })}
         </div>
