@@ -13,7 +13,6 @@ const Dialogs = ({ title, onClick }) => {
     dispatch(fetchInitDialogs());
   }, [dispatch]);
 
-  console.log(dialogs);
   return (
     <div className={styles.Dialog} onClick={onClick}>
       {title && <h2>{title}</h2>}

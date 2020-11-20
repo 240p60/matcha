@@ -9,6 +9,7 @@ import { ignorsReducer } from './IgnoreList/reducer';
 import { blackListReducer } from './BlackList/reducer';
 import { messageReducer, fetchMessagesReducer } from './Messages/reducer';
 import { socketReducer } from './Socket/reducer';
+import { noticeReducer } from './Notice/reducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   messages: messageReducer,
   fetchMessages: fetchMessagesReducer,
   socket: socketReducer,
+  notice: noticeReducer,
   fetchPhotos: fetchPhotosReducer,
 });
 

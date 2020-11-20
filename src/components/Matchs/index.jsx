@@ -1,10 +1,13 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchInfoFailed } from '../../store/actions';
 import { Item } from './Item';
 import { Filter } from '../Filter';
 
 import styles from './Matchs.module.scss';
 
 export default function Matchs() {
+  const dispatch = useDispatch();
   const [openFilter, setOpenFilter] = React.useState(false);
   const [users, setUsers] = React.useState([]);
   const [filters, setFilters] = React.useState({
@@ -48,8 +51,8 @@ export default function Matchs() {
       });
   };
 
-  const applyFilters = React.useCallback(() => {
-    fetch('http://localhost:3000/search/', {
+  const applyFilters = React.useCallback(async () => {
+    let res = await fetch('http://localhost:3000/search/', {
       method: 'POST',
       body: JSON.stringify({
         'x-auth-token': sessionStorage.getItem('x-auth-token'),
@@ -62,10 +65,15 @@ export default function Matchs() {
           radius: filters.radius.max,
         },
       }),
-    })
-      .then((res) => res.json())
-      .then((data) => setUsers(data));
-  }, [filters]);
+    });
+
+    if (res.status === 401) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+    } else {
+      let data = await res.json();
+      setUsers(data);
+    }
+  }, [filters, dispatch]);
 
   React.useEffect(() => {
     applyFilters();
@@ -79,7 +87,6 @@ export default function Matchs() {
         'x-auth-token': sessionStorage.getItem('x-auth-token'),
       })
     }).then(res => res.status === 200 && applyFilters());
-    applyFilters();
   }
 
   const unsetLike = (uid) => {

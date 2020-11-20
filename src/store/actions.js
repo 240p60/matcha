@@ -62,3 +62,10 @@ export {
   fetchAddPhoto,
   fetchDeletePhoto
 } from './Photos/actions';
+
+export {
+  addNotice,
+  removeNotice,
+  fetchRemoveNotice,
+  fetchInitNotices
+} from './Notice/actions';

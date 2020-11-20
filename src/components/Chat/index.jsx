@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { ChatForm } from './ChatForm';
 import { MessageList } from './MessageList';
 import { fetchInitMessages } from '../../store/actions';
@@ -44,7 +44,11 @@ const Chat = () => {
 
   return (
     <div className={styles.Chat}>
-      <h1>{name}</h1>
+      <h1>
+        <Link to={`/user/page/${url.id}`}>
+          {name}
+        </Link>
+      </h1>
       <div className={styles.ChatContainer}>
         <div className={`contentRef ${styles.ChatContent}`}>
           <div className={styles.Messages}>

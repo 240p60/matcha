@@ -2,7 +2,8 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { Menu, Button } from '../index';
-import { fetchLogOut } from '../../store/Auth/actions';
+import { ReactComponent as Notice } from './calendar.svg';
+import { fetchLogOut, fetchInitNotices } from '../../store/actions';
 
 import './Header.scss';
 
@@ -10,6 +11,7 @@ export default function Header() {
   const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
+  const notice = useSelector((store) => store.notice);
   const socket = useSelector((store) => store.socket);
 
   const handlerLogOut = React.useCallback((e) => {
@@ -21,6 +23,10 @@ export default function Header() {
     dispatch(fetchLogOut());
     history.push('/');
   }, [dispatch, socket, history]);
+  
+  React.useEffect(() => {
+    dispatch(fetchInitNotices());
+  }, [dispatch]);
 
   return (
     <div className="header">
@@ -31,13 +37,22 @@ export default function Header() {
         <div className="header__right-block">
           <div className="header__actions">
             {sessionStorage.getItem('x-auth-token') ? (
-              <Button
-                href=""
-                text="Log Out"
-                type="button"
-                onClick={handlerLogOut}
-                subClass="header-action"
-              />
+              <>
+                <Button
+                  href=""
+                  text="Log Out"
+                  type="button"
+                  onClick={handlerLogOut}
+                  subClass="header-action"
+                />
+                <Link className="header__notice" to='/notice'>
+                  <Notice />
+                  {notice.length ? (
+                  <div className="header__notice counter">
+                    {notice.length}
+                  </div>) : null}
+                </Link>
+              </>
             ) : (
               <Button
                 href="/signIn"

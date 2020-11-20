@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import styles from './Matchs.module.scss';
 
 import { PictureSlider } from '../index';
-import Close from './close.svg';
-import Heart from './heart.svg';
+import Close from '../../assets/img/close.svg';
+import Heart from '../../assets/img/heart.svg';
 
 export const Item = ({ data, setLike, unsetLike }) => {
   return (

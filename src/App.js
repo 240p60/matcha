@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { Context } from './Context';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchInitUser, fetchAuthClear, openSocket } from './store/actions';
+import { fetchInitUser, fetchAuthClear, openSocket, fetchLogOut } from './store/actions';
 import 'antd/dist/antd.css';
 
 import {
@@ -18,6 +18,7 @@ import {
   Widget,
   Dialogs,
   Ignore,
+  Notices,
   Chat,
 } from './components/index';
 
@@ -64,8 +65,9 @@ function App() {
   React.useEffect(() => {
     if (fetchUser.error === 'Unauthorized') {
       history.push('/signIn');
+      dispatch(fetchLogOut());
     }
-  }, [history, fetchUser]);
+  }, [history, fetchUser, dispatch]);
 
   return (
     <main id="main">
@@ -115,13 +117,16 @@ function App() {
                 <Matchs />
               </Route>
               <Route exact path="/dialogs">
-                <Dialogs title="Диалоги" />
+                <Dialogs title="Dialogs" />
               </Route>
               <Route exact path="/ignore/list">
                 <Ignore type="ignore" title="Ignored users" />
               </Route>
               <Route exact path="/black/list">
                 <Ignore type="blacklist" title="Black list" />
+              </Route>
+              <Route exact path="/notice">
+                <Notices title="Notices" />
               </Route>
               <Route path="/chat/:id">
                 <Chat />

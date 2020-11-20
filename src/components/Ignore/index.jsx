@@ -19,7 +19,7 @@ const Ignore = ({ type, title, onClick }) => {
   }, [dispatch, type]);
 
   const removeFromBlackList = React.useCallback((uid) => {
-    dispatch(fetchRemoveFromIgnore(uid));
+    dispatch(fetchRemoveFromBlackList(uid));
   }, [dispatch]);
 
   const removeFromIgnore = React.useCallback((uid) => {

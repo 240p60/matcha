@@ -25,7 +25,42 @@
   }
 
   &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding-right: 50px;
+    gap: 15px;
+  }
+
+  &__notice {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    &.counter {
+      position: absolute;
+      right: -7px;
+      bottom: 0px;
+      width: 18px;
+      height: 18px;
+      font-size: 0.6rem;
+      background-color: #fff;
+      color: #000;
+      display: flex;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      border-radius: 50%;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   nav ul {

@@ -23,3 +23,4 @@ export { default as Widget } from './Widget';
 export { default as Dialogs } from './Dialogs';
 export { default as Chat } from './Chat';
 export { default as Ignore } from './Ignore';
+export { default as Notices } from './Notices';

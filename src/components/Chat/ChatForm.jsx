@@ -16,8 +16,6 @@ export const ChatForm = ({ receiver }) => {
       message.type = "message";
       message.uidReceiver = receiver;
       message.uidSender = user.uid;
-      message.senderFname = user.fname;
-      message.senderLname = user.lname;
       message.body = value;
       let jsonMessage = JSON.stringify(message);
       socket.send(jsonMessage);

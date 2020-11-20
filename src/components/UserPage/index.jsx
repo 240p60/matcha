@@ -2,13 +2,17 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { notification } from 'antd';
+import classNames from 'classnames';
 import { Context } from '../../Context';
 import { fetchDeleteUser, fetchUpdateUser } from "../../store/actions";
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Button, PictureSlider, Input, Modal } from '../index';
 import { default as Menu } from './Menu';
 import { mapApiKey } from '../../apikeys.js';
+import Close from '../../assets/img/close.svg';
+import Heart from '../../assets/img/heart.svg';
 import './UserPage.scss';
+import styles from './UserPage.module.scss';
 
 const mapContainerStyle = {
   width: '100%',
@@ -53,12 +57,50 @@ export default function UserPage() {
   }, []);
 
   React.useEffect(() => {
-    if (+url.id !== +user.uid) {
-      getOtherUser(url.id);
-    } else setOtherUser(false)
+    if (user.uid) {
+      if (+url.id !== +user.uid) {
+        getOtherUser(url.id);
+      } else setOtherUser(false);
+    }
   }, [url, user, getOtherUser]);
 
   console.log(otherUser);
+
+  const setLike = (uid) => {
+    fetch('http://localhost:3000/like/set/', {
+      method: 'PUT',
+      body: JSON.stringify({
+        otherUid: uid,
+        'x-auth-token': sessionStorage.getItem('x-auth-token'),
+      })
+    }).then(res => {
+      if (res.status === 200) {
+        getOtherUser(url.id);
+        notification.success({
+          message: 'Succes Updated',
+          description: `${otherUser.fname} ${otherUser.lname} has been successfully liked`,
+        });
+      }
+    });
+  }
+
+  const unsetLike = (uid) => {
+    fetch('http://localhost:3000/like/unset/', {
+      method: 'DELETE',
+      body: JSON.stringify({
+        otherUid: uid,
+        'x-auth-token': sessionStorage.getItem('x-auth-token'),
+      })
+    }).then(res => {
+      if (res.status === 200) {
+        getOtherUser(url.id);
+        notification.success({
+          message: 'Succes Updated',
+          description: `${otherUser.fname} ${otherUser.lname} has been successfully unliked`,
+        });
+      }
+    });
+  }
 
   const changePassValue = (name, value) => {
     setPassValue(value);
@@ -137,7 +179,6 @@ export default function UserPage() {
     if (getDataRes.status) {
       notification.success({
         message: `${otherUser.fname} ${otherUser.lname} add to ignore list`,
-        description: getDataRes.statusText,
       });
     }
   }
@@ -157,7 +198,6 @@ export default function UserPage() {
     if (getDataRes.status) {
       notification.success({
         message: `${otherUser.fname} ${otherUser.lname} add to black list`,
-        description: getDataRes.statusText,
       });
     }
   }
@@ -306,6 +346,13 @@ export default function UserPage() {
                 text="Add to Black List"
                 onClick={() => setInBlackList()}
               />
+              <div className={styles.itemActions}>
+                {otherUser.isLiked ? <div className={classNames(styles.itemDislike, 'dislike')} onClick={() => unsetLike(otherUser.uid)}>
+                  <img src={Close} alt="dislike" />
+                </div> : <div className={classNames(styles.itemLike, 'like')} onClick={() => setLike(otherUser.uid)}>
+                  <img src={Heart} alt="like" />
+                </div>}
+              </div>
             </>
           )}
         </div>

@@ -108,7 +108,7 @@ export const fetchInitUser = (uid, token) => async (dispatch) => {
       if (data.fname !== '') dispatch(initUser(data));
       else dispatch(initNewUser(data.uid));
       dispatch(fetchInfoSuccess());
-    } else if (getDataRes.status === 401) {
+    } else {
       dispatch(fetchInfoFailed({error: 'Unauthorized'}));
       dispatch(fetchLogOut());
     }
