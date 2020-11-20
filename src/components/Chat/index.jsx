@@ -45,7 +45,7 @@ const Chat = () => {
   return (
     <div className={styles.Chat}>
       <h1>
-        <Link to={`/user/page/${url.id}`}>
+        <Link className={styles.Title} to={`/user/page/${url.id}`}>
           {name}
         </Link>
       </h1>
