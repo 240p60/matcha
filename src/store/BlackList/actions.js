@@ -32,7 +32,7 @@ export const fetchInitBlackList = () => async (dispatch) => {
 export const fetchRemoveFromBlackList = (uid) => async (dispatch) => {
   const token = sessionStorage.getItem('x-auth-token');
   if (token) {
-    let res = await fetch('http://localhost:3000/claim/unset', {
+    let res = await fetch('http://localhost:3000/claim/unset/', {
       method: 'DELETE',
       body: JSON.stringify({
         'x-auth-token': token,

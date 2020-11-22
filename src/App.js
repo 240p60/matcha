@@ -104,34 +104,44 @@ function App() {
               <Route exact path="/signUp">
                 <SignUp />
               </Route>
-              <Route exact path="/profile">
-                <ProfileInfo />
-              </Route>
-              <Route exact path="/confirm/mail">
-                <ConfirmMail />
-              </Route>
-              <Route exact path="/user/page/:id">
-                <UserPage />
-              </Route>
-              <Route exact path="/matchs">
-                <Matchs />
-              </Route>
-              <Route exact path="/dialogs">
-                <Dialogs title="Dialogs" />
-              </Route>
-              <Route exact path="/ignore/list">
-                <Ignore type="ignore" title="Ignored users" />
-              </Route>
-              <Route exact path="/black/list">
-                <Ignore type="blacklist" title="Black list" />
-              </Route>
-              <Route exact path="/notice">
-                <Notices title="Notices" />
-              </Route>
-              <Route path="/chat/:id">
-                <Chat />
-              </Route>
-              {sessionStorage.getItem('x-auth-token') && <Widget />}
+              {token && (
+                <>
+                  <Route exact path="/profile">
+                    <ProfileInfo />
+                  </Route>
+                  <Route exact path="/confirm/mail">
+                    <ConfirmMail />
+                  </Route>
+                  <Route exact path="/user/page/:id">
+                    <UserPage />
+                  </Route>
+                  <Route exact path="/matchs">
+                    <Matchs />
+                  </Route>
+                  <Route exact path="/dialogs">
+                    <Dialogs title="Dialogs" />
+                  </Route>
+                  <Route exact path="/ignore/list">
+                    <Ignore type="ignore" title="Ignored users" />
+                  </Route>
+                  <Route exact path="/black/list">
+                    <Ignore type="blacklist" title="Blacklist" />
+                  </Route>
+                  <Route exact path="/guests">
+                    <Ignore type="guests" title="My Guests" />
+                  </Route>
+                  <Route exact path="/history">
+                    <Ignore type="history" title="Visit History" />
+                  </Route>
+                  <Route exact path="/notice">
+                    <Notices title="Notices" />
+                  </Route>
+                  <Route path="/chat/:id">
+                    <Chat />
+                  </Route>
+                  <Widget />
+                </>
+              )}
             </Route>
           </Switch>
         </Context.Provider>

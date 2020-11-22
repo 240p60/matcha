@@ -16,10 +16,12 @@ export default function Header() {
 
   const handlerLogOut = React.useCallback((e) => {
     e.preventDefault();
-    let message = {};
-    message.type = "logout";
-    let jsonMessage = JSON.stringify(message);
-    socket.send(jsonMessage);
+    if (socket) {
+      let message = {};
+      message.type = "logout";
+      let jsonMessage = JSON.stringify(message);
+      socket.send(jsonMessage);
+    }
     dispatch(fetchLogOut());
     history.push('/');
   }, [dispatch, socket, history]);
@@ -62,7 +64,7 @@ export default function Header() {
               />
             )}
           </div>
-          <Menu></Menu>
+          {sessionStorage.getItem('x-auth-token') && <Menu />}
         </div>
       </div>
     </div>

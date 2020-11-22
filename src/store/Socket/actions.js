@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { addMessage, addNotice } from '../actions';
+import { addMessage, addNotice, fetchInfoFailed } from '../actions';
 export const INIT_SOCKET = 'INIT_SOCKET';
 export const CLOSE_SOCKET = 'CLOSE_SOCKET';
 
@@ -28,6 +28,7 @@ export const openSocket = (uid, token) => (dispatch) => {
 
     socket.onclose = () => {
       dispatch(closeSocket());
+      dispatch(fetchInfoFailed({error: 'Unauthorized'}));
     }
 
     socket.onmessage = async function (message) {

@@ -48,6 +48,14 @@ export {
 } from './BlackList/actions';
 
 export {
+  fetchInitGuests,
+} from './Guests/actions';
+
+export {
+  fetchInitHistory,
+} from './History/actions';
+
+export {
   openSocket
 } from './Socket/actions';
 

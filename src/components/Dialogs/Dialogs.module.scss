@@ -60,6 +60,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    width: calc(100% - 50px);
   }
 
   .DialogLink {

@@ -10,6 +10,8 @@ import { blackListReducer } from './BlackList/reducer';
 import { messageReducer, fetchMessagesReducer } from './Messages/reducer';
 import { socketReducer } from './Socket/reducer';
 import { noticeReducer } from './Notice/reducer';
+import { historyReducer } from './History/reducer';
+import { guestsReducer } from './Guests/reducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -26,6 +28,8 @@ const rootReducer = combineReducers({
   socket: socketReducer,
   notice: noticeReducer,
   fetchPhotos: fetchPhotosReducer,
+  history: historyReducer,
+  guests: guestsReducer,
 });
 
 export default rootReducer;

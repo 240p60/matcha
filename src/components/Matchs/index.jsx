@@ -52,51 +52,68 @@ export default function Matchs() {
   };
 
   const applyFilters = React.useCallback(async () => {
-    let res = await fetch('http://localhost:3000/search/', {
-      method: 'POST',
-      body: JSON.stringify({
-        'x-auth-token': sessionStorage.getItem('x-auth-token'),
+    let token = sessionStorage.getItem('x-auth-token');
+    if (token) {
+      let data = {
+        'x-auth-token': token,
         rating: filters.rating,
         age: filters.age,
-        options: filters.options.value,
-        online: filters.online,
-        wasntLiked: filters.wasntLiked,
         radius: {
           radius: filters.radius.max,
         },
-      }),
-    });
+      };
+      if (filters.options.value.length) {
+        data.interests = filters.options.value;
+      }
 
-    if (res.status === 401) {
-      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
-    } else {
-      let data = await res.json();
-      setUsers(data);
-    }
+      if (filters.wasntLiked) {
+        data.wasntLiked = filters.wasntLiked;
+      }
+
+      if (filters.online) {
+        data.online = filters.online;
+      }
+
+      let res = await fetch('http://localhost:3000/search/', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+
+      if (res.status === 401) {
+        dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+      } else {
+        let data = await res.json();
+        setUsers(data);
+      }
+    } else dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
   }, [filters, dispatch]);
 
   React.useEffect(() => {
     applyFilters();
   }, []);
 
-  const setLike = (uid) => {
-    fetch('http://localhost:3000/like/set/', {
+  const setLike = async (uid) => {
+    let res = await fetch('http://localhost:3000/like/set/', {
       method: 'PUT',
       body: JSON.stringify({
         otherUid: uid,
         'x-auth-token': sessionStorage.getItem('x-auth-token'),
       })
-    }).then(res => res.status === 200 && applyFilters());
+    });
+
+    res.status === 200 && applyFilters();
   }
 
-  const unsetLike = (uid) => {
-    fetch('http://localhost:3000/like/unset/', {
+  const unsetLike = async (uid) => {
+    let res = fetch('http://localhost:3000/like/unset/', {
       method: 'DELETE',
       body: JSON.stringify({
         otherUid: uid,
         'x-auth-token': sessionStorage.getItem('x-auth-token'),
       })
-    }).then(res => res.status === 200 && applyFilters());
+    });
+
+    res.status === 200 && applyFilters();
   }
 
   console.log(users);
@@ -115,9 +132,9 @@ export default function Matchs() {
           {Array.isArray(users) &&
             !!users.length &&
             users.map((item) => {
-              return !item.isLiked ? (item.fname === 'admin' ? null : (
+              return (item.fname === 'admin' ? null : (
                 <Item setLike={setLike} unsetLike={unsetLike} key={item.uid} data={item} />
-              )) : null;
+              ));
             })}
         </div>
       </div>

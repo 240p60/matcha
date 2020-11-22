@@ -16,7 +16,7 @@ const Notices = ({ type, title, onClick }) => {
   return (
     <div className={styles.Dialog} onClick={onClick}>
       {title && <h2>{title}</h2>}
-      {(Array.isArray(notice) && notice.length) ? notice.map((item) => {
+      {(Array.isArray(notice) && notice.length) ? notice.reverse().map((item) => {
           return <NoticeItem remove={removeNotice} key={item.nid} item={item} />;
         }) : <div className={styles.EmptyDialogs}>You have no notifications</div>}
     </div>
