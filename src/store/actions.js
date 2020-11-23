@@ -75,5 +75,6 @@ export {
   addNotice,
   removeNotice,
   fetchRemoveNotice,
+  fetchRemoveAllNotices,
   fetchInitNotices
 } from './Notice/actions';

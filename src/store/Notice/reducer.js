@@ -1,4 +1,9 @@
-import { ADD_NOTICE, REMOVE_NOTICE, INIT_NOTICES } from './actions';
+import { 
+  ADD_NOTICE, 
+  REMOVE_NOTICE, 
+  INIT_NOTICES,
+  REMOVE_ALL_NOTICES,
+} from './actions';
 
 const initialState = [];
 
@@ -10,6 +15,8 @@ export const noticeReducer = (state = initialState, action) => {
       return [...state, action.payload];
     case REMOVE_NOTICE:
       return [...state.filter((item) => item.nid !== action.payload)];
+    case REMOVE_ALL_NOTICES:
+      return [];
     default:
       return state;
   }

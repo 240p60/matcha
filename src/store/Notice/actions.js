@@ -1,5 +1,6 @@
 export const ADD_NOTICE = 'ADD_NOTICE';
 export const REMOVE_NOTICE = 'REMOVE_NOTICE';
+export const REMOVE_ALL_NOTICES = 'REMOVE_ALL_NOTICES';
 export const INIT_NOTICES = 'INIT_NOTICES';
 
 export const addNotice = (notice) => {
@@ -15,6 +16,13 @@ export const removeNotice = (index) => {
     payload: index,
   }
 }
+
+export const removeAllNotices = () => {
+  return {
+    type: REMOVE_ALL_NOTICES,
+  }
+}
+
 
 export const initNotices = (data) => {
   return {
@@ -51,6 +59,22 @@ export const fetchRemoveNotice = (nid) => async (dispatch) => {
 
     if (res.status === 200) {
       dispatch(removeNotice(nid));
+    }
+  }
+}
+
+export const fetchRemoveAllNotices = () => async (dispatch) => {
+  const token = sessionStorage.getItem('x-auth-token');
+  if (token) {
+    let res = await fetch('http://localhost:3000/notification/delete/all/', {
+      method: 'DELETE',
+      body: JSON.stringify({
+        'x-auth-token': token,
+      }),
+    });
+
+    if (res.status === 200) {
+      dispatch(removeAllNotices());
     }
   }
 }

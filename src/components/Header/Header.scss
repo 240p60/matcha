@@ -7,6 +7,10 @@
   -moz-box-shadow: 0px 4px 5px -4px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 4px 5px -4px rgba(0, 0, 0, 0.75);
 
+  @media (max-width: 600px) {
+    padding: 12px 0;
+  }
+
   &__container {
     max-width: 1080px;
     width: 96%;
@@ -22,14 +26,27 @@
     font-size: 3rem;
     line-height: 3rem;
     color: #fff;
+
+    @media (max-width: 600px) {
+      font-size: 2rem;
+      line-height: 2rem;
+    }
+
+    @media (max-width: 400px) {
+      font-size: 1.5rem;
+      line-height: 1.5rem;
+    }
   }
 
   &__actions {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-right: 50px;
     gap: 15px;
+
+    &.active {
+      padding-right: 50px;
+    }
   }
 
   &__notice {
@@ -71,15 +88,6 @@
     li {
       margin: 0 20px;
       font-weight: bold;
-    }
-  }
-}
-
-@media (max-width: 600px) {
-  .header {
-    &__logo {
-      font-size: 2rem;
-      line-height: 2rem;
     }
   }
 }

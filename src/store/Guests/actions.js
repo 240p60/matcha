@@ -15,20 +15,22 @@ const initDialogs = (dialogs) => {
 //   }
 // }
 
-const unique = (arr) => {
-  let result = [];
-  let lookupObj = {};
+// const unique = (arr) => {
+//   let result = [];
+//   let lookupObj = {};
 
-  for (let obj of arr) {
-    lookupObj[obj.uid] = obj;
-  }
+//   if (arr.length) {
+//     for (let obj of arr) {
+//       lookupObj[obj.uid] = obj;
+//     }
+  
+//     for (let i in lookupObj) {
+//       result.push(lookupObj[i]);
+//     }
+//   }
 
-  for (let i in lookupObj) {
-    result.push(lookupObj[i]);
-  }
-
-  return result;
-}
+//   return result;
+// }
 
 export const fetchInitGuests = () => async (dispatch) => {
   const token = sessionStorage.getItem('x-auth-token');
@@ -42,7 +44,7 @@ export const fetchInitGuests = () => async (dispatch) => {
 
     if (res.status === 200) {
       let data = await res.json();
-      dispatch(initDialogs(unique(data)));
+      dispatch(initDialogs(data));
     }
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
+import './Range.scss';
 
 const useStyles = makeStyles({
   root: {
@@ -35,7 +36,7 @@ export default function RangeSlider({
 
   return (
     <div className={classes.container}>
-      <div id="range-slider" className={`${title}-slider`}>
+      <div id="range-slider" className={`${title}-slider slider_title`}>
         {title}
       </div>
       <div className={classes.root}>

@@ -35,6 +35,10 @@ const MessageItem = styled.div`
   align-items: flex-start;
   justify-content: ${({ myMessage }) => myMessage ? 'flex-end' : 'flex-start'};
   padding-bottom: 10px;
+
+  @media (max-width: 600px) {
+    padding-bottom: 5px;
+  }
 `;
 
 const MessageContent = styled.div`
@@ -42,6 +46,10 @@ const MessageContent = styled.div`
   border-radius: 10px;
   background-color: #f62354;
   padding: 8px 12px;
+
+  @media (max-width: 600px) {
+    padding: 4px 8px;
+  }
 `;
 
 const MessageImage = styled.div`
@@ -54,6 +62,11 @@ const MessageImage = styled.div`
   overflow: hidden;
   margin-right: 10px;
   border: 1px solid #f62354;
+
+  @media (max-width: 600px) {
+    width: 28px;
+    height: 28px;
+  }
 
   img {
     width: 100%;

@@ -9,7 +9,7 @@ const Modal = ({ children, title, onClose }) => {
           <h3>{title}</h3>
         </div>
         {children}
-        <div className={styles.ModalClose} onClick={() => onClose()}></div>
+        <div className={styles.ModalClose} onClick={() => onClose()}>X</div>
       </div>
     </form>
   );

@@ -15,9 +15,11 @@ export const IgnoreItem = ({ unset, item }) => {
       </Link>
       <div className={styles.DialogContent}>
         <Link to={`/user/page/${item.uid}`} className={styles.CompanionName}>{`${item.fname} ${item.lname}`}</Link>
-        <div className={styles.DialogLink} onClick={() => unset(item.uid)}>
-          <Close />
-        </div>
+        {item.time ? <div className={styles.DialogTime}>{item.time}</div> : (
+          <div className={styles.DialogLink} onClick={() => unset(item.uid)}>
+            <Close />
+          </div>
+        )}
       </div>
     </div>
   );

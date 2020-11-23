@@ -4,13 +4,24 @@
   justify-content: center;
   padding: 20px 0 0;
 
+  @media (max-width: 600px) {
+    padding: 10px 0 0;
+  }
+
   div {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 0 10px;
     cursor: pointer;
+
+    @media (max-width: 600px) {
+      width: 50px;
+      height: 50px;
+    }
 
     img {
       width: 20px;

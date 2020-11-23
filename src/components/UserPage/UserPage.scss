@@ -6,14 +6,26 @@
   border: 1px solid #e2e2e2;
   border-radius: 12px;
 
+  @media (max-width: 600px) {
+    margin: 40px 0;
+  }
+
   &__main-info {
     &_name {
       font-weight: bold;
       font-size: 2rem;
+
+      @media (max-width: 600px) {
+        font-size: 1.5rem;
+      }
     }
 
     &_years {
       font-size: 1.5rem;
+
+      @media (max-width: 600px) {
+        font-size: 1rem;
+      }
     }
   }
 
@@ -21,9 +33,17 @@
     padding: 20px 40px;
     border-bottom: 1px solid #e2e2e2;
 
+    @media (max-width: 600px) {
+      padding: 10px 20px;
+    }
+
     .user-page__title {
       font-weight: bold;
       margin-bottom: 10px;
+
+      @media (max-width: 600px) {
+        margin-bottom: 5px;
+      }
     }
 
     &:last-child {
@@ -38,6 +58,10 @@
     padding: 20px 40px;
     border-bottom: 1px solid #e2e2e2;
 
+    @media (max-width: 600px) {
+      padding: 10px 20px;
+    }
+
     .user-page__title {
       color: #868686;
     }
@@ -50,7 +74,11 @@
   .user-menu {
     position: absolute;
     right: 0;
-    top: -48px;
+    top: -47px;
+
+    @media (max-width: 600px) {
+      top: -37px;
+    }
 
     button {
       transform: rotate(90deg);

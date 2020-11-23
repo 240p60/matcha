@@ -20,6 +20,10 @@
   font-size: 1.3rem;
   line-height: 1.8rem;
 
+  @media (max-width: 600px) {
+    padding: 0 10px;
+  }
+
   &:hover {
     color: #000;
   }
@@ -54,6 +58,11 @@
     font-size: 1.3rem;
     line-height: 1.8rem;
     color: #000;
+
+    @media (max-width: 600px) {
+      font-size: 1rem;
+      line-height: 1.2rem;
+    }
   }
 
   .LastMessage {
@@ -61,6 +70,12 @@
     text-overflow: ellipsis;
     overflow: hidden;
     width: calc(100% - 50px);
+
+    @media (max-width: 600px) {
+      font-size: 1rem;
+      line-height: 1.2rem;
+      padding-bottom: 4px;
+    }
   }
 
   .DialogLink {
@@ -73,5 +88,11 @@
     height: 40px;
     border-radius: 50%;
     background-color: #fff;
+
+    @media (max-width: 600px) {
+      width: 36px;
+      height: 36px;
+      margin-top: -18px;
+    }
   }
 }

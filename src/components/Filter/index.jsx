@@ -64,7 +64,7 @@ export const Filter = ({ filters, changeFilters, active, onClick, onSubmit }) =>
           <FormControlLabel
             className={`${classes.root} ${classes.label}`}
             control={<Checkbox checked={filters.wasntLiked} onChange={() => changeFilters('wasntLiked', !filters.wasntLiked)} name="wasntLiked" />}
-            label="Show liked users"
+            label="Do not show liked"
           />
           <InputOptions
             name="options"

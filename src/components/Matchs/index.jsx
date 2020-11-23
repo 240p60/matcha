@@ -105,7 +105,7 @@ export default function Matchs() {
   }
 
   const unsetLike = async (uid) => {
-    let res = fetch('http://localhost:3000/like/unset/', {
+    let res = await fetch('http://localhost:3000/like/unset/', {
       method: 'DELETE',
       body: JSON.stringify({
         otherUid: uid,

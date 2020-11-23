@@ -104,13 +104,13 @@ function App() {
               <Route exact path="/signUp">
                 <SignUp />
               </Route>
+              <Route exact path="/confirm/mail">
+                <ConfirmMail />
+              </Route>
               {token && (
                 <>
                   <Route exact path="/profile">
                     <ProfileInfo />
-                  </Route>
-                  <Route exact path="/confirm/mail">
-                    <ConfirmMail />
                   </Route>
                   <Route exact path="/user/page/:id">
                     <UserPage />

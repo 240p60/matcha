@@ -37,7 +37,7 @@ export default function Header() {
           <Link to={sessionStorage.getItem('x-auth-token') ? `/user/page/${user.uid}` : '/'}>Strings</Link>
         </div>
         <div className="header__right-block">
-          <div className="header__actions">
+          <div className={`header__actions ${sessionStorage.getItem('x-auth-token') && 'active'}`}>
             {sessionStorage.getItem('x-auth-token') ? (
               <>
                 <Button

@@ -6,11 +6,19 @@ import styles from './Matchs.module.scss';
 import { PictureSlider } from '../index';
 import Close from '../../assets/img/close.svg';
 import Heart from '../../assets/img/heart.svg';
+import Match from '../../assets/img/pinkHeart.svg';
 
 export const Item = ({ data, setLike, unsetLike }) => {
   return (
     <div id={data.uid} className={styles.matchsItem}>
-      <div className={styles.itemArea}>
+      <div className={classNames(styles.itemArea, {
+        [styles.itemMatch]: data.isMatch,
+      })}>
+        {data.isMatch && (
+          <div className={styles.matchIcon}>
+            <img src={Match} alt="isMatch"/>
+          </div>
+        )}
         <PictureSlider height="320px" uid={data.uid} />
         <div className={styles.itemBottomArea}>
           <div className={styles.itemInfo}>

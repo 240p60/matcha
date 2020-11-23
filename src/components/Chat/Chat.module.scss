@@ -12,6 +12,10 @@
 
 .Title {
   font-size: 2rem;
+
+  @media (max-width: 600px) {
+    font-size: 1.5rem;
+  }
 }
 
 .ChatContainer {
@@ -24,7 +28,10 @@
 .ChatContent {
   height: 400px;
   overflow-y: auto;
-  padding-right: 12px;
+
+  @media (max-width: 600px) {
+    height: 300px;
+  }
 }
 
 .ChatForm {
@@ -41,6 +48,18 @@
 .inputContainer {
   width: 100%;
   margin-right: 20px;
+
+  @media (max-width: 600px) {
+    margin-right: 10px;
+  }
+}
+
+.buttonContainer {
+  button {
+    @media (max-width: 600px) {
+      padding: 8px;
+    }
+  }
 }
 
 .messageInput {
@@ -48,6 +67,10 @@
   padding: 5px 10px;
   width: 100%;
   height: 100%;
+
+  @media (max-width: 600px) {
+    font-size: 0.9rem;
+  }
 
   &::-webkit-input-placeholder {
     opacity: 1;

@@ -19,14 +19,16 @@ export default function InputOptions({ input, name, onChange }) {
   }
 
   const getOptions = async () => {
-    let res = await fetch('http://localhost:3000/interests/get/');
+    if (sessionStorage.getItem('x-auth-token')) {
+      let res = await fetch('http://localhost:3000/interests/get/');
 
-    if (res.ok) {
-      const data = await res.json();
-      setTags(data.map(item => item.name));
-    } else notification.error({
-      message: 'Не удалось загрузить список интересов',
-    });
+      if (res.ok) {
+        const data = await res.json();
+        setTags(data.map(item => item.name));
+      } else notification.error({
+        message: 'Не удалось загрузить список интересов',
+      });
+    }
   }
 
   React.useEffect(() => {
