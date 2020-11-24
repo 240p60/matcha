@@ -133,6 +133,9 @@ function App() {
                   <Route exact path="/history">
                     <Ignore type="history" title="Visit History" />
                   </Route>
+                  <Route exact path="/followers">
+                    <Ignore type="followers" title="My Followers" />
+                  </Route>
                   <Route exact path="/notice">
                     <Notices title="Notices" />
                   </Route>

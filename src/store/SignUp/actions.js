@@ -49,19 +49,19 @@ export const fetchSignUp = (mail, password, loadingText) => async (
     }),
   });
 
-  if (response.status === 401) {
+  if (response.status === 203) {//203
     dispatch(fetchSignUpFailed("User don't confirm mail", 401));
     notification.error({
       message: `Sign Up Failed`,
       description: `User don't confirm mail`,
     });
-  } else if (response.status === 406) {
+  } else if (response.status === 205) {//205
     dispatch(fetchSignUpFailed('User already exist', 406));
     notification.error({
       message: `Sign Up Failed`,
       description: `User already exist`,
     });
-  } else if (response.status !== 201) {
+  } else if (response.status !== 201) {//204
     dispatch(fetchSignUpFailed('Wrong mail or password'));
     notification.error({
       message: `Sign Up Failed`,
@@ -71,5 +71,8 @@ export const fetchSignUp = (mail, password, loadingText) => async (
     throw Error(response.statusText);
   } else {
     dispatch(fetchSignUpSuccess());
+    notification.success({
+      message: `Please, confirm your mail`,
+    });
   }
 };

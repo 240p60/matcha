@@ -4,7 +4,6 @@ import { ReactComponent as Close } from "./close.svg";
 import styles from "./Ignore.module.scss";
 
 export const IgnoreItem = ({ unset, item }) => {
-
   return (
     <div className={styles.DialogItem}>
       <Link to={`/user/page/${item.uid}`} className={styles.DialogImage}>

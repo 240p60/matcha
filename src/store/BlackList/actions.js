@@ -1,3 +1,4 @@
+import { fetchInfoFailed } from '../actions';
 export const INIT_BLACK_LIST = 'INIT_BLACK_LIST';
 export const REMOVE_FROM_LIST = 'REMOVE_FROM_LIST';
 
@@ -40,6 +41,10 @@ export const fetchRemoveFromBlackList = (uid) => async (dispatch) => {
       }),
     });
 
-    res.status === 200 && dispatch(removeUser(uid));
+    if (res.status === 200) {
+      dispatch(removeUser(uid));
+    } else if (res.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+    }
   }
 }

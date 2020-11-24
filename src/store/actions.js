@@ -56,6 +56,10 @@ export {
 } from './History/actions';
 
 export {
+  fetchInitFollowers,
+} from './Followers/actions';
+
+export {
   openSocket
 } from './Socket/actions';
 

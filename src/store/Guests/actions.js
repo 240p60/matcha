@@ -1,3 +1,4 @@
+import { fetchInfoFailed } from '../actions';
 export const INIT_GUESTS_LIST = 'INIT_GUESTS_LIST';
 export const REMOVE_FROM_LIST = 'REMOVE_FROM_LIST';
 
@@ -45,6 +46,8 @@ export const fetchInitGuests = () => async (dispatch) => {
     if (res.status === 200) {
       let data = await res.json();
       dispatch(initDialogs(data));
+    } else if (res.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
     }
   }
 }

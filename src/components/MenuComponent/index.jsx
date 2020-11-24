@@ -25,6 +25,9 @@ export default function MenuComponent() {
       <Link id="guests" to="/guests">
         My Guests
       </Link>
+      <Link id="followers" to="/followers">
+        Followers
+      </Link>
       <Link id="history" to="/history">
         Visit History
       </Link>

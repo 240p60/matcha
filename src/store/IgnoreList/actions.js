@@ -1,3 +1,4 @@
+import { fetchInfoFailed } from '../actions';
 export const INIT_IGNORE_LIST = 'INIT_IGNORE_LIST';
 export const REMOVE_FROM_LIST = 'REMOVE_FROM_LIST';
 
@@ -18,14 +19,19 @@ const removeUser = (uid) => {
 export const fetchInitIgnoreList = () => async (dispatch) => {
   const token = sessionStorage.getItem('x-auth-token');
   if (token) {
-    fetch('http://localhost:3000/user/get/ignored/', {
+    let res = await fetch('http://localhost:3000/user/get/ignored/', {
       method: 'POST',
       body: JSON.stringify({
         'x-auth-token': token,
       }),
-    })
-    .then((res) => res.json())
-    .then((data) => dispatch(initDialogs(data)));
+    });
+
+    if (res.status === 200) {
+      let data = res.json();
+      dispatch(initDialogs(data));
+    } else if (res.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+    }
   }
 }
 
@@ -40,6 +46,10 @@ export const fetchRemoveFromIgnore = (uid) => async (dispatch) => {
       }),
     });
 
-    res.status === 200 && dispatch(removeUser(uid));
+    if (res.status === 200) {
+      dispatch(removeUser(uid));
+    } else if (res.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+    }
   }
 }

@@ -12,6 +12,7 @@ import { socketReducer } from './Socket/reducer';
 import { noticeReducer } from './Notice/reducer';
 import { historyReducer } from './History/reducer';
 import { guestsReducer } from './Guests/reducer';
+import { followersReducer } from './Followers/reducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   fetchPhotos: fetchPhotosReducer,
   history: historyReducer,
   guests: guestsReducer,
+  followers: followersReducer,
 });
 
 export default rootReducer;

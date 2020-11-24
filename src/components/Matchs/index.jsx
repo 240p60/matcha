@@ -1,12 +1,17 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchInfoFailed } from '../../store/actions';
+import { Pagination } from '../index';
 import { Item } from './Item';
 import { Filter } from '../Filter';
 
 import styles from './Matchs.module.scss';
 
 export default function Matchs() {
+  let length;
+  length = window.innerWidth >= 1280 ? 6 : window.innerWidth < 1280 && window.innerWidth >= 660 ? 2 : 1;
+  console.log(length)
+  const [itemsAmount, setItemsAmount] = React.useState({min: 1, max: length});
   const dispatch = useDispatch();
   const [openFilter, setOpenFilter] = React.useState(false);
   const [users, setUsers] = React.useState([]);
@@ -29,6 +34,20 @@ export default function Matchs() {
     online: false,
     wasntLiked: false,
   });
+
+  const changeAmount = (page) => {
+    if (page === 1) {
+      setItemsAmount({
+        min: page,
+        max: page * length,
+      })
+    } else {
+      setItemsAmount({
+        min: (page - 1) * length + 1,
+        max: page * length,
+      })
+    }
+  }
 
   const actionOpenFilter = () => {
     setOpenFilter(!openFilter);
@@ -79,7 +98,7 @@ export default function Matchs() {
         body: JSON.stringify(data),
       });
 
-      if (res.status === 401) {
+      if (res.status === 202) {
         dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
       } else {
         let data = await res.json();
@@ -129,14 +148,15 @@ export default function Matchs() {
           onSubmit={applyFilters}
         />
         <div className={styles.matchsContainer}>
-          {Array.isArray(users) &&
-            !!users.length &&
-            users.map((item) => {
+          {(Array.isArray(users) && users.length) ? users.map((item, index) => {
+            if (index + 1 >= itemsAmount.min && index + 1 <= itemsAmount.max) {
               return (item.fname === 'admin' ? null : (
                 <Item setLike={setLike} unsetLike={unsetLike} key={item.uid} data={item} />
               ));
-            })}
+            } else return null;
+          }) : <div className={styles.EmptyDialogs}>No matching users</div>}
         </div>
+        {(Array.isArray(users) && users.length) ? <Pagination changePage={changeAmount} pages={Math.ceil(users.length / length)}/> : null}
       </div>
     </div>
   );

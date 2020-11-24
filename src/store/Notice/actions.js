@@ -1,3 +1,4 @@
+import { fetchInfoFailed } from '../actions';
 export const ADD_NOTICE = 'ADD_NOTICE';
 export const REMOVE_NOTICE = 'REMOVE_NOTICE';
 export const REMOVE_ALL_NOTICES = 'REMOVE_ALL_NOTICES';
@@ -32,17 +33,22 @@ export const initNotices = (data) => {
 }
 
 
-export const fetchInitNotices = () => (dispatch) => {
+export const fetchInitNotices = () => async (dispatch) => {
   const token = sessionStorage.getItem('x-auth-token');
   if (token) {
-    fetch('http://localhost:3000/notification/get/', {
+    let res = await fetch('http://localhost:3000/notification/get/', {
       method: 'POST',
       body: JSON.stringify({
         'x-auth-token': token,
       }),
-    })
-      .then((res) => res.json())
-      .then((data) => dispatch(initNotices(data)));
+    });
+
+    if (res.status === 200) {
+      let data = await res.json();
+      dispatch(initNotices(data.reverse()));
+    } else if (res.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+    }
   }
 }
 
@@ -59,6 +65,8 @@ export const fetchRemoveNotice = (nid) => async (dispatch) => {
 
     if (res.status === 200) {
       dispatch(removeNotice(nid));
+    } else if (res.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
     }
   }
 }
@@ -75,6 +83,8 @@ export const fetchRemoveAllNotices = () => async (dispatch) => {
 
     if (res.status === 200) {
       dispatch(removeAllNotices());
+    } else if (res.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
     }
   }
 }

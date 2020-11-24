@@ -24,3 +24,4 @@ export { default as Dialogs } from './Dialogs';
 export { default as Chat } from './Chat';
 export { default as Ignore } from './Ignore';
 export { default as Notices } from './Notices';
+export { default as Pagination } from './Pagination';

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { notification } from 'antd';
 import classNames from 'classnames';
 import { Context } from '../../Context';
-import { fetchDeleteUser, fetchUpdateUser } from "../../store/actions";
+import { fetchDeleteUser, fetchUpdateUser, fetchInfoFailed, fetchLogOut } from "../../store/actions";
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Button, PictureSlider, Input, Modal } from '../index';
 import { default as Menu } from './Menu';
@@ -47,6 +47,9 @@ export default function UserPage() {
     if (getDataRes.status === 200) {
       const data = await getDataRes.json();
       setOtherUser(data);
+    } else if (getDataRes.status === 202) {
+      dispatch(fetchInfoFailed({error: 'Unauthorized'}));
+      dispatch(fetchLogOut());
     } else {
       notification.error({
         message: 'Error',
@@ -54,7 +57,7 @@ export default function UserPage() {
       });
       setOtherUser(false);
     }
-  }, []);
+  }, [dispatch]);
 
   React.useEffect(() => {
     if (user.uid) {
@@ -63,8 +66,6 @@ export default function UserPage() {
       } else setOtherUser(false);
     }
   }, [url, user, getOtherUser]);
-
-  console.log(otherUser);
 
   const setLike = (uid) => {
     fetch('http://localhost:3000/like/set/', {
@@ -176,7 +177,7 @@ export default function UserPage() {
       }),
     });
 
-    if (getDataRes.status) {
+    if (getDataRes.status === 200) {
       notification.success({
         message: `${otherUser.fname} ${otherUser.lname} add to ignore list`,
       });
@@ -195,7 +196,7 @@ export default function UserPage() {
       }),
     });
 
-    if (getDataRes.status) {
+    if (getDataRes.status === 200) {
       notification.success({
         message: `${otherUser.fname} ${otherUser.lname} add to black list`,
       });

@@ -82,7 +82,7 @@ export const fetchDeleteUser = (token, password) => async (dispatch) => {
       }),
     });
 
-    if (res.status === 200) {
+    if (res.status === 202) {
       dispatch(fetchInfoFailed({error: 'Unauthorized'}));
       dispatch(fetchLogOut());
     }
@@ -108,7 +108,7 @@ export const fetchInitUser = (uid, token) => async (dispatch) => {
       if (data.fname !== '') dispatch(initUser(data));
       else dispatch(initNewUser(data.uid));
       dispatch(fetchInfoSuccess());
-    } else {
+    } else if (getDataRes.status === 202) {
       dispatch(fetchInfoFailed({error: 'Unauthorized'}));
       dispatch(fetchLogOut());
     }
@@ -128,13 +128,13 @@ export const fetchUpdateUser = (data) => async (dispatch) => {
       body: JSON.stringify(data),
     });
 
-    if (response.status === 202) {
+    if (response.status === 203) {
       dispatch(fetchAuthFailed("User don't confirm mail", 401));
-    } else if (response.status === 401) {
+    } else if (response.status === 202) {
       dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
     } else if (!response.ok) {
       throw Error(response.statusText);
-    } else {
+    } else if (response.status === 200) {
       dispatch(fetchInitUser(data.uid, token));
       dispatch(fetchInfoSuccess());
       notification.success({

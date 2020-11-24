@@ -48,13 +48,13 @@ export const fetchAuth = (mail, password, loadingText) => async (dispatch) => {
     }),
   });
 
-  if (response.status === 401) {
+  if (response.status === 203) { //203
     dispatch(fetchAuthFailed("User don't confirm mail", 401));
     dispatch(fetchMailFailed("User don't confirm mail", 401));
     notification.error({
       message: "User don't confirm mail",
     });
-  } else if (response.status === 422) {
+  } else if (response.status === 205) { //204
     dispatch(fetchAuthFailed('Wrong mail or password', 422));
     notification.error({
       message: 'Wrong mail or password',
