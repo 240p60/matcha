@@ -10,7 +10,7 @@ export default function Login() {
             <div className="login__header">
                 <h1>
                     Welcome to 
-                    <span className="login__header_high bold">Strings</span>
+                    <span className="login__header_high bold">Matcha</span>
                     <span className="login__header_small bold">match, chat, connect.</span>
                 </h1>
             </div>

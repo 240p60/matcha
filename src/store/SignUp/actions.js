@@ -61,6 +61,12 @@ export const fetchSignUp = (mail, password, loadingText) => async (
       message: `Sign Up Failed`,
       description: `User already exist`,
     });
+  } else if (response.status === 204) {//204
+    dispatch(fetchSignUpFailed('Wrong mail or password'));
+    notification.error({
+      message: `Sign Up Failed`,
+      description: `Mail has unexpected symbols`,
+    });
   } else if (response.status !== 201) {//204
     dispatch(fetchSignUpFailed('Wrong mail or password'));
     notification.error({

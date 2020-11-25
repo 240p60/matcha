@@ -9,8 +9,7 @@ import styles from './Matchs.module.scss';
 
 export default function Matchs() {
   let length;
-  length = window.innerWidth >= 1280 ? 6 : window.innerWidth < 1280 && window.innerWidth >= 660 ? 2 : 1;
-  console.log(length)
+  length = window.innerWidth >= 1280 ? 3 : window.innerWidth < 1280 && window.innerWidth >= 660 ? 2 : 1;
   const [itemsAmount, setItemsAmount] = React.useState({min: 1, max: length});
   const dispatch = useDispatch();
   const [openFilter, setOpenFilter] = React.useState(false);
@@ -134,8 +133,6 @@ export default function Matchs() {
 
     res.status === 200 && applyFilters();
   }
-
-  console.log(users);
 
   return (
     <div className={styles.matchs}>

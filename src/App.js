@@ -104,7 +104,7 @@ function App() {
               <Route exact path="/signUp">
                 <SignUp />
               </Route>
-              <Route exact path="/confirm/mail">
+              <Route path="/confirm/mail">
                 <ConfirmMail />
               </Route>
               {token && (

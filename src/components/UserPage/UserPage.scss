@@ -10,6 +10,12 @@
     margin: 40px 0;
   }
 
+  &__photo {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px 12px 0 0;
+  }
+
   &__main-info {
     &_name {
       font-weight: bold;

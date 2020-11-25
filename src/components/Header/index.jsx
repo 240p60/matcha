@@ -34,7 +34,7 @@ export default function Header() {
     <div className="header">
       <div className="header__container">
         <div className="header__logo">
-          <Link to={sessionStorage.getItem('x-auth-token') ? `/user/page/${user.uid}` : '/'}>Strings</Link>
+          <Link to={sessionStorage.getItem('x-auth-token') ? `/user/page/${user.uid}` : '/'}>Matcha</Link>
         </div>
         <div className="header__right-block">
           <div className={`header__actions ${sessionStorage.getItem('x-auth-token') && 'active'}`}>

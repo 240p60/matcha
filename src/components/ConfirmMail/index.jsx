@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ConfirmMail() {
   const history = useHistory();
-  const [input, setValue] = useState({
+  const [input, setValue] = React.useState({
     type: 'text',
     name: 'Auth code',
     value: '',
@@ -31,14 +31,14 @@ export default function ConfirmMail() {
     helperText: 'Empty Value',
   });
   const dispatch = useDispatch();
-  const actionConfirmMail = useCallback(
+  const mail = useSelector((store) => store.mail);
+
+  const actionConfirmMail = React.useCallback(
     (text, token) => {
       dispatch(fetchConfirmMail(text, token));
     },
     [dispatch]
   );
-
-  const mail = useSelector((store) => store.mail);
 
   function changeValue(name, value) {
     const newInput = {
@@ -81,34 +81,56 @@ export default function ConfirmMail() {
 
   return (
     <div className={`${classes.paper} form__block form__block-confirm`}>
-      <Avatar className={classes.avatar}>
-        <LockOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Confirm Mail
-      </Typography>
-      <form action="" method="POST" name="signUp">
-        <Input focus={true} input={input} onChange={changeValue} />
-        <div className="description">
-          Enter the code that will come to your mail
-        </div>
-        <Button
-          onClick={validateMail}
-          subClass="submit"
-          type="submit"
-          text="Confirm Mail"
-        />
-        <Grid container className="actions" justify="center">
+      {history.location.pathname === '/confirm/mail' && (
+        <>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Confirm Mail
+          </Typography>
+          <form action="" method="POST" name="signUp">
+            <Input focus={true} input={input} onChange={changeValue} />
+            <div className="description">
+              Enter the code that will come to your mail
+            </div>
+            <Button
+              onClick={validateMail}
+              subClass="submit"
+              type="submit"
+              text="Confirm Mail"
+            />
+          </form>
+        </>
+      )}
+      <Grid container className="actions" justify="center">
           <Grid item>
-            <Link
-              to="/signIn"
-              style={{ color: '#000', fontSize: '1rem', lineHeight: '1rem' }}
-            >
-              Already have an account? <span className="red-link">Sign In</span>
-            </Link>
+            {history.location.pathname === '/confirm/mail' && (
+              <Link
+                to="/signIn"
+                style={{ color: '#000', fontSize: '1rem', lineHeight: '1rem' }}
+              >
+                Already have an account? <span className="red-link">Sign In</span>
+              </Link>
+            )}
+            {history.location.pathname === '/confirm/mail/fail' && (
+              <a
+                href='/confirm/mail'
+                style={{ color: '#000', fontSize: '1rem', lineHeight: '1rem' }}
+              >
+                An error has occurred. Try again. <div style={{ textAlign: 'center', marginTop: '10px' }}><span className="red-link">Confirm mail with token</span></div>
+              </a>
+            )}
+            {history.location.pathname === '/confirm/mail/success' && (
+              <Link
+                to="/signIn"
+                style={{ color: '#000', fontSize: '1rem', lineHeight: '1rem' }}
+              >
+                Mail confirmed successfully! <div style={{ textAlign: 'center', marginTop: '10px' }}><span className="red-link">Sign In</span></div>
+              </Link>
+            )}
           </Grid>
         </Grid>
-      </form>
     </div>
   );
 }

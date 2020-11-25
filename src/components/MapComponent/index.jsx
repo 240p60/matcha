@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 import './MapComponent.scss';
-import { mapApiKey } from '../../apikeys.js';
+import { mapApiKey, ipstackAPI } from '../../apikeys.js';
 
 export default function MapComponent({ input, onChange, name }) {
   const containerStyle = {
@@ -10,20 +10,27 @@ export default function MapComponent({ input, onChange, name }) {
     height: '300px',
     margin: '20px 0 0',
   };
+
+  const setLocation = (location) => {
+    onChange(name, {
+      center: {
+        lat: location.latitude,
+        lng: location.longitude,
+      },
+      zoom: 11,
+    });
+  }
   
   useEffect(() => {
     if (navigator.geolocation && input.value.center.lat === 0) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        onChange(name, {
-          center: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          },
-          zoom: 11,
-        });
+      navigator.geolocation.getCurrentPosition((position) => setLocation(position.coords), 
+      () => {
+        fetch(`http://api.ipstack.com/check?access_key=${ipstackAPI}&format=1`)
+        .then(res => res.json())
+        .then(data => setLocation(data));
       });
     }
-  });
+  }, []);
 
   function onChangeMarkerPosition(position) {
     const newPosition = {
