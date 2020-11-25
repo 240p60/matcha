@@ -22,11 +22,11 @@ export default function MenuComponent() {
       <Link id="chat" to="/dialogs">
         Dialogs
       </Link>
-      <Link id="guests" to="/guests">
-        My Guests
-      </Link>
       <Link id="followers" to="/followers">
         Followers
+      </Link>
+      <Link id="guests" to="/guests">
+        My Guests
       </Link>
       <Link id="history" to="/history">
         Visit History

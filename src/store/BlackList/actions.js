@@ -19,14 +19,19 @@ const removeUser = (uid) => {
 export const fetchInitBlackList = () => async (dispatch) => {
   const token = sessionStorage.getItem('x-auth-token');
   if (token) {
-    fetch('http://localhost:3000/user/get/claimed/', {
+    let res = await fetch('http://localhost:3000/user/get/claimed/', {
       method: 'POST',
       body: JSON.stringify({
         'x-auth-token': token,
       }),
     })
-    .then((res) => res.json())
-    .then((data) => dispatch(initDialogs(data)));
+
+    if (res.status === 200) {
+      let data = await res.json();
+      dispatch(initDialogs(data))
+    } else if (res.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+    }
   }
 }
 

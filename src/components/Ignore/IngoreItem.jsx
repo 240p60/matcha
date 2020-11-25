@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ReactComponent as Close } from "./close.svg";
 import styles from "./Ignore.module.scss";
 
-export const IgnoreItem = ({ unset, item }) => {
+export const IgnoreItem = ({ type, unset, item }) => {
   return (
     <div className={styles.DialogItem}>
       <Link to={`/user/page/${item.uid}`} className={styles.DialogImage}>
@@ -14,11 +14,12 @@ export const IgnoreItem = ({ unset, item }) => {
       </Link>
       <div className={styles.DialogContent}>
         <Link to={`/user/page/${item.uid}`} className={styles.CompanionName}>{`${item.fname} ${item.lname}`}</Link>
-        {item.time ? <div className={styles.DialogTime}>{item.time}</div> : (
-          <div className={styles.DialogLink} onClick={() => unset(item.uid)}>
-            <Close />
-          </div>
-        )}
+          {(type === 'guests' || type === 'history') && <div className={styles.DialogTime}>{item.time}</div>}
+          {(type === 'ignore' || type === 'blacklist') && (
+            <div className={styles.DialogLink} onClick={() => unset(item.uid)}>
+              <Close />
+            </div>
+          )}
       </div>
     </div>
   );

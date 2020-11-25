@@ -48,7 +48,7 @@ export const fetchInitMessages = (receiver) => async (dispatch) => {
       }),
     });
 
-    if (response.status === 401) dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+    if (response.status === 202) dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
     else if (response.ok) dispatch(initMessages(await response.json()));
     else notification.error({
       message: 'Something went wrong',

@@ -51,6 +51,8 @@ export const fetchAddPhoto = (uid, image) => async (dispatch) => {
       notification.error({
         message: 'Failed to upload photo',
       });
+    } else if (response.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
     } else {
       notification.success({
         message: 'Photo uploaded successfully',
@@ -79,6 +81,8 @@ export const fetchDeletePhoto = (uid, pid) => async (dispatch) => {
       notification.error({
         message: 'Failed to delete photo',
       });
+    } else if (response.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
     } else {
       notification.success({
         message: 'Photo deleted successfully',
@@ -106,10 +110,10 @@ export const fetchGetPhotos = (uid) => async (dispatch) => {
     if (response.status === 200) {
       const photos = await response.json();
       dispatch(initPhotos({ uid: uid, photos: photos.map((item) => item) }));
-    } else if (response.status === 401) if (response.status === 401) dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
-     else notification.error({
+    } else if (response.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+    } else notification.error({
         message: 'Failed to upload photo',
       });
   }
 };
-//Посмотри pid, который присваивается при добавлении фото

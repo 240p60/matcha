@@ -27,7 +27,7 @@ export const fetchInitIgnoreList = () => async (dispatch) => {
     });
 
     if (res.status === 200) {
-      let data = res.json();
+      let data = await res.json();
       dispatch(initDialogs(data));
     } else if (res.status === 202) {
       dispatch(fetchInfoFailed({ error: 'Unauthorized' }));

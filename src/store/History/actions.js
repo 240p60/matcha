@@ -9,30 +9,6 @@ const initDialogs = (dialogs) => {
   }
 }
 
-// const removeUser = (uid) => {
-//   return {
-//     type: REMOVE_FROM_LIST,
-//     payload: uid,
-//   }
-// }
-
-// const unique = (arr) => {
-//   let result = [];
-//   let lookupObj = {};
-
-//   if (Array.isArray(arr) && arr.length) {
-//     for (let obj of arr) {
-//       lookupObj[obj.uid] = obj;
-//     }
-  
-//     for (let i in lookupObj) {
-//       result.push(lookupObj[i]);
-//     }
-//   }
-
-//   return result;
-// }
-
 export const fetchInitHistory = () => async (dispatch) => {
   const token = sessionStorage.getItem('x-auth-token');
   if (token) {
@@ -51,18 +27,3 @@ export const fetchInitHistory = () => async (dispatch) => {
     }
   }
 }
-
-// export const fetchRemoveFromIgnore = (uid) => async (dispatch) => {
-//   const token = sessionStorage.getItem('x-auth-token');
-//   if (token) {
-//     let res = await fetch('http://localhost:3000/ignore/unset/', {
-//       method: 'DELETE',
-//       body: JSON.stringify({
-//         'x-auth-token': token,
-//         otherUid: uid,
-//       }),
-//     });
-
-//     res.status === 200 && dispatch(removeUser(uid));
-//   }
-// }

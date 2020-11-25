@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const Filter = ({ filters, changeFilters, active, onClick, onSubmit }) => {
+const Filter = ({ filters, changeFilters, active, onClick, onSubmit }) => {
   const arrowRef = React.useRef(null);
   const classes = useStyles();
 
@@ -26,7 +26,7 @@ export const Filter = ({ filters, changeFilters, active, onClick, onSubmit }) =>
   }
 
   return (
-    <div className={styles.FilterBlock}>
+    <div className={cx(styles.FilterBlock, { [styles.FilterBlockActive]: active })}>
       <div className={styles.HeaderFilterBlock}>
         <h3>Filters</h3>
         <div ref={arrowRef} className={styles.arrowBlock} onClick={onClick}>
@@ -84,3 +84,5 @@ export const Filter = ({ filters, changeFilters, active, onClick, onSubmit }) =>
     </div>
   );
 };
+
+export default Filter;

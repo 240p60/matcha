@@ -37,6 +37,7 @@
   flex-direction: column;
   justify-content: space-between;
   transition: 0.2s linear;
+  border: 2px solid transparent;
 }
 
 .itemMatch {
@@ -64,7 +65,7 @@
 }
 
 .itemInfo {
-  height: 157px;
+  height: 141px;
   overflow-y: auto;
   padding-right: 20px;
 }

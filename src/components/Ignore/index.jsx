@@ -67,7 +67,7 @@ const Ignore = ({ type, title, onClick }) => {
         <>
           {ignoreList.map((item, index) => {
             if (index + 1 >= itemsAmount.min && index + 1 <= itemsAmount.max) {
-              return <IgnoreItem unset={removeFromIgnore} key={item.uid} item={item} />;
+              return <IgnoreItem type={type} unset={removeFromIgnore} key={item.uid} item={item} />;
             } else return null;
           })}
           {(Array.isArray(ignoreList) && ignoreList.length) ? <Pagination changePage={changeAmount} pages={Math.ceil(ignoreList.length / length)}/> : null}
@@ -77,7 +77,7 @@ const Ignore = ({ type, title, onClick }) => {
         <>
           {blackList.map((item, index) => {
             if (index + 1 >= itemsAmount.min && index + 1 <= itemsAmount.max) {
-              return <IgnoreItem unset={removeFromBlackList} key={item.uid} item={item} />;
+              return <IgnoreItem type={type} unset={removeFromBlackList} key={item.uid} item={item} />;
             } else return null;
           })}
           {(Array.isArray(blackList) && blackList.length) ? <Pagination changePage={changeAmount} pages={Math.ceil(blackList.length / length)}/> : null}
@@ -87,7 +87,7 @@ const Ignore = ({ type, title, onClick }) => {
         <>
           {history.map((item, index) => {
             if (index + 1 >= itemsAmount.min && index + 1 <= itemsAmount.max) {
-              return <IgnoreItem unset={removeFromBlackList} key={item.uid} item={item} />;
+              return <IgnoreItem type={type} unset={removeFromBlackList} key={item.uid} item={item} />;
             } else return null;
           })}
           {(Array.isArray(history) && history.length) ? <Pagination changePage={changeAmount} pages={Math.ceil(history.length / length)}/> : null}
@@ -97,7 +97,7 @@ const Ignore = ({ type, title, onClick }) => {
         <>
           {guests.map((item, index) => {
             if (index + 1 >= itemsAmount.min && index + 1 <= itemsAmount.max) {
-              return <IgnoreItem unset={removeFromBlackList} key={item.uid} item={item} />;
+              return <IgnoreItem type={type} unset={removeFromBlackList} key={item.uid} item={item} />;
             } else return null;
           })}
           {(Array.isArray(guests) && guests.length) ? <Pagination changePage={changeAmount} pages={Math.ceil(guests.length / length)}/> : null}
@@ -107,7 +107,7 @@ const Ignore = ({ type, title, onClick }) => {
         <>
           {followers.map((item, index) => {
             if (index + 1 >= itemsAmount.min && index + 1 <= itemsAmount.max) {
-              return <IgnoreItem key={item.uid} item={item} />;
+              return <IgnoreItem type={type} key={item.uid} item={item} />;
             } else return null;
           })}
           {(Array.isArray(followers) && followers.length) ? <Pagination changePage={changeAmount} pages={Math.ceil(followers.length / length)}/> : null}
