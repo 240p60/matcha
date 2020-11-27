@@ -1,92 +1,100 @@
 /* Position and sizing of burger button */
 .bm-burger-button {
-    position: absolute;
-    width: 32px;
-    height: 24px;
-    right: 0;
-    top: 50%;
-    margin-top: -12px;
-  }
-  
-  /* Color/shape of burger icon bars */
-  .bm-burger-bars {
-    background: #fff;
-  }
-  
-  /* Color/shape of burger icon bars on hover*/
-  .bm-burger-bars-hover {
-    background: #a90000;
-  }
-  
-  /* Position and sizing of clickable cross button */
-  .bm-cross-button {
-    height: 24px;
-    width: 24px;
-  }
+  position: absolute;
+  width: 32px;
+  height: 24px;
+  right: 0;
+  top: 50%;
+  margin-top: -12px;
+}
 
-  .bm-burger-bars {
-    height: 4px !important;
-  }
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #fff;
+}
 
-  .bm-burger-bars:nth-child(2) {
-    top: calc(50% - 2px) !important;
-  }
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: #a90000;
+}
 
-  .bm-burger-bars:nth-child(3) {
-    top: calc(100% - 4px) !important;
-  }
-  
-  /* Color/shape of close button cross */
-  .bm-cross {
-    background: #F62354;
-  }
-  
-  /*
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+.bm-burger-bars {
+  height: 4px !important;
+}
+
+.bm-burger-bars:nth-child(2) {
+  top: calc(50% - 2px) !important;
+}
+
+.bm-burger-bars:nth-child(3) {
+  top: calc(100% - 4px) !important;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #f62354;
+}
+
+/*
   Sidebar wrapper styles
   Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
   */
-  .bm-menu-wrap {
-    position: fixed;
-    height: 100%;
-    top: 0;
-  }
+.bm-menu-wrap {
+  position: fixed;
+  height: 100%;
+  top: 0;
+}
 
-  @media screen and (min-width: 1500px) {
-    .bm-menu-wrap {
-      width: 500px !important;
-    }
+@media screen and (min-width: 1500px) {
+  .bm-menu-wrap {
+    width: 500px !important;
   }
-  
-  /* General sidebar styles */
-  .bm-menu {
-    background: #fff;
-    padding: 2.5em 1.5em 0;
-    font-size: 1.15em;
-  }
-  
-  /* Morph shape necessary with bubble or elastic */
-  .bm-morph-shape {
-    fill: #373a47;
-  }
-  
-  /* Wrapper for item list */
-  .bm-item-list {
-    color: #b8b7ad;
-    padding: 0.8em 0 0.8em 0.8em;
-    text-align: right;
-  }
-  
-  /* Individual item */
-  .bm-item {
-    display: inline-block;
-    color: #F62354;
-    font-size: 2rem;
-    line-height: 2rem;
-    margin-bottom: 10px;
-  }
-  
-  /* Styling of overlay */
-  .bm-overlay {
-    top: 0;
-    background: rgba(0, 0, 0, 0.3);
-  }
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #fff;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 0.8em 0 0.8em 0.8em;
+  text-align: right;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+  color: #f62354;
+  font-size: 2rem;
+  line-height: 2rem;
+  margin-bottom: 10px;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  top: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.MenuItem {
+  display: block;
+  color: #f62354;
+  font-size: 2rem;
+  line-height: 2rem;
+  margin-bottom: 10px;
+}

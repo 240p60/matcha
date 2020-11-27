@@ -29,7 +29,7 @@ export default function UserPage() {
   const [newPassValue, setNewPassValue] =React.useState('');
   const [curMail, setCurMail] = React.useState('');
   const [newMail, setNewMail] = React.useState('');
-  const { user } = React.useContext(Context);
+  const { user, photos } = React.useContext(Context);
   const [otherUser, setOtherUser] = React.useState(false);
 
   const getOtherUser = React.useCallback(async (uid) => {
@@ -178,9 +178,34 @@ export default function UserPage() {
     });
 
     if (getDataRes.status === 200) {
+      getOtherUser(url.id);
       notification.success({
-        message: `${otherUser.fname} ${otherUser.lname} add to ignore list`,
+        message: `${otherUser.fname} ${otherUser.lname} added to ignore list`,
       });
+    } else if (getDataRes.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+    }
+  }
+
+  const removeFromIgnoreList = async () => {
+    let getDataRes = await fetch('http://localhost:3000/ignore/unset/', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'x-auth-token': sessionStorage.getItem('x-auth-token'),
+        'otherUid': parseInt(otherUser.uid),
+      }),
+    });
+
+    if (getDataRes.status === 200) {
+      getOtherUser(url.id);
+      notification.success({
+        message: `${otherUser.fname} ${otherUser.lname} removed from ignore list`,
+      });
+    } else if (getDataRes.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
     }
   }
 
@@ -197,11 +222,38 @@ export default function UserPage() {
     });
 
     if (getDataRes.status === 200) {
+      getOtherUser(url.id);
       notification.success({
-        message: `${otherUser.fname} ${otherUser.lname} add to black list`,
+        message: `${otherUser.fname} ${otherUser.lname} added to black list`,
       });
+    } else if (getDataRes.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
     }
   }
+
+  const removeFromBlackList = async () => {
+    let getDataRes = await fetch('http://localhost:3000/claim/unset/', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'x-auth-token': sessionStorage.getItem('x-auth-token'),
+        'otherUid': parseInt(otherUser.uid),
+      }),
+    });
+
+    if (getDataRes.status === 200) {
+      getOtherUser(url.id);
+      notification.success({
+        message: `${otherUser.fname} ${otherUser.lname} removed from black list`,
+      });
+    } else if (getDataRes.status === 202) {
+      dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
+    }
+  }
+
+  console.log(otherUser);
 
   return (
     <div className="user-page">
@@ -325,28 +377,48 @@ export default function UserPage() {
                 href="/profile"
                 text="Change Information"
               />
-              <Button
-                type="button"
-                subClass="submit"
-                href="/matchs"
-                text="Go to Matchs"
-              />
+              {(user.fname !== '' && (Array.isArray(photos[user.uid]) && !!photos[user.uid].length)) && (
+                <Button
+                  type="button"
+                  subClass="submit"
+                  href="/matchs"
+                  text="Go to Matchs"
+                />
+              )}
             </>
           )}
           {otherUser && (
             <>
-              <Button
-                type="button"
-                subClass="ignore-action"
-                text="Add to Ignore List"
-                onClick={() => setInIgnoreList()}
-              />
-              <Button
-                type="button"
-                subClass="delete-action"
-                text="Add to Black List"
-                onClick={() => setInBlackList()}
-              />
+              {otherUser.isIgnored ? (
+                <Button
+                  type="button"
+                  subClass="ignore-action"
+                  text="Remove from Ignore List"
+                  onClick={() => removeFromIgnoreList()}
+                />
+              ) : (
+                <Button
+                  type="button"
+                  subClass="ignore-action"
+                  text="Add to Ignore List"
+                  onClick={() => setInIgnoreList()}
+                />
+              )}
+              {otherUser.isClaimed ? (
+                <Button
+                  type="button"
+                  subClass="delete-action"
+                  text="Remove from Black List"
+                  onClick={() => removeFromBlackList()}
+                />
+              ) : (
+                <Button
+                  type="button"
+                  subClass="delete-action"
+                  text="Add to Black List"
+                  onClick={() => setInBlackList()}
+                />
+              )}
               <div className={styles.itemActions}>
                 {otherUser.isLiked ? <div className={classNames(styles.itemDislike, 'dislike')} onClick={() => unsetLike(otherUser.uid)}>
                   <img src={Close} alt="dislike" />

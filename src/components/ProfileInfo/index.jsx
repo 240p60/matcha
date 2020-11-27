@@ -415,7 +415,7 @@ export default function ProfileInfo() {
           </div>
         )}
       </form>
-      {user.fname.value !== '' && (
+      {(user.fname !== '' && (Array.isArray(photos[user.uid]) && !!photos[user.uid].length)) && (
         <div className="form__block-info">
           <Link className="green-link" to={`/user/page/${user.uid}`}>
             Go to user page

@@ -21,7 +21,7 @@ export const fetchInitDialogs = () => async (dispatch) => {
     if (res.status === 200) {
       let data = await res.json();
       dispatch(initDialogs(data));
-    }  else if (res.status === 202) {
+    } else if (res.status === 202) {
       dispatch(fetchInfoFailed({ error: 'Unauthorized' }));
     }
   }

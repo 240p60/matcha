@@ -33,7 +33,6 @@ export default function PictureSlider({
     if (e.target.files && e.target.files[0]) {
       let reader = new FileReader();
       reader.onload = function (e) {
-        console.log(value);
         if (!value.length || !value[uid].includes(e.target.result)) {
           dispatch(fetchAddPhoto(uid, e.target.result));
         }
@@ -51,7 +50,7 @@ export default function PictureSlider({
         <>
           <input
             type={input.type}
-            onChange={addPhotoPreview}
+            onChange={(e) => addPhotoPreview(e)}
             id="file-input"
             name={name}
           />

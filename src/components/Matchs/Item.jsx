@@ -26,18 +26,26 @@ export const Item = ({ data, setLike, unsetLike }) => {
               <span className={styles.itemName}>{`${data.fname} ${data.lname}, `}</span>
               <span className={styles.itemAge}>{data.age}</span>
             </div>
-            <div className={styles.itemInterests}>
-              <b>Interests:</b> {data.interests.join(', ')}
-            </div>
-            <div className={styles.itemGender}>
-              <b>Gender:</b> {data.gender}
-            </div>
-            <div className={styles.itemOrientation}>
-              <b>Orientation:</b> {data.orientation}
-            </div>
-            <div className={styles.itemRating}>
-              <b>Rating:</b> {data.rating}
-            </div>
+            {data.interests ? (
+              <div className={styles.itemInterests}>
+                <b>Interests:</b> {data.interests.join(', ')}
+              </div>
+            ) : null}
+            {data.gender ? (
+              <div className={styles.itemGender}>
+                <b>Gender:</b> {data.gender}
+              </div>
+            ) : null}
+            {data.orientation ? (
+              <div className={styles.itemOrientation}>
+                <b>Orientation:</b> {data.orientation}
+              </div>
+            ) : null}
+            {typeof data.rating === 'number' ? (
+              <div className={styles.itemRating}>
+                <b>Rating:</b> {data.rating}
+              </div>
+            ) : null}
           </div>
           <Link className={styles.itemLink} to={`/user/page/${data.uid}`}>
             View profile

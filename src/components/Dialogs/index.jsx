@@ -33,8 +33,10 @@ const Dialogs = ({ title, onClick }) => {
   return (
     <div className={styles.Dialog} onClick={onClick}>
       {title && <h2>{title}</h2>}
-      {(Array.isArray(dialogs) && dialogs.length) ? dialogs.map((item) => {
-        return <DialogItem key={item.uid} dialog={item} />;
+      {(Array.isArray(dialogs) && dialogs.length) ? dialogs.map((item, index) => {
+        if (index + 1 >= itemsAmount.min && index + 1 <= itemsAmount.max) {
+          return <DialogItem key={item.uid} dialog={item} />;
+        } else return null;
       }) : <div className={styles.EmptyDialogs}>You have no chats</div>}
       {(Array.isArray(dialogs) && dialogs.length && title) ? <Pagination changePage={changeAmount} pages={Math.ceil(dialogs.length / length)}/> : null}
     </div>

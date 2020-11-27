@@ -12,7 +12,6 @@ import styles from './Matchs.module.scss';
 
 import {
   ASCENDING,
-  DESCENDING,
   BYAGE,
   BYRATING,
   BYDISTANCE,
@@ -85,11 +84,11 @@ export default function Matchs() {
     let sortParams = activeSort.split(': ');
     switch (sortParams[0]) {
       case BYAGE:
-        return data.sort((a, b) => sortParams[1] === ASCENDING ? a.age - b.age : b.age - a.age);
+        return data ? data.sort((a, b) => sortParams[1] === ASCENDING ? a.age - b.age : b.age - a.age) : [];
       case BYRATING:
-        return data.sort((a, b) => sortParams[1] === ASCENDING ? a.rating - b.rating : b.rating - a.rating);
+        return data ? data.sort((a, b) => sortParams[1] === ASCENDING ? a.rating - b.rating : b.rating - a.rating) : [];
       case BYDISTANCE:
-        return data.sort((a, b) => sortParams[1] === ASCENDING ? a.range - b.range : b.range - a.range);
+        return data ? data.sort((a, b) => sortParams[1] === ASCENDING ? a.range - b.range : b.range - a.range) : [];
       default:
         return data;
     }
