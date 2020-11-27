@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { Context } from './Context';
