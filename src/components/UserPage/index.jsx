@@ -253,8 +253,6 @@ export default function UserPage() {
     }
   }
 
-  console.log(otherUser);
-
   return (
     <div className="user-page">
       {deleteModal && (

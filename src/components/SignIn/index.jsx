@@ -112,9 +112,6 @@ export default function SignIn() {
         />
         <Grid container className="actions">
           <Grid item xs>
-            <Link className="red-link" to="/">
-              Forgot password?
-            </Link>
           </Grid>
           <Grid item>
             <Link className="green-link" to="/signUp">
