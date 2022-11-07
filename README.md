@@ -11,7 +11,7 @@ Backend:
 - Go
 - PostgreSQL
 
-I developed frontend part on this project
+I developed frontend part on this project <br />
 Denis Globchansky developed backend (https://github.com/GlobchanskyDenis)
 
 ## How to run project
