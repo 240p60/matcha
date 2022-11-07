@@ -12,7 +12,7 @@ Backend:
 - PostgreSQL
 
 I developed frontend part on this project <br />
-Denis Globchansky developed backend (https://github.com/GlobchanskyDenis)
+Denis Globchansky developed backend ([https://github.com/GlobchanskyDenis](https://github.com/GlobchanskyDenis/matcha))
 
 ## How to run project
 
